@@ -7,6 +7,8 @@ import (
 func main() {
 	godotenv.Load() // Load env vars from ./.env
 
-	stravaToken := getStravaAccessToken()
+	st := getStravaAccessToken()
 
+	// getGroupMemberList(st)
+	getActivityDetails("5064060938", st)
 }

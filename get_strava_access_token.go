@@ -29,6 +29,7 @@ func getStravaAccessToken() string {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer res.Body.Close()
 
 	var result map[string]string
 
