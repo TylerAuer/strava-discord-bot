@@ -26,11 +26,11 @@ type Activity struct {
 	ElevationGain float64 `json:"total_elevation_gain"`
 }
 
-func getLatestGroupActivity(st string) Activity {
+func getLatestGroupActivities(st string, count int16) []Activity {
 	fmt.Println("Getting most recent group activity")
 
 	cid := os.Getenv("STRAVA_CLUB_ID")
-	url := "https://www.strava.com/api/v3/clubs/" + cid + "/activities?per_page=1&access_token=" + st
+	url := "https://www.strava.com/api/v3/clubs/" + cid + "/activities?per_page=" + fmt.Sprint(count) + "&access_token=" + st
 
 	res, resErr := http.Get(url)
 	if resErr != nil {
@@ -49,6 +49,6 @@ func getLatestGroupActivity(st string) Activity {
 		log.Fatal(parseErr)
 	}
 
-	fmt.Println("Retrieved most recent group activity")
-	return la[0]
+	fmt.Println("Retrieved most recent" + fmt.Sprint(count) + "group activities")
+	return la
 }

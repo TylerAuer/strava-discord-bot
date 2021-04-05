@@ -11,11 +11,9 @@ func main() {
 
 	st := getStravaAccessToken()
 
-	la := getLatestGroupActivity(st)
+	la := getLatestGroupActivities(st, 5)
 
 	str := fmt.Sprintf("%#v", la)
 
-	postToDiscord("Progress boys! Check this out!")
 	postToDiscord(str)
-	postToDiscord("It's running on my local machine, but it's doing most of the hard work already!")
 }
