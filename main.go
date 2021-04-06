@@ -1,10 +1,6 @@
 package main
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/joho/godotenv"
 )
 
@@ -13,23 +9,18 @@ type MyEvent struct {
 }
 
 func main() {
-	lambda.Start(HandleRequest)
-}
-
-func HandleRequest(ctx context.Context, name MyEvent) (string, error) {
-	getStravaActivitiesAndPostToDiscord()
-
-	return fmt.Sprintf("Hello %s!", name.Name), nil
-}
-
-func getStravaActivitiesAndPostToDiscord() {
+	// lambda.Start(HandleRequest)
 	godotenv.Load() // Load env vars from ./.env
 
-	st := getStravaAccessToken()
+	ta := Kraftee{"Tyler", "Auer", "Ugly Stick", "2007", "TYLER", "20419783", ""}
 
-	la := getLatestGroupActivities(st, 5)
+	kraftees := []Kraftee{ta}
 
-	str := fmt.Sprintf("%#v", la)
+	// TODO: Use go routines here
+	for _, k := range kraftees {
+		k.StravaAccessToken = getStravaAccessToken(k)
+		stats := getAthleteStats(k)
 
-	postToDiscord(str)
+		postToDiscord(stats.YtdRunsTotalsString())
+	}
 }

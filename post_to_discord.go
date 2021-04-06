@@ -8,6 +8,7 @@ import (
 )
 
 func postToDiscord(post string) {
+	fmt.Println("Making post to Discord")
 
 	token := os.Getenv("DISCORD_BOT_TOKEN")
 	c := os.Getenv("DISCORD_TEST_CHANNEL_ID")
