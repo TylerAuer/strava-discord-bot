@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type AthleteStats struct {
 	BiggestRideDistance       float64 `json:"biggest_ride_distance"`
@@ -74,5 +77,9 @@ type AthleteStats struct {
 }
 
 func (as AthleteStats) YtdRunsTotalsString() string {
-	return fmt.Sprint(as.YtdRunTotals.Count) + " runs over " + fmt.Sprintf("%f.1", metersToMiles(as.YtdRideTotals.Distance)) + " in " + fmt.Sprintf("%f.1", secondsToHours(as.YtdRideTotals.ElapsedTime))
+	miles := strconv.FormatFloat(metersToMiles(as.YtdRunTotals.Distance), 'f', 1, 64) + " miles"
+	time := secondsToHoursMinsSeconds(as.YtdRunTotals.MovingTime)
+	feetGained := "+" + strconv.FormatFloat(metersToFeet(as.YtdRunTotals.ElevationGain), 'f', 0, 64) + "'"
+
+	return fmt.Sprint(as.YtdRunTotals.Count) + " runs over " + miles + " in " + time + " with " + feetGained
 }

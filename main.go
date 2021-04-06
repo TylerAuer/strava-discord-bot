@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/joho/godotenv"
 )
 
@@ -21,6 +23,7 @@ func main() {
 		k.StravaAccessToken = getStravaAccessToken(k)
 		stats := getAthleteStats(k)
 
-		postToDiscord(stats.YtdRunsTotalsString())
+		fmt.Println(stats.YtdRunsTotalsString())
+		// postToDiscord(stats.YtdRunsTotalsString())
 	}
 }
