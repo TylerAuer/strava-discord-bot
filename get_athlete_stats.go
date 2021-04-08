@@ -23,7 +23,7 @@ type Stats struct {
 }
 
 func getAthleteStats(k Kraftee) AthleteStats {
-	fmt.Println("Getting athlete stats for" + k.fullName())
+	fmt.Println("Getting athlete stats for " + k.fullName())
 	athleteStatsUrl := "https://www.strava.com/api/v3/athletes/" + k.StravaId + "/stats"
 	authHeader := "Bearer " + k.StravaAccessToken
 

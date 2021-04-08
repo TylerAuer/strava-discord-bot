@@ -15,7 +15,7 @@ type Athlete struct {
 	ResourceState int64  `json:"resource_state"`
 }
 
-type Activity struct {
+type ActivityBasic struct {
 	ResourceState int64   `json:"resource_state"`
 	Athlete       Athlete `json:"athlete"`
 	Name          string  `json:"name"`
@@ -26,7 +26,7 @@ type Activity struct {
 	ElevationGain float64 `json:"total_elevation_gain"`
 }
 
-func getLatestGroupActivities(st string, count int16) []Activity {
+func getLatestGroupActivities(st string, count int16) []ActivityBasic {
 	fmt.Println("Getting most recent group activity")
 
 	cid := os.Getenv("STRAVA_CLUB_ID")
@@ -43,7 +43,7 @@ func getLatestGroupActivities(st string, count int16) []Activity {
 		log.Fatal(bodyErr)
 	}
 
-	la := []Activity{}
+	la := []ActivityBasic{}
 	parseErr := json.Unmarshal(body, &la)
 	if parseErr != nil {
 		log.Fatal(parseErr)

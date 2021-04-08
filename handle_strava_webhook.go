@@ -11,5 +11,5 @@ type WebhookData struct {
 }
 
 func handleStravaWebhook(body string) {
-	fmt.Println(body)
+	fmt.Println("Strava Post Content:" + body)
 }

@@ -10,8 +10,23 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// This will run when the image is running on AWS Lambda
-func handleRequest(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func main() {
+	fmt.Println("Starting")
+	godotenv.Load()
+	fmt.Println("Loaded env vars")
+
+	// Decide what to execute based on where things are running
+	production := os.Getenv("PRODUCTION")
+	if production != "FALSE" {
+		fmt.Println("Passing handleRequest to lambda.Start")
+		lambda.Start(handleLambda)
+	} else {
+		fmt.Println("Invoking handleLocal")
+		handleLocal()
+	}
+}
+
+func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	fmt.Println("Invoking handleRequest")
 
 	defaultResponse := events.APIGatewayProxyResponse{
@@ -34,33 +49,12 @@ func handleRequest(ctx context.Context, req events.APIGatewayProxyRequest) (even
 	return defaultResponse, nil
 }
 
-// This will run locally
 func handleLocal() {
 	ta := Kraftee{"Tyler", "Auer", "Ugly Stick", "2007", "TYLER", "20419783", ""}
+	ta.StravaAccessToken = getStravaAccessToken(ta)
 
-	kraftees := []Kraftee{ta}
+	a := getActivityDetails("1110968169", ta)
+	p := parseActivityStatsIntoPost(a, ta)
 
-	// TODO: Use go routines here
-	for _, k := range kraftees {
-		k.StravaAccessToken = getStravaAccessToken(k)
-		stats := getAthleteStats(k)
-
-		fmt.Println(stats.YtdRunsTotalsString())
-		// postToDiscord(stats.YtdRunsTotalsString())
-	}
-}
-
-func main() {
-	fmt.Println("Starting")
-	godotenv.Load()
-	fmt.Println("Loaded env vars")
-
-	// Decide what to execute based on where things are running
-	production := os.Getenv("PRODUCTION")
-	if production != "FALSE" {
-		fmt.Println("Passing handleRequest to lambda.Start")
-		lambda.Start(handleRequest)
-	} else {
-		handleLocal()
-	}
+	postToDiscord(p)
 }
