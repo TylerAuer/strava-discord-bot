@@ -18,7 +18,7 @@ func parseActivityStatsIntoPost(a ActivityDetails, k Kraftee) string {
 	elev := fmt.Sprintf("%.1f", metersToFeet(a.TotalElevationGain)) + "' gained"
 	movTime := secondsToHoursMinsSeconds(a.MovingTime) + " moving time"
 	paceInSecondsPerMile := float64(a.MovingTime) / metersToMiles(a.Distance)
-	pace := secondsToMinSec(paceInSecondsPerMile) + "  per mile"
+	pace := secondsToMinSec(paceInSecondsPerMile) + " per mile"
 
 	return "" +
 		"*" + k.First + " just logged a " + strings.ToLower(a.Type) + "*\n\n" +
