@@ -36,16 +36,12 @@ func getActivityDetails(id string, k Kraftee) ActivityDetails {
 		log.Fatal(err)
 	}
 
-	// Add link to activity to Activity Details
-	stats.LinkToActivity = "https://www.strava.com/activities/" + string(stats.ID)
-
 	return stats
 }
 
 type ActivityDetails struct {
-	LinkToActivity string `json:link_to_activity`
-	ResourceState  int    `json:"resource_state"`
-	Athlete        struct {
+	ResourceState int `json:"resource_state"`
+	Athlete       struct {
 		ID            int `json:"id"`
 		ResourceState int `json:"resource_state"`
 	} `json:"athlete"`

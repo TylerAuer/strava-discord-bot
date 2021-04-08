@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math"
 	"strconv"
 )
 
@@ -30,21 +29,26 @@ func secondsToHoursMinsSeconds(s int) string {
 	mins := s / 60 % 60
 	hours := s / 60 / 60 % 60
 
-	if hours == 0 {
-		return strconv.Itoa(mins) + ":" + strconv.Itoa(secs)
+	var sString string
+	if secs < 10 {
+		sString = "0" + strconv.Itoa(secs)
+	} else {
+		sString = strconv.Itoa(secs)
 	}
 
-	return strconv.Itoa(hours) + ":" + strconv.Itoa(mins) + ":" + strconv.Itoa(secs)
+	var mString string
+	if secs < 10 {
+		mString = "0" + strconv.Itoa(mins)
+	} else {
+		mString = strconv.Itoa(mins)
+	}
 
-}
+	if hours == 0 {
+		return mString + ":" + sString
+	}
 
-func round(num float64) int {
-	return int(num + math.Copysign(0.5, num))
-}
+	return strconv.Itoa(hours) + ":" + mString + ":" + sString
 
-func toFixed(num float64, precision int) float64 {
-	output := math.Pow(10, float64(precision))
-	return float64(round(num*output)) / output
 }
 
 func secondsToMinSec(p float64) string {
@@ -52,5 +56,12 @@ func secondsToMinSec(p float64) string {
 	fractionalMins := p/60.0 - float64(mins) // fractional minute left after truncating
 	secs := int(fractionalMins * 60.0)
 
-	return strconv.Itoa(mins) + ":" + strconv.Itoa(secs)
+	var secString string
+	if secs < 10 {
+		secString = "0" + strconv.Itoa(secs)
+	} else {
+		secString = strconv.Itoa(secs)
+	}
+
+	return strconv.Itoa(mins) + ":" + secString
 }

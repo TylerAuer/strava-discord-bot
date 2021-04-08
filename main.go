@@ -53,7 +53,7 @@ func handleLocal() {
 	ta := Kraftee{"Tyler", "Auer", "Ugly Stick", "2007", "TYLER", "20419783", ""}
 	ta.StravaAccessToken = getStravaAccessToken(ta)
 
-	a := getActivityDetails("1110968169", ta)
+	a := getActivityDetails("5088461939", ta)
 	p := parseActivityStatsIntoPost(a, ta)
 
 	postToDiscord(p)
