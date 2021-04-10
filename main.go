@@ -13,7 +13,7 @@ import (
 
 var krafteesByStravaId = map[string]Kraftee{
 	"20419783": {"Tyler", "Auer", "TYLER", "20419783", ""},
-	//"80996402": {"Jamie", "Quella", "Q", "80996402", ""},
+	"80996402": {"Jamie", "Quella", "Q", "80996402", ""},
 	//"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", ""},
 	//"2102360": {"Brian", "Munroe", "PHYS", "2102360", ""},
 	//"60682578": {"Tom", "Samuelson", "TOM", "60682578", ""},
@@ -74,9 +74,9 @@ func handleLocal() {
 	}{
 		AspectType: "create",
 		// EventTime:      1516126040,
-		ObjectId:       5098963418,
+		ObjectId:       5098705720,
 		ObjectType:     "activity",
-		OwnerId:        20419783,
+		OwnerId:        80996402,
 		SubscriptionId: 1,
 	}
 
