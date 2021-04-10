@@ -12,7 +12,6 @@ func postToDiscord(post string) {
 
 	token := os.Getenv("DISCORD_BOT_TOKEN")
 	c := os.Getenv("DISCORD_CHANNEL_ID")
-	// c := os.Getenv("DISCORD_WORKOUT_CHANNEL_ID")
 
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + token)

@@ -13,7 +13,7 @@ func getActivityDetails(id string, k Kraftee) ActivityDetails {
 
 	url := "https://www.strava.com/api/v3/activities/" + id
 
-	authHeader := "Bearer " + k.StravaAccessToken
+	authHeader := "Bearer " + k.GetStravaAccessToken()
 
 	// Build request; include authHeader
 	req, err := http.NewRequest("GET", url, nil)

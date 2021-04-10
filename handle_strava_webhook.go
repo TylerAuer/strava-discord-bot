@@ -26,11 +26,10 @@ func handleStravaWebhook(body string) {
 	if b.ObjectType == "activity" && b.AspectType == "create" {
 		fmt.Println("Handling new activity with ID: " + fmt.Sprint(b.ObjectId))
 
-		ta := Kraftee{"Tyler", "Auer", "Ugly Stick", "2007", "TYLER", "20419783", ""}
-		ta.StravaAccessToken = getStravaAccessToken(ta)
+		k := krafteesByStravaId[fmt.Sprint(b.OwnerId)]
 
-		a := getActivityDetails(fmt.Sprint(b.ObjectId), ta)
-		p := parseActivityStatsIntoPost(a, ta)
+		a := getActivityDetails(fmt.Sprint(b.ObjectId), k)
+		p := parseActivityStatsIntoPost(a, k)
 
 		postToDiscord(p)
 

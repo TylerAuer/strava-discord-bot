@@ -10,7 +10,7 @@ import (
 )
 
 func getStravaAccessToken(k Kraftee) string {
-	fmt.Println("Requesting Strava Access Token for " + k.fullName())
+	fmt.Println("Requesting Strava Access Token for " + k.FullName())
 	client_id := os.Getenv("STRAVA_CLIENT_ID")
 	client_secret := os.Getenv("STRAVA_CLIENT_SECRET")
 	refresh_token := os.Getenv("STRAVA_REFRESH_" + k.RefreshTokenEnvName)
@@ -35,9 +35,9 @@ func getStravaAccessToken(k Kraftee) string {
 	json.NewDecoder(res.Body).Decode(&result)
 
 	if result["access_token"] == "" {
-		log.Fatal("Error getting access token for " + k.fullName())
+		log.Fatal("Error getting access token for " + k.FullName())
 	}
-	fmt.Println("Received access token for " + k.fullName())
+	fmt.Println("Received access token for " + k.FullName() + " of: " + result["access_token"])
 
 	return result["access_token"]
 }

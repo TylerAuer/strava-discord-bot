@@ -19,11 +19,19 @@ func parseActivityStatsIntoPost(a ActivityDetails, k Kraftee) string {
 	movTime := secondsToHoursMinsSeconds(a.MovingTime) + " moving time"
 	paceInSecondsPerMile := float64(a.MovingTime) / metersToMiles(a.Distance)
 	pace := secondsToMinSec(paceInSecondsPerMile) + " per mile"
+	relativeEffort := func() string {
+		if a.SufferScore == 0 {
+			return ""
+		} else {
+			return "Relative Effort: " + fmt.Sprint(a.SufferScore) + "\n"
+		}
+	}()
 
 	return "" +
 		"*" + k.First + " just logged a " + strings.ToLower(a.Type) + "*\n\n" +
 		dist + "\n" +
 		elev + "\n" +
-		movTime + " @ " + pace + "\n\n" +
-		url
+		movTime + " @ " + pace + "\n" +
+		relativeEffort +
+		"\n" + url
 }
