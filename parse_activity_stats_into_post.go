@@ -6,6 +6,13 @@ import (
 )
 
 func parseActivityStatsIntoPost(a ActivityDetails, k Kraftee) string {
+	emojis := map[string]string{
+		"walk":            "🚶🚶🚶",
+		"ride":            "🚴‍♂️🚴‍♂️🚴‍♂️",
+		"swim":            "🏊‍♂️🏊‍♂️🏊‍♂️",
+		"weight training": "🏋️💪🏋️💪",
+	}
+
 	id := fmt.Sprint(a.ID)
 	url := "https://www.strava.com/activities/" + id
 	dist := "Distance:        " + fmt.Sprintf("%.1f", metersToMiles(a.Distance)) + " miles"
@@ -27,8 +34,7 @@ func parseActivityStatsIntoPost(a ActivityDetails, k Kraftee) string {
 	}()
 
 	return "" +
-		"*" + k.First + " just logged a " + strings.ToLower(a.Type) + "*\n\n" +
-		"**STATS**" +
+		k.First + " just logged a " + strings.ToLower(a.Type) + emojis[strings.ToLower(a.Type)] + "\n\n" +
 		"```" +
 		dist + "\n" +
 		movTime + " @ " + pace + "\n" +
