@@ -37,7 +37,7 @@ func secondsToHoursMinsSeconds(s int) string {
 	}
 
 	var mString string
-	if secs < 10 {
+	if mins < 10 {
 		mString = "0" + strconv.Itoa(mins)
 	} else {
 		mString = strconv.Itoa(mins)
