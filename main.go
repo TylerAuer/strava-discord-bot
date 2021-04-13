@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sync"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -68,9 +69,19 @@ func handleLocal() {
 	epochTime := time.Now().Unix()
 	startInEpochTime := epochTime - secsToLookBack
 
-	a := getActivitiesSince(startInEpochTime, krafteesByStravaId["20419783"])
-	s := compileStatsFromActivities(a)
+	var wg sync.WaitGroup
 
-	prettyPrintStruct(s)
+	for _, k := range krafteesByStravaId {
+		wg.Add(1)
+
+		go func() {
+			actList := getActivitiesSince(startInEpochTime, k)
+			s := compileStatsFromActivities(actList)
+			prettyPrintStruct(s)
+			wg.Done()
+		}()
+
+		wg.Wait()
+	}
 
 }
