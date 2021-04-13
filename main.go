@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -64,23 +66,17 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 }
 
 func handleLocal() {
-	e := struct {
-		AspectType     string `json:"aspect_type"`
-		EventTime      int    `json:"event_time"`
-		ObjectId       int    `json:"object_id"`
-		ObjectType     string `json:"object_type"`
-		OwnerId        int    `json:"owner_id"`
-		SubscriptionId int    `json:"subscription_id"`
-	}{
-		AspectType: "create",
-		// EventTime:      1516126040,
-		ObjectId:       5098705720,
-		ObjectType:     "activity",
-		OwnerId:        80996402,
-		SubscriptionId: 1,
+	secsToLookBack := int64(7 * 24 * 60 * 60)
+	epochTime := time.Now().Unix()
+	startInEpochTime := epochTime - secsToLookBack
+
+	a := getActivitiesSince(startInEpochTime, krafteesByStravaId["20419783"])
+	s := compileStatsFromActivities(a)
+
+	empJSON, err := json.MarshalIndent(s, "", "  ")
+	if err != nil {
+		log.Fatalf(err.Error())
 	}
+	fmt.Printf("MarshalIndent funnction output %s\n", string(empJSON))
 
-	s, _ := json.Marshal(e)
-
-	handleStravaWebhook(string(s))
 }

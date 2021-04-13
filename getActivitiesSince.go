@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func getStatsSince(s int64, k Kraftee) []ActivityDetails {
+func getActivitiesSince(s int64, k Kraftee) []ActivityDetails {
 	fmt.Println("Getting activity history for " + k.FullName())
 	// Grab the stats for Kraftee
 
