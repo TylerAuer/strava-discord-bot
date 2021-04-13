@@ -2,9 +2,7 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -18,11 +16,11 @@ var krafteesByStravaId = map[string]Kraftee{
 	"80996402": {"Jamie", "Quella", "Q", "80996402", ""},
 	"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", ""},
 	"23248014": {"Fred", "Brasz", "FRED", "23248014", ""},
-	"2102360":  {"Brian", "Munroe", "PHYS", "2102360", ""},
-	"60682578": {"Tom", "Samuelson", "TOM", "60682578", ""},
-	"65626950": {"Alex", "Hogan", "HOGAN", "65626950", ""},
-	"65753450": {"Zach", "Grossman", "ZACH", "65753450", ""},
-	"80341128": {"Conor", "Quinn", "CONOR", "80341128", ""},
+	// "2102360":  {"Brian", "Munroe", "PHYS", "2102360", ""},
+	// "60682578": {"Tom", "Samuelson", "TOM", "60682578", ""},
+	// "65626950": {"Alex", "Hogan", "HOGAN", "65626950", ""},
+	// "65753450": {"Zach", "Grossman", "ZACH", "65753450", ""},
+	// "80341128": {"Conor", "Quinn", "CONOR", "80341128", ""},
 }
 
 func main() {
@@ -73,10 +71,6 @@ func handleLocal() {
 	a := getActivitiesSince(startInEpochTime, krafteesByStravaId["20419783"])
 	s := compileStatsFromActivities(a)
 
-	empJSON, err := json.MarshalIndent(s, "", "  ")
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-	fmt.Printf("MarshalIndent funnction output %s\n", string(empJSON))
+	prettyPrintStruct(s)
 
 }

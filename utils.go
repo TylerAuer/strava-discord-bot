@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
 	"strconv"
 )
 
@@ -64,4 +67,12 @@ func secondsToMinSec(p float64) string {
 	}
 
 	return strconv.Itoa(mins) + ":" + secString
+}
+
+func prettyPrintStruct(s interface{}) {
+	j, err := json.MarshalIndent(s, "", "  ")
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	fmt.Printf("MarshalIndent funnction output %s\n", string(j))
 }
