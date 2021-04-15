@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"sync"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -22,6 +21,8 @@ var krafteesByStravaId = map[string]Kraftee{
 	// "65626950": {"Alex", "Hogan", "HOGAN", "65626950", ""},
 	// "65753450": {"Zach", "Grossman", "ZACH", "65753450", ""},
 	// "80341128": {"Conor", "Quinn", "CONOR", "80341128", ""},
+	// "82860978": {"Andre", "Martinez", "DRE", "82860978", ""},
+	// "": {"Larry", "Dworkin", "SMOOTH", "", ""},
 }
 
 func main() {
@@ -52,36 +53,66 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 	httpMethod := req.HTTPMethod
 	fmt.Println("HTTP Method: " + httpMethod)
 
-	switch httpMethod {
-	case "GET":
-		fmt.Printf("Handling GET request which should be subscription validation from Strava")
-		return handleStravaSubscriptionChallenge(req.QueryStringParameters)
-	case "POST":
-		fmt.Printf("Handling POST request which should be webhook event from Strava")
-		handleStravaWebhook(req.Body)
+	purpose := os.Getenv("PURPOSE")
+
+	if purpose == "NEW_POSTS" {
+		switch httpMethod {
+		case "GET":
+			fmt.Printf("Handling GET request which should be subscription validation from Strava")
+			return handleStravaSubscriptionChallenge(req.QueryStringParameters)
+		case "POST":
+			fmt.Printf("Handling POST request which should be webhook event from Strava")
+			handleStravaWebhook(req.Body)
+		}
 	}
 
 	return defaultResponse, nil
 }
 
 func handleLocal() {
+	defer duration(track("handleLocal"))
+
+	var kStatsList []Stats           // Holds each Kraftees stats for comparison
+	var allActList []ActivityDetails // Holds all activities for group stats computation
+
+	kChan := make(chan Stats)
+	allChan := make(chan []ActivityDetails)
+
 	secsToLookBack := int64(7 * 24 * 60 * 60)
 	epochTime := time.Now().Unix()
 	startInEpochTime := epochTime - secsToLookBack
 
-	var wg sync.WaitGroup
-
 	for _, k := range krafteesByStravaId {
-		wg.Add(1)
-
-		go func() {
-			actList := getActivitiesSince(startInEpochTime, k)
-			s := compileStatsFromActivities(actList)
-			prettyPrintStruct(s)
-			wg.Done()
-		}()
-
-		wg.Wait()
+		go getStatsForSummary(startInEpochTime, k, kChan, allChan)
 	}
 
+	// Handle incoming channel messages
+
+	for i := 0; i < 2*len(krafteesByStravaId); i++ {
+		select {
+		case newKrafteeStats := <-kChan:
+			fmt.Println("Received kChan message")
+			kStatsList = append(kStatsList, newKrafteeStats)
+		case newListOfActivities := <-allChan:
+			fmt.Println("Received allChan message")
+			allActList = append(allActList, newListOfActivities...)
+		}
+	}
+
+	allStats := compileStatsFromActivities("All", "", allActList)
+	prettyPrintStruct(allStats)
+}
+
+func getStatsForSummary(t int64, k Kraftee, kChan chan Stats, allChan chan []ActivityDetails) {
+	kActList := getActivitiesSince(t, k)
+	allChan <- kActList
+	fmt.Println("sent allChan message for " + k.FullName())
+
+	kStats := compileStatsFromActivities(k.FullName(), k.StravaId, kActList)
+	kChan <- kStats
+	fmt.Println("sent kChan message for " + k.FullName())
+
+	fmt.Println("Finished " + k.FullName())
+
+	prettyPrintStruct(kStats)
 }

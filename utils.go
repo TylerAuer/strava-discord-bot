@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"time"
 )
 
 func metersToMiles(m float64) float64 {
@@ -74,5 +75,13 @@ func prettyPrintStruct(s interface{}) {
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
-	fmt.Printf("MarshalIndent funnction output %s\n", string(j))
+	fmt.Printf("%s\n", string(j))
+}
+
+func track(msg string) (string, time.Time) {
+	return msg, time.Now()
+}
+
+func duration(msg string, start time.Time) {
+	log.Printf("%v: %v\n", msg, time.Since(start))
 }

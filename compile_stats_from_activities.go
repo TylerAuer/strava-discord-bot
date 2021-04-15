@@ -1,6 +1,9 @@
 package main
 
 type Stats struct {
+	Name string
+	ID   string
+
 	AllCount         int
 	AllMovingSeconds int
 	//MaxHeartRate
@@ -21,8 +24,11 @@ type Stats struct {
 	WalkOrHikeElevationGain float64
 }
 
-func compileStatsFromActivities(a []ActivityDetails) Stats {
-	s := Stats{}
+func compileStatsFromActivities(name string, ID string, a []ActivityDetails) Stats {
+	s := Stats{
+		Name: name,
+		ID:   ID,
+	}
 
 	for _, a := range a {
 		s.AllCount++
