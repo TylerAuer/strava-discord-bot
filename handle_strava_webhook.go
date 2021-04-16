@@ -29,7 +29,7 @@ func handleStravaWebhook(body string) {
 		k := krafteesByStravaId[fmt.Sprint(b.OwnerId)]
 
 		a := getActivityDetails(fmt.Sprint(b.ObjectId), k)
-		p := parseActivityStatsIntoPost(a, k)
+		p := buildActivityPost(a, k)
 
 		postToDiscord(p)
 

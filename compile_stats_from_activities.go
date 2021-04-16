@@ -36,23 +36,23 @@ func compileStatsFromActivities(name string, ID string, a []ActivityDetails) Sta
 
 		if a.Type == "Run" {
 			s.RunCount++
-			s.RunMovingSeconds = a.MovingTime
-			s.RunMeters = a.Distance
-			s.RunElevationGain = a.TotalElevationGain
+			s.RunMovingSeconds += a.MovingTime
+			s.RunMeters += a.Distance
+			s.RunElevationGain += a.TotalElevationGain
 		}
 
 		if a.Type == "Ride" {
 			s.RideCount++
-			s.RideMovingSeconds = a.MovingTime
-			s.RideMeters = a.Distance
-			s.RideElevationGain = a.TotalElevationGain
+			s.RideMovingSeconds += a.MovingTime
+			s.RideMeters += a.Distance
+			s.RideElevationGain += a.TotalElevationGain
 		}
 
 		if a.Type == "Walk" || a.Type == "Hike" {
 			s.WalkOrHikeCount++
-			s.WalkOrHikeMovingSeconds = a.MovingTime
-			s.WalkOrHikeMeters = a.Distance
-			s.WalkOrHikeElevationGain = a.TotalElevationGain
+			s.WalkOrHikeMovingSeconds += a.MovingTime
+			s.WalkOrHikeMeters += a.Distance
+			s.WalkOrHikeElevationGain += a.TotalElevationGain
 		}
 	}
 

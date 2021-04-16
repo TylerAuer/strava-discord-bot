@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func parseActivityStatsIntoPost(a ActivityDetails, k Kraftee) string {
+func buildActivityPost(a ActivityDetails, k Kraftee) string {
 	emojis := map[string]string{
 		"walk":            "🚶🚶🚶",
 		"run":             "🏃‍♂️🏃‍♂️🏃‍♂️",
