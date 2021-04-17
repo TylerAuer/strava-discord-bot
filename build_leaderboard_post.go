@@ -6,7 +6,6 @@ import (
 )
 
 func buildLeaderboardPost(sList []Stats) string {
-
 	medal := map[int]string{
 		0: "🥇",
 		1: "🥈",
@@ -34,7 +33,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	}
 	DiscordPost += ActivityCount
 
-	RunDistance := "\nRun Distance\n"
+	RunDistance := "\nRun Distance " + emojis["run"] + "\n"
 	sort.Slice(sList, func(i, j int) bool { return sList[i].RunMeters > sList[j].RunMeters })
 	for i, k := range sList[:3] {
 		if k.RunMeters > 0 {
@@ -43,7 +42,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	}
 	DiscordPost += RunDistance
 
-	RunTime := "\nRun Time\n"
+	RunTime := "\nRun Time " + emojis["run"] + "\n"
 	sort.Slice(sList, func(i, j int) bool { return sList[i].RunMovingSeconds > sList[j].RunMovingSeconds })
 	for i, k := range sList[:3] {
 		if k.RunMovingSeconds > 0 {
@@ -52,7 +51,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	}
 	DiscordPost += RunTime
 
-	RunElev := "\nRun Elevation Gain\n"
+	RunElev := "\nRun Elevation Gain " + emojis["run"] + "\n"
 	sort.Slice(sList, func(i, j int) bool { return sList[i].RunElevationGain > sList[j].RunElevationGain })
 	for i, k := range sList[:3] {
 		if k.RunElevationGain > 0 {
@@ -61,7 +60,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	}
 	DiscordPost += RunElev
 
-	RideDistance := "\nRide Distance\n"
+	RideDistance := "\nRide Distance " + emojis["ride"] + "\n"
 	sort.Slice(sList, func(i, j int) bool { return sList[i].RideMeters > sList[j].RideMeters })
 	for i, k := range sList[:3] {
 		if k.RideMeters > 0 {
@@ -70,7 +69,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	}
 	DiscordPost += RideDistance
 
-	RideTime := "\nRide Time\n"
+	RideTime := "\nRide Time " + emojis["ride"] + "\n"
 	sort.Slice(sList, func(i, j int) bool { return sList[i].RideMovingSeconds > sList[j].RideMovingSeconds })
 	for i, k := range sList[:3] {
 		if k.RideMovingSeconds > 0 {
@@ -79,7 +78,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	}
 	DiscordPost += RideTime
 
-	RideElev := "\nRide Elevation Gain\n"
+	RideElev := "\nRide Elevation Gain " + emojis["ride"] + "\n"
 	sort.Slice(sList, func(i, j int) bool { return sList[i].RideElevationGain > sList[j].RideElevationGain })
 	for i, k := range sList[:3] {
 		if k.RideElevationGain > 0 {

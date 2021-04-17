@@ -35,7 +35,7 @@ func getOneKrafteesStats(t int64, k Kraftee, kChan chan Stats, allChan chan []Ac
 	kActList := getActivitiesSince(t, k)
 	allChan <- kActList
 
-	kStats := compileStatsFromActivities(k.FullName(), k.StravaId, kActList)
+	kStats := buildStatsFromActivityList(k.FullName(), k.StravaId, kActList)
 	kChan <- kStats
 
 	fmt.Println("Finished " + k.FullName())

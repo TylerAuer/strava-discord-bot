@@ -7,6 +7,7 @@ func buildGroupStatsPost(gs Stats) string {
 	post += "```"
 	post += "Activities: " + fmt.Sprint(gs.AllCount) + "\n"
 	post += "Total Time: " + secondsToHoursMinsSeconds(gs.AllMovingSeconds) + "\n"
+	post += "Total Heartbeats: " + fmt.Sprint(gs.Heartbeats/1000) + "k \n"
 	post += "\n"
 	post += "Runs: " + fmt.Sprint(gs.RunCount) + "\n"
 	post += "Rides: " + fmt.Sprint(gs.RideCount) + "\n"

@@ -6,14 +6,6 @@ import (
 )
 
 func buildActivityPost(a ActivityDetails, k Kraftee) string {
-	emojis := map[string]string{
-		"walk":            "🚶🚶🚶",
-		"run":             "🏃‍♂️🏃‍♂️🏃‍♂️",
-		"ride":            "🚴‍♂️🚴‍♂️🚴‍♂️",
-		"swim":            "🏊‍♂️🏊‍♂️🏊‍♂️",
-		"weight training": "🏋️💪🏋️💪",
-	}
-
 	id := fmt.Sprint(a.ID)
 	url := "https://www.strava.com/activities/" + id
 

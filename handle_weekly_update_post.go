@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 func handleWeeklyUpdatePost() {
 	// Find 7 days ago in unix epoch time
@@ -8,14 +11,17 @@ func handleWeeklyUpdatePost() {
 	epochTime := time.Now().Unix()
 	startInEpochTime := epochTime - secsToLookBack
 
+	krafteeCount := len(krafteesByStravaId)
+
 	listOfKrafteeStats, listOfEveryActivity := getAllKrafteeStats(startInEpochTime)
 
-	groupStats := compileStatsFromActivities("All", "", listOfEveryActivity)
+	groupStats := buildStatsFromActivityList("All", "", listOfEveryActivity)
 	groupStatsPost := buildGroupStatsPost(groupStats)
 
 	leaderboardPost := buildLeaderboardPost(listOfKrafteeStats)
 
-	post := "**Weekly Update Post**"
+	post := "**Weekly Update Post**\n"
+	post += "*Here's a summary for " + fmt.Sprint(krafteeCount) + " kraftees over the last week*"
 	post += "\n\n" + groupStatsPost
 	post += "\n\n" + leaderboardPost
 	postToDiscord(post)

@@ -25,6 +25,14 @@ var krafteesByStravaId = map[string]Kraftee{
 	// "82860978": {"Andre", "Martinez", "DRE", "82860978", ""},
 }
 
+var emojis = map[string]string{
+	"walk":            "🚶🚶🚶",
+	"run":             "🏃‍♂️🏃‍♂️🏃‍♂️",
+	"ride":            "🚴‍♂️🚴‍♂️🚴‍♂️",
+	"swim":            "🏊‍♂️🏊‍♂️🏊‍♂️",
+	"weight training": "🏋️💪🏋️💪",
+}
+
 func main() {
 	fmt.Println("Starting")
 	godotenv.Load()

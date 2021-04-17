@@ -6,6 +6,7 @@ type Stats struct {
 
 	AllCount         int
 	AllMovingSeconds int
+	Heartbeats       int
 	//MaxHeartRate
 
 	RunCount         int
@@ -24,7 +25,7 @@ type Stats struct {
 	WalkOrHikeElevationGain float64
 }
 
-func compileStatsFromActivities(name string, ID string, a []ActivityDetails) Stats {
+func buildStatsFromActivityList(name string, ID string, a []ActivityDetails) Stats {
 	s := Stats{
 		Name: name,
 		ID:   ID,
@@ -33,6 +34,7 @@ func compileStatsFromActivities(name string, ID string, a []ActivityDetails) Sta
 	for _, a := range a {
 		s.AllCount++
 		s.AllMovingSeconds += a.MovingTime
+		s.Heartbeats += int(a.AverageHeartrate * float64(a.MovingTime) / 60.0)
 
 		if a.Type == "Run" {
 			s.RunCount++
