@@ -20,7 +20,7 @@ func handleWeeklyUpdatePost() {
 
 	leaderboardPost := buildLeaderboardPost(listOfKrafteeStats)
 
-	post := "**Weekly Update Post**\n"
+	post := "**Weekly Update**\n"
 	post += "*Here's a summary for " + fmt.Sprint(krafteeCount) + " kraftees over the last week*"
 	post += "\n\n" + groupStatsPost
 	post += "\n\n" + leaderboardPost
