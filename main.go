@@ -16,13 +16,13 @@ var krafteesByStravaId = map[string]Kraftee{
 	"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", ""},
 	"23248014": {"Fred", "Brasz", "FRED", "23248014", ""},
 	"83356822": {"Larry", "Dworkin", "SMOOTH", "83356822", ""},
-	// "2102360":  {"Brian", "Munroe", "PHYS", "2102360", ""},
+	"2102360":  {"Brian", "Munroe", "PHYS", "2102360", ""},
+	"81799070": {"Norman", "Nicolson", "NORMAN", "81799070", ""},
 	// "60682578": {"Tom", "Samuelson", "TOM", "60682578", ""},
 	// "65626950": {"Alex", "Hogan", "HOGAN", "65626950", ""},
 	// "65753450": {"Zach", "Grossman", "ZACH", "65753450", ""},
 	// "80341128": {"Conor", "Quinn", "CONOR", "80341128", ""},
 	// "82860978": {"Andre", "Martinez", "DRE", "82860978", ""},
-	// "81799070": {"Norman", "Nicolson", "NORMAN", "81799070", ""},
 }
 
 func main() {
