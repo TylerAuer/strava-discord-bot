@@ -19,8 +19,8 @@ var krafteesByStravaId = map[string]Kraftee{
 	"2102360":  {"Brian", "Munroe", "PHYS", "2102360", ""},
 	"81799070": {"Norman", "Nicolson", "NORMAN", "81799070", ""},
 	"65753450": {"Zach", "Grossman", "ZACH", "65753450", ""},
+	"65626950": {"Alex", "Hogan", "HOGAN", "65626950", ""},
 	// "60682578": {"Tom", "Samuelson", "TOM", "60682578", ""},
-	// "65626950": {"Alex", "Hogan", "HOGAN", "65626950", ""},
 	// "80341128": {"Conor", "Quinn", "CONOR", "80341128", ""},
 	// "82860978": {"Andre", "Martinez", "DRE", "82860978", ""},
 }
