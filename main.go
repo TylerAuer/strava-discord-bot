@@ -20,8 +20,8 @@ var krafteesByStravaId = map[string]Kraftee{
 	"81799070": {"Norman", "Nicolson", "NORMAN", "81799070", ""},
 	"65753450": {"Zach", "Grossman", "ZACH", "65753450", ""},
 	"65626950": {"Alex", "Hogan", "HOGAN", "65626950", ""},
+	"80341128": {"Conor", "Quinn", "CONOR", "80341128", ""},
 	// "60682578": {"Tom", "Samuelson", "TOM", "60682578", ""},
-	// "80341128": {"Conor", "Quinn", "CONOR", "80341128", ""},
 	// "82860978": {"Andre", "Martinez", "DRE", "82860978", ""},
 }
 
@@ -82,7 +82,7 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 
 func handleLocal() {
 	defer duration(track("handleLocal"))
-	// handleWeeklyUpdatePost()
+	handleWeeklyUpdatePost()
 
 	// A bike ride by Fred
 	// handleStravaWebhook(`{
@@ -96,13 +96,13 @@ func handleLocal() {
 	// }`)
 
 	//Tyler's run with Jessica
-	handleStravaWebhook(`{
-			"aspect_type": "create",
-			"event_time": 1618702283,
-			"object_id": 5145296337,
-			"object_type": "activity",
-			"owner_id": 20419783,
-			"subscription_id": 188592,
-			"updates": {}
-		}`)
+	// handleStravaWebhook(`{
+	// 		"aspect_type": "create",
+	// 		"event_time": 1618702283,
+	// 		"object_id": 5145296337,
+	// 		"object_type": "activity",
+	// 		"owner_id": 20419783,
+	// 		"subscription_id": 188592,
+	// 		"updates": {}
+	// 	}`)
 }
