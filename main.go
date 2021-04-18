@@ -31,6 +31,7 @@ var emojis = map[string]string{
 	"ride":           "🚴‍♂️🚴‍♂️🚴‍♂️",
 	"swim":           "🏊‍♂️🏊‍♂️🏊‍♂️",
 	"weighttraining": "🏋️💪🏋️💪",
+	"fallback":       "🥵🥵🥵",
 }
 
 func main() {
@@ -82,13 +83,26 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 func handleLocal() {
 	defer duration(track("handleLocal"))
 	// handleWeeklyUpdatePost()
+
+	// A bike ride by Fred
+	// handleStravaWebhook(`{
+	//     "aspect_type": "create",
+	//     "event_time": 1618705240,
+	//     "object_id": 5145415643,
+	//     "object_type": "activity",
+	//     "owner_id": 23248014,
+	//     "subscription_id": 188592,
+	//     "updates": {}
+	// }`)
+
+	//Tyler's run with Jessica
 	handleStravaWebhook(`{
-    "aspect_type": "create",
-    "event_time": 1618623328,
-    "object_id": 5139372673,
-    "object_type": "activity",
-    "owner_id": 2102360,
-    "subscription_id": 188592,
-    "updates": {}
-}`)
+			"aspect_type": "create",
+			"event_time": 1618702283,
+			"object_id": 5145296337,
+			"object_type": "activity",
+			"owner_id": 20419783,
+			"subscription_id": 188592,
+			"updates": {}
+		}`)
 }

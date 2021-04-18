@@ -9,7 +9,7 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 	id := fmt.Sprint(a.ID)
 	url := "https://www.strava.com/activities/" + id
 
-	fmt.Println(a.Type)
+	title := a.Name
 
 	msg := func() string {
 		switch a.Type {
@@ -18,6 +18,14 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 		default:
 			return ""
 		}
+	}
+
+	emoji := func() string {
+		if emojis, ok := emojis[strings.ToLower(a.Type)]; ok {
+			return emojis
+		}
+		fmt.Println("No emoji for: " + strings.ToLower(a.Type))
+		return emojis["fallback"]
 	}
 
 	dist := func() string {
@@ -76,8 +84,9 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 	}()
 
 	return "" +
-		k.First + " just logged a " + strings.ToLower(a.Type) + emojis[strings.ToLower(a.Type)] + "\n\n" +
+		k.First + " posted: *" + title + "* " + emoji() + "\n" +
 		msg() +
+		"\n" +
 		"```" +
 		dist() +
 		movTime + "\n" +

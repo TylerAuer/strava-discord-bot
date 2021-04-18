@@ -7,21 +7,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func postToDiscord(post string) {
+// Accepts a Discord Go session and makes a post to the channel matching an ID in an env var
+func postToDiscord(dg *discordgo.Session, post string) {
 	fmt.Println("Making post to Discord")
-
-	token := os.Getenv("DISCORD_BOT_TOKEN")
-	c := os.Getenv("DISCORD_CHANNEL_ID")
-
-	// Create a new Discord session using the provided bot token.
-	dg, err := discordgo.New("Bot " + token)
-	if err != nil {
-		fmt.Println("error creating Discord session,", err)
-		return
-	}
-
 	defer dg.Close()
-
+	c := os.Getenv("DISCORD_CHANNEL_ID")
 	dg.ChannelMessageSend(c, post)
-
 }
