@@ -9,14 +9,43 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 	id := fmt.Sprint(a.ID)
 	url := "https://www.strava.com/activities/" + id
 
-	dist := "Distance:           " + fmt.Sprintf("%.2f", metersToMiles(a.Distance)) + " miles"
+	fmt.Println(a.Type)
 
-	elev := "Elevation Gain:     " + fmt.Sprintf("%.0f", metersToFeet(a.TotalElevationGain)) + "'"
+	msg := func() string {
+		switch a.Type {
+		case "WeightTraining":
+			return "Get swole!\n"
+		default:
+			return ""
+		}
+	}
+
+	dist := func() string {
+		if a.Distance > 0 {
+			return "Distance:           " + fmt.Sprintf("%.2f", metersToMiles(a.Distance)) + " miles\n"
+		} else {
+			return ""
+		}
+	}
+
+	elev := func() string {
+		if a.TotalElevationGain > 0 {
+			return "Elevation Gain:     " + fmt.Sprintf("%.0f", metersToFeet(a.TotalElevationGain)) + "'\n"
+		} else {
+			return ""
+		}
+	}
 
 	movTime := "Time:               " + secondsToHoursMinsSeconds(a.MovingTime)
 
-	paceInSecondsPerMile := float64(a.MovingTime) / metersToMiles(a.Distance)
-	pace := "Pace:               " + secondsToMinSec(paceInSecondsPerMile) + " per mile"
+	pace := func() string {
+		if a.Distance > 0 {
+			paceInSecondsPerMile := float64(a.MovingTime) / metersToMiles(a.Distance)
+			return "Pace:               " + secondsToMinSec(paceInSecondsPerMile) + " per mile\n"
+		} else {
+			return ""
+		}
+	}
 
 	relativeEffort := func() string {
 		if a.SufferScore == 0 {
@@ -48,11 +77,12 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 
 	return "" +
 		k.First + " just logged a " + strings.ToLower(a.Type) + emojis[strings.ToLower(a.Type)] + "\n\n" +
+		msg() +
 		"```" +
-		dist + "\n" +
+		dist() +
 		movTime + "\n" +
-		pace + "\n" +
-		elev + "\n" +
+		pace() +
+		elev() +
 		avgHeartRate +
 		relativeEffort +
 		cals +

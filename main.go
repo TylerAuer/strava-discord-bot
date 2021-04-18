@@ -26,11 +26,11 @@ var krafteesByStravaId = map[string]Kraftee{
 }
 
 var emojis = map[string]string{
-	"walk":            "🚶🚶🚶",
-	"run":             "🏃‍♂️🏃‍♂️🏃‍♂️",
-	"ride":            "🚴‍♂️🚴‍♂️🚴‍♂️",
-	"swim":            "🏊‍♂️🏊‍♂️🏊‍♂️",
-	"weight training": "🏋️💪🏋️💪",
+	"walk":           "🚶🚶🚶",
+	"run":            "🏃‍♂️🏃‍♂️🏃‍♂️",
+	"ride":           "🚴‍♂️🚴‍♂️🚴‍♂️",
+	"swim":           "🏊‍♂️🏊‍♂️🏊‍♂️",
+	"weighttraining": "🏋️💪🏋️💪",
 }
 
 func main() {
@@ -81,5 +81,14 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 
 func handleLocal() {
 	defer duration(track("handleLocal"))
-	handleWeeklyUpdatePost()
+	// handleWeeklyUpdatePost()
+	handleStravaWebhook(`{
+    "aspect_type": "create",
+    "event_time": 1618623328,
+    "object_id": 5139372673,
+    "object_type": "activity",
+    "owner_id": 2102360,
+    "subscription_id": 188592,
+    "updates": {}
+}`)
 }
