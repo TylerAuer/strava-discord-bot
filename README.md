@@ -1,10 +1,9 @@
 # Read Strava Data and Post to Discord
 
 Things it can do (by priority)
-1. Update posts when title changes and to prevent duplicates
-2. Use an s3 bucket for state
-3. Publish milestones
-   1. Passed 100mi, 200mi, 300mi in 202x
+1. Publish milestones
+   1. Passed 100mi, 200mi, 300mi by year
+2. Publish charts with updates
 
 ## Add user workflow
 
