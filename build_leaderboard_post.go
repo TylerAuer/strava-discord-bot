@@ -6,19 +6,6 @@ import (
 )
 
 func buildLeaderboardPost(sList []Stats) string {
-	medal := map[int]string{
-		0: "🥇",
-		1: "🥈",
-		2: "🥉",
-		3: "4️⃣",
-		4: "5️⃣",
-		5: "6️⃣",
-		6: "7️⃣",
-		7: "8️⃣",
-		8: "9️⃣",
-		9: "🔟",
-	}
-
 	DiscordPost := "Leaderboard\n"
 	DiscordPost += "```"
 
@@ -26,7 +13,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	sort.Slice(sList, func(i, j int) bool { return sList[i].AllMovingSeconds > sList[j].AllMovingSeconds })
 	for i, k := range sList[:9] {
 		if k.AllMovingSeconds > 0 {
-			AllMovingSeconds += medal[i] + " " + secondsToHoursMinsSeconds(k.AllMovingSeconds) + " " + k.Name + "\n"
+			AllMovingSeconds += medal[i] + " " + secToHMS(k.AllMovingSeconds) + " " + k.Name + "\n"
 		}
 	}
 	DiscordPost += AllMovingSeconds
@@ -53,7 +40,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	sort.Slice(sList, func(i, j int) bool { return sList[i].RunMovingSeconds > sList[j].RunMovingSeconds })
 	for i, k := range sList[:9] {
 		if k.RunMovingSeconds > 0 {
-			RunTime += medal[i] + " " + secondsToHoursMinsSeconds(k.RunMovingSeconds) + " " + k.Name + "\n"
+			RunTime += medal[i] + " " + secToHMS(k.RunMovingSeconds) + " " + k.Name + "\n"
 		}
 	}
 	DiscordPost += RunTime
@@ -80,7 +67,7 @@ func buildLeaderboardPost(sList []Stats) string {
 	sort.Slice(sList, func(i, j int) bool { return sList[i].RideMovingSeconds > sList[j].RideMovingSeconds })
 	for i, k := range sList[:9] {
 		if k.RideMovingSeconds > 0 {
-			RideTime += medal[i] + " " + secondsToHoursMinsSeconds(k.RideMovingSeconds) + " " + k.Name + "\n"
+			RideTime += medal[i] + " " + secToHMS(k.RideMovingSeconds) + " " + k.Name + "\n"
 		}
 	}
 	DiscordPost += RideTime

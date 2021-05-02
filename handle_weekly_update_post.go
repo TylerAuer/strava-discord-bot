@@ -13,7 +13,7 @@ func handleWeeklyUpdatePost() {
 
 	krafteeCount := len(krafteesByStravaId)
 
-	listOfKrafteeStats, listOfEveryActivity := getAllKrafteeStats(startInEpochTime)
+	listOfKrafteeStats, listOfEveryActivity := getAllKrafteeStatsSince(startInEpochTime)
 
 	groupStats := buildStatsFromActivityList("All", "", listOfEveryActivity)
 	groupStatsPost := buildGroupStatsPost(groupStats)

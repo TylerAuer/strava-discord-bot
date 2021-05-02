@@ -34,6 +34,19 @@ var emojis = map[string]string{
 	"fallback":       "🥵🥵🥵",
 }
 
+var medal = map[int]string{
+	0: "🥇",
+	1: "🥈",
+	2: "🥉",
+	3: "4️⃣",
+	4: "5️⃣",
+	5: "6️⃣",
+	6: "7️⃣",
+	7: "8️⃣",
+	8: "9️⃣",
+	9: "🔟",
+}
+
 func main() {
 	fmt.Println("Starting")
 	godotenv.Load()
@@ -82,27 +95,26 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 
 func handleLocal() {
 	defer duration(track("handleLocal"))
-	handleWeeklyUpdatePost()
 
-	// A bike ride by Fred
-	// handleStravaWebhook(`{
-	//     "aspect_type": "create",
-	//     "event_time": 1618705240,
-	//     "object_id": 5145415643,
-	//     "object_type": "activity",
-	//     "owner_id": 23248014,
-	//     "subscription_id": 188592,
-	//     "updates": {}
-	// }`)
+	// handleWeeklyUpdatePost()
 
-	//Tyler's run with Jessica
 	// handleStravaWebhook(`{
-	// 		"aspect_type": "create",
-	// 		"event_time": 1618702283,
-	// 		"object_id": 5145296337,
-	// 		"object_type": "activity",
-	// 		"owner_id": 20419783,
-	// 		"subscription_id": 188592,
-	// 		"updates": {}
+	// 	"aspect_type": "create",
+	// 	"event_time": 1619767037,
+	// 	"object_id": 5226015088,
+	// 	"object_type": "activity",
+	// 	"owner_id": 65626950,
+	// 	"subscription_id": 188592,
+	// 	"updates": {}
 	// 	}`)
+
+	handleStravaWebhook(`{
+		"aspect_type": "create",
+		"event_time": 1619767037,
+		"object_id": 5220342833,
+		"object_type": "activity",
+		"owner_id": 20419783,
+		"subscription_id": 188592,
+		"updates": {}
+		}`)
 }

@@ -19,3 +19,29 @@ curl -X POST https://www.strava.com/api/v3/oauth/token \
   -d code=ReplaceWithCode \
   -d grant_type=authorization_code
 ```
+
+## Activities to Use During Development
+
+```go
+// A bike ride by Fred
+handleStravaWebhook(`{
+  "aspect_type": "create",
+  "event_time": 1618705240,
+  "object_id": 5145415643,
+  "object_type": "activity",
+  "owner_id": 23248014,
+  "subscription_id": 188592,
+  "updates": {}
+}`)
+
+// Tyler's run with Jessica
+handleStravaWebhook(`{
+  "aspect_type": "create",
+  "event_time": 1618702283,
+  "object_id": 5145296337,
+  "object_type": "activity",
+  "owner_id": 20419783,
+  "subscription_id": 188592,
+  "updates": {}
+}`)
+```

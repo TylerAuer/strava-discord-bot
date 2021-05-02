@@ -20,7 +20,7 @@ func secondsToHours(s int) float64 {
 	return float64(s) / 60.0 / 60.0
 }
 
-func secondsToHoursMinsSeconds(s int) string {
+func secToHMS(s int) string {
 	// floatHours := float64(s) / 60.0 / 60.0
 
 	// intHours := int(floatHours)
@@ -84,4 +84,27 @@ func track(msg string) (string, time.Time) {
 
 func duration(msg string, start time.Time) {
 	log.Printf("%v: %v\n", msg, time.Since(start))
+}
+
+func getStartOfWeekInUnixTime() (startOfWeekInUnixTime int64) {
+	now := time.Now()
+
+	offset := int(time.Monday - now.Weekday())
+	if offset > 0 {
+		offset = -6
+	}
+
+	weekStartInUnix := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local).AddDate(0, 0, offset).Unix()
+
+	return weekStartInUnix
+}
+
+func contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
 }

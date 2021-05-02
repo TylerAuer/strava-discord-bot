@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func getAllKrafteeStats(startEpochTime int64) ([]Stats, []ActivityDetails) {
+func getAllKrafteeStatsSince(startEpochTime int64) ([]Stats, []ActivityDetails) {
 	var kStatsList []Stats           // Holds each Kraftees stats for comparison
 	var allActList []ActivityDetails // Holds all activities for group stats computation
 
