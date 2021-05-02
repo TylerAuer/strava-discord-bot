@@ -32,7 +32,6 @@ func handleStravaWebhook(body string) {
 		a := getActivityDetails(idStr, k)
 		p := buildActivityPost(a, k)
 
-		postOrUpdateActivity(idStr, p, b.AspectType)
+		postOrUpdateActivity(idStr, p, b.AspectType, a, k)
 	}
-
 }

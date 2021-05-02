@@ -7,7 +7,7 @@ import (
 	"regexp"
 )
 
-func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDeclaredType string) {
+func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDeclaredType string, a ActivityDetails, k Kraftee) {
 	c := os.Getenv("DISCORD_CHANNEL_ID")
 
 	// Get a connection to Discord, defer closing it
@@ -47,5 +47,11 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 	*/
 	if stravaWebhookDeclaredType == "create" {
 		postToDiscord(dg, postContent)
+
+		// Build and post the leaderboard status for a user's post just once. Otherwise, if they update
+		// a post a few days later it will botch the whole thing.
+		lbs := buildLeaderboardStatus(a, k)
+		postToDiscord(dg, lbs)
+
 	}
 }
