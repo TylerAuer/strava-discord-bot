@@ -6,9 +6,6 @@ import (
 )
 
 func buildActivityPost(a ActivityDetails, k Kraftee) string {
-	id := fmt.Sprint(a.ID)
-	url := "https://www.strava.com/activities/" + id
-
 	title := a.Name
 
 	msg := func() string {
@@ -30,7 +27,7 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 
 	dist := func() string {
 		if a.Distance > 0 {
-			return "Distance:           " + fmt.Sprintf("%.2f", metersToMiles(a.Distance)) + " miles\n"
+			return "Dist:    " + fmt.Sprintf("%.2f", metersToMiles(a.Distance)) + " miles\n"
 		} else {
 			return ""
 		}
@@ -38,18 +35,18 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 
 	elev := func() string {
 		if a.TotalElevationGain > 0 {
-			return "Elevation Gain:     " + fmt.Sprintf("%.0f", metersToFeet(a.TotalElevationGain)) + "'\n"
+			return "Elev:    +" + fmt.Sprintf("%.0f", metersToFeet(a.TotalElevationGain)) + "'\n"
 		} else {
 			return ""
 		}
 	}
 
-	movTime := "Time:               " + secToHMS(a.MovingTime)
+	movTime := "Time:    " + secToHMS(a.MovingTime)
 
 	pace := func() string {
 		if a.Distance > 0 {
 			paceInSecondsPerMile := float64(a.MovingTime) / metersToMiles(a.Distance)
-			return "Pace:               " + secondsToMinSec(paceInSecondsPerMile) + " per mile\n"
+			return "Pace:    " + secondsToMinSec(paceInSecondsPerMile) + " per mile\n"
 		} else {
 			return ""
 		}
@@ -59,37 +56,33 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 		if a.SufferScore == 0 {
 			return ""
 		}
-		return "Relative Effort:    " + fmt.Sprint(a.SufferScore) + "\n"
+		return "RE:      " + fmt.Sprint(a.SufferScore) + "\n"
 	}()
 
 	cals := func() string {
 		if a.Calories == 0 {
 			return ""
 		}
-		return "Calories:           " + fmt.Sprint(a.Calories) + "\n"
-	}()
-
-	achievementCount := func() string {
-		if a.AchievementCount == 0 {
-			return ""
-		}
-		return "Achievement Count:  " + fmt.Sprint(a.AchievementCount) + "\n"
+		return "Cals:    " + fmt.Sprint(a.Calories) + "\n"
 	}()
 
 	avgHeartRate := func() string {
 		if a.AverageHeartrate == 0 {
 			return ""
 		}
-		return "Average Heart Rate: " + fmt.Sprint(a.AverageHeartrate) + "\n"
+		return "AVG HR:  " + fmt.Sprint(a.AverageHeartrate) + " bpm\n"
 	}()
 
+	id := "ID: " + fmt.Sprint(a.ID)
+
 	return "" +
-		k.First + " posted: *" + title + "* " + emoji() + "\n" +
+		k.First + " just " + emoji() + "\n" +
 		msg() +
+		"*" + title + "*\n" +
 		"\n" +
-		"**Activity Summary**\n" +
+		"**Summary**\n" +
 		// "*Where you stood on the leaderboard when this activity was first posted*\n" +
-		"```" +
+		"```\n" +
 		dist() +
 		movTime + "\n" +
 		pace() +
@@ -97,7 +90,7 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 		avgHeartRate +
 		relativeEffort +
 		cals +
-		achievementCount +
 		"```" +
-		"\n" + url
+		"\n" + id +
+		"\n"
 }

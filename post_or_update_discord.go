@@ -17,10 +17,10 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 	// Collect last 100 messages
 	msgs := getDiscordChannelMessages(dg, c)
 
-	re := "https://www.strava.com/activities/" + activityID
+	re := "ID: " + activityID
 
 	/**
-	For each of the last 100 messages, check if it contains a URL to the activity ID. If one is found
+	For each of the last 100 messages, check if it contains "ID: <activity id>". If one is found
 	with a matching URL, update it.
 
 	This is desired even if the Strava webhook type is "create" because Strava's webhook accidentally
