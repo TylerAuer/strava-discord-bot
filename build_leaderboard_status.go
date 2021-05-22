@@ -11,7 +11,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 	startOfWeek := getStartOfWeekInUnixTime()
 	kStats, _ := getAllKrafteeStatsSince(startOfWeek)
 
-	lbs := "\n**Leaderboard** @ post time\n"
+	lbs := "**Leaderboard** @ post time\n"
 	lbs += "```\n"
 
 	lbs += "## Activities ##\n"
