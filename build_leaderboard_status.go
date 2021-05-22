@@ -43,7 +43,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 	lbs += "\n"
 
 	if a.Type == "Run" {
-		lbs += emojis["run"] + " Distance ##\n"
+		lbs += emojis["run"] + " Distance\n"
 		sort.Slice(kStats, func(i, j int) bool { return kStats[i].RunMeters > kStats[j].RunMeters })
 		rank, err = findKrafteeRankinStatsList(kStats, k)
 		if err != nil {
@@ -57,7 +57,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 		}
 		lbs += "\n"
 
-		lbs += emojis["run"] + " Time ##\n"
+		lbs += emojis["run"] + " Time\n"
 		sort.Slice(kStats, func(i, j int) bool { return kStats[i].RunMovingSeconds > kStats[j].RunMovingSeconds })
 		rank, err = findKrafteeRankinStatsList(kStats, k)
 		if err != nil {
@@ -72,7 +72,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 	}
 
 	if a.Type == "Ride" {
-		lbs += emojis["ride"] + " Distance ##\n"
+		lbs += emojis["ride"] + " Distance\n"
 		sort.Slice(kStats, func(i, j int) bool { return kStats[i].RideMeters > kStats[j].RideMeters })
 		rank, err = findKrafteeRankinStatsList(kStats, k)
 		if err != nil {
@@ -86,7 +86,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 		}
 		lbs += "\n"
 
-		lbs += emojis["ride"] + " Time ##\n"
+		lbs += emojis["ride"] + " Time\n"
 		sort.Slice(kStats, func(i, j int) bool { return kStats[i].RideMovingSeconds > kStats[j].RideMovingSeconds })
 		rank, err = findKrafteeRankinStatsList(kStats, k)
 		if err != nil {
