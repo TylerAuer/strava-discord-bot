@@ -73,12 +73,10 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 		return "AVG HR:  " + fmt.Sprint(a.AverageHeartrate) + " bpm\n"
 	}()
 
-	id := "ID: " + fmt.Sprint(a.ID)
-
 	return "" +
-		k.First + " just " + emoji() + "\n" +
+		k.First + " logged a " + emoji() + "\n" +
 		msg() +
-		"*" + title + "*\n" +
+		"\n*" + title + "*\n" +
 		"\n" +
 		"**Summary**\n" +
 		// "*Where you stood on the leaderboard when this activity was first posted*\n" +
@@ -91,6 +89,5 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 		relativeEffort +
 		cals +
 		"```" +
-		"\n" + id +
 		"\n"
 }

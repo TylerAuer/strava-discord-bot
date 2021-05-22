@@ -16,11 +16,10 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 
 	// Collect last 100 messages
 	msgs := getDiscordChannelMessages(dg, c)
-
 	re := "ID: " + activityID
 
 	/**
-	For each of the last 100 messages, check if it contains "ID: <activity id>". If one is found
+	For each of the last 100 messages, check if it contains "ID: <activityID>". If one is found
 	with a matching URL, update it.
 
 	This is desired even if the Strava webhook type is "create" because Strava's webhook accidentally
@@ -33,7 +32,10 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 		}
 		if matched {
 			fmt.Println("Updating post with id: " + m.ID + " which is " + fmt.Sprint(i) + " posts from the end of the thread.")
-			dg.ChannelMessageEdit(m.ChannelID, m.ID, postContent)
+			reForLB := regexp.MustCompile(`[*]*Leaderboard[*]* @ post time[\w|\W]*`)
+			oldLB := reForLB.Find([]byte(m.Content))
+
+			dg.ChannelMessageEdit(m.ChannelID, m.ID, postContent+"\n"+string(oldLB))
 			return
 		}
 	}
@@ -46,12 +48,9 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 	indicates that this is a "create" type of update.
 	*/
 	if stravaWebhookDeclaredType == "create" {
-		postToDiscord(dg, postContent)
-
 		// Build and post the leaderboard status for a user's post just once. Otherwise, if they update
 		// a post a few days later it will botch the whole thing.
 		lbs := buildLeaderboardStatus(a, k)
-		postToDiscord(dg, lbs)
-
+		postToDiscord(dg, postContent+lbs+"\n\nID: "+activityID)
 	}
 }

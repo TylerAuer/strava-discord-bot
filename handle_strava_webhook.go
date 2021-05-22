@@ -33,5 +33,7 @@ func handleStravaWebhook(body string) {
 		p := buildActivityPost(a, k)
 
 		postOrUpdateActivity(idStr, p, b.AspectType, a, k)
+	} else {
+		fmt.Println("webhook was none of the following 1) activity 2) create aspect_type 3) update aspect_type")
 	}
 }
