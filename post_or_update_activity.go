@@ -51,6 +51,6 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 		// Build and post the leaderboard status for a user's post just once. Otherwise, if they update
 		// a post a few days later it will botch the whole thing.
 		lbs := buildLeaderboardStatus(a, k)
-		postToDiscord(dg, postContent+lbs+"\n\nID: "+activityID)
+		postToDiscord(dg, postContent+lbs+"\nID: "+activityID)
 	}
 }
