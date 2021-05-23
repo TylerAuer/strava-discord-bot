@@ -60,3 +60,13 @@ func buildStatsFromActivityList(name string, ID string, a []ActivityDetails) Sta
 
 	return s
 }
+
+func (s Stats) PadName(length int) string {
+	paddedName := s.Name
+	for {
+		paddedName = paddedName + " "
+		if len(paddedName) >= length {
+			return paddedName
+		}
+	}
+}

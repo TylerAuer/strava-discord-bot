@@ -7,6 +7,9 @@ import (
 	"sort"
 )
 
+var DEF_NAME_LEN = 10
+var DEF_STAT_LEN = 7
+
 func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 	startOfWeek := getStartOfWeekInUnixTime()
 	kStats, _ := getAllKrafteeStatsSince(startOfWeek)
@@ -24,7 +27,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 		if i > rank {
 			break // Only show kraftees with data
 		}
-		lbs += fmt.Sprint(i+1) + " " + kraftee.Name + " (" + fmt.Sprint(kraftee.AllCount) + ")\n"
+		lbs += fmt.Sprint(i+1) + " " + kraftee.PadName(DEF_NAME_LEN) + padLeft(fmt.Sprint(kraftee.AllCount), DEF_STAT_LEN) + "\n"
 	}
 	lbs += "\n"
 
@@ -35,10 +38,11 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 		log.Fatal(err)
 	}
 	for i, kraftee := range kStats {
-		if i > rank {
+		if i <= rank {
+			lbs += fmt.Sprint(i+1) + " " + kraftee.PadName(DEF_NAME_LEN) + padLeft(secToHMS(kraftee.AllMovingSeconds), DEF_STAT_LEN) + "\n"
+		} else {
 			break // Only show kraftees with data
 		}
-		lbs += fmt.Sprint(i+1) + " " + kraftee.Name + " (" + secToHMS(kraftee.AllMovingSeconds) + ")\n"
 	}
 	lbs += "\n"
 
@@ -53,7 +57,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 			if i > rank {
 				break // Only show kraftees with data
 			}
-			lbs += fmt.Sprint(i+1) + " " + kraftee.Name + " (" + fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters)) + " mi.)\n"
+			lbs += fmt.Sprint(i+1) + " " + kraftee.PadName(DEF_NAME_LEN) + padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters))+" mi", DEF_STAT_LEN) + "\n"
 		}
 		lbs += "\n"
 
@@ -67,7 +71,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 			if i > rank {
 				break // Only show kraftees with data
 			}
-			lbs += fmt.Sprint(i+1) + " " + kraftee.Name + " (" + secToHMS(kraftee.RunMovingSeconds) + ")\n"
+			lbs += fmt.Sprint(i+1) + " " + kraftee.PadName(DEF_NAME_LEN) + padLeft(secToHMS(kraftee.RunMovingSeconds), DEF_STAT_LEN) + "\n"
 		}
 	}
 
@@ -82,7 +86,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 			if i > rank {
 				break // Only show kraftees with data
 			}
-			lbs += fmt.Sprint(i+1) + " " + kraftee.Name + " (" + fmt.Sprintf("%.1f", metersToMiles(kraftee.RideMeters)) + " mi.)\n"
+			lbs += fmt.Sprint(i+1) + " " + kraftee.PadName(DEF_NAME_LEN) + padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RideMeters))+" mi", DEF_STAT_LEN) + "\n"
 		}
 		lbs += "\n"
 
@@ -96,7 +100,7 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 			if i > rank {
 				break // Only show kraftees with data
 			}
-			lbs += fmt.Sprint(i+1) + " " + kraftee.Name + " (" + secToHMS(kraftee.RideMovingSeconds) + ")\n"
+			lbs += fmt.Sprint(i+1) + " " + kraftee.PadName(DEF_NAME_LEN) + padLeft(secToHMS(kraftee.RideMovingSeconds), DEF_STAT_LEN) + "\n"
 		}
 	}
 
@@ -111,4 +115,14 @@ func findKrafteeRankinStatsList(kStats []Stats, k Kraftee) (int, error) {
 		}
 	}
 	return 0, errors.New("did not find kraftee in list of Kraftee stats")
+}
+
+func padLeft(s string, length int) string {
+	paddedString := s
+	for {
+		if len(paddedString) >= length {
+			return paddedString
+		}
+		paddedString = " " + paddedString
+	}
 }
