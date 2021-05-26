@@ -1,8 +1,7 @@
 # Read Strava Data and Post to Discord
 
-Things it can do (by priority)
-1. Publish milestones
-   1. Passed 100mi, 200mi, 300mi by year
+Things it that would be fun to add:
+1. Publish milestones like passed 100mi, 200mi, 300mi by year
 2. Publish charts with updates
 
 ## Add user workflow
