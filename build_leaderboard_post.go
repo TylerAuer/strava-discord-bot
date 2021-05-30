@@ -9,6 +9,8 @@ func buildLeaderboardPost(lb Leaderboard) string {
 	lbPost += lb.printRunDurationUpToKraftee(nil)
 	lbPost += lb.printRideDistanceUpToKraftee(nil)
 	lbPost += lb.printRideDurationUpToKraftee(nil)
+	lbPost += lb.printWalkOrHikeDistanceUpToKraftee(nil)
+	lbPost += lb.printWalkOrHikeDurationUpToKraftee(nil)
 	lbPost += "```"
 	return lbPost
 }
