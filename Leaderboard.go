@@ -16,12 +16,15 @@ func (l Leaderboard) printActivityCountUpToKraftee(k *Kraftee) string {
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := "## Activities ##\n" // Header
 	for i, kraftee := range l {
+		if kraftee.AllCount <= 0 {
+			break // Don't include kraftees without relevant stat / data / workout type
+		}
 		str += medal[i] + " "                                     // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                // Name
 		str += padLeft(fmt.Sprint(kraftee.AllCount), STAT_LENGTH) // Stat
 		str += "\n"                                               // Line break
-		if i == rank || kraftee.AllCount <= 0 {
-			break // Stop when reaching the given kraftee or when Kraftee is at 0
+		if i == rank {
+			break // Stop when reaching the given kraftee
 		}
 	}
 	str += "\n"
@@ -33,12 +36,15 @@ func (l Leaderboard) printDurationUpToKraftee(k *Kraftee) string {
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := "## Time ##\n" // Header
 	for i, kraftee := range l {
+		if kraftee.AllMovingSeconds <= 0 {
+			break // Don't include kraftees without relevant stat / data / workout type
+		}
 		str += medal[i] + " "                                           // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                      // Name
 		str += padLeft(secToHMS(kraftee.AllMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                     // Line break
-		if i == rank || kraftee.AllMovingSeconds <= 0 {
-			break // Stop when reaching the given kraftee or when Kraftee is at 0
+		if i == rank {
+			break // Stop when reaching the given kraftee
 		}
 	}
 	str += "\n"
@@ -50,12 +56,15 @@ func (l Leaderboard) printRunDistanceUpToKraftee(k *Kraftee) string {
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["run"] + " Distance\n" // Header
 	for i, kraftee := range l {
+		if kraftee.RunMeters <= 0 {
+			break // Don't include kraftees without relevant stat / data / workout type
+		}
 		str += medal[i] + " "                                                                    // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                               // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                              // Line break
-		if i == rank || kraftee.RunMeters <= 0 {
-			break // Stop when reaching the given kraftee or when Kraftee is at 0
+		if i == rank {
+			break // Stop when reaching the given kraftee
 		}
 	}
 	str += "\n"
@@ -67,12 +76,15 @@ func (l Leaderboard) printRunDurationUpToKraftee(k *Kraftee) string {
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["run"] + " Time\n" // Header
 	for i, kraftee := range l {
+		if kraftee.RunMovingSeconds <= 0 {
+			break // Don't include kraftees without relevant stat / data / workout type
+		}
 		str += medal[i] + " "                                           // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                      // Name
 		str += padLeft(secToHMS(kraftee.RunMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                     // Line break
-		if i == rank || kraftee.RunMovingSeconds <= 0 {
-			break // Stop when reaching the given kraftee or when Kraftee is at 0
+		if i == rank {
+			break // Stop when reaching the given kraftee
 		}
 	}
 	str += "\n"
@@ -84,12 +96,15 @@ func (l Leaderboard) printRideDistanceUpToKraftee(k *Kraftee) string {
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["ride"] + " Distance\n" // Header
 	for i, kraftee := range l {
+		if kraftee.RideMeters <= 0 {
+			break // Don't include kraftees without relevant stat / data / workout type
+		}
 		str += medal[i] + " "                                                                     // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                                // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RideMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                               // Line break
-		if i == rank || kraftee.RideMeters <= 0 {
-			break // Stop when reaching the given kraftee or when Kraftee is at 0
+		if i == rank {
+			break // Stop when reaching the given kraftee
 		}
 	}
 	str += "\n"
@@ -101,12 +116,15 @@ func (l Leaderboard) printRideDurationUpToKraftee(k *Kraftee) string {
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["ride"] + " Time\n" // Header
 	for i, kraftee := range l {
+		if kraftee.RideMovingSeconds <= 0 {
+			break // Don't include kraftees without relevant stat / data / workout type
+		}
 		str += medal[i] + " "                                            // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                       // Name
 		str += padLeft(secToHMS(kraftee.RideMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                      // Line break
-		if i == rank || kraftee.RideMovingSeconds <= 0 {
-			break // Stop when reaching the given kraftee or when Kraftee is at 0
+		if i == rank {
+			break // Stop when reaching the given kraftee
 		}
 	}
 	str += "\n"
