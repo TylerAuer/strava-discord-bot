@@ -78,7 +78,7 @@ func buildActivityPost(a ActivityDetails, k Kraftee) string {
 		msg() +
 		"\n*" + title + "*\n" +
 		"\n" +
-		"**Summary**\n" +
+		"**This Activity**\n" +
 		// "*Where you stood on the leaderboard when this activity was first posted*\n" +
 		"```\n" +
 		dist() +

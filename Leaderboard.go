@@ -131,6 +131,46 @@ func (l Leaderboard) printRideDurationUpToKraftee(k *Kraftee) string {
 	return str
 }
 
+func (l Leaderboard) printWalkOrHikeDistanceUpToKraftee(k *Kraftee) string {
+	l.sortByWalkorHikeDistance(k) // Sort
+	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
+	str := emojis["walk"] + " Distance\n" // Header
+	for i, kraftee := range l {
+		if kraftee.WalkOrHikeMeters <= 0 {
+			break // Don't include kraftees without relevant stat / data / workout type
+		}
+		str += medal[i] + " "                                                                           // Rank
+		str += padRight(kraftee.Name, NAME_LENGTH)                                                      // Name
+		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.WalkOrHikeMeters))+" mi", STAT_LENGTH) // Stat
+		str += "\n"                                                                                     // Line break
+		if i == rank {
+			break // Stop when reaching the given kraftee
+		}
+	}
+	str += "\n"
+	return str
+}
+
+func (l Leaderboard) printWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
+	l.sortByWalkOrHikeTime(k) // Sort
+	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
+	str := emojis["walk"] + " Time\n" // Header
+	for i, kraftee := range l {
+		if kraftee.WalkOrHikeMovingSeconds <= 0 {
+			break // Don't include kraftees without relevant stat / data / workout type
+		}
+		str += medal[i] + " "                                                  // Rank
+		str += padRight(kraftee.Name, NAME_LENGTH)                             // Name
+		str += padLeft(secToHMS(kraftee.WalkOrHikeMovingSeconds), STAT_LENGTH) // Stat
+		str += "\n"                                                            // Line break
+		if i == rank {
+			break // Stop when reaching the given kraftee
+		}
+	}
+	str += "\n"
+	return str
+}
+
 /*
 These methods sort the leaderboard. The passed Kraftee loses all ties.
 */
@@ -190,6 +230,26 @@ func (l Leaderboard) sortByRideTime(k *Kraftee) {
 			return l[i].ID != k.StravaId
 		} else {
 			return l[i].RideMovingSeconds > l[j].RideMovingSeconds
+		}
+	})
+}
+
+func (l Leaderboard) sortByWalkorHikeDistance(k *Kraftee) {
+	sort.Slice(l, func(i, j int) bool {
+		if k != nil && l[i].WalkOrHikeMeters == l[j].WalkOrHikeMeters {
+			return l[i].ID != k.StravaId
+		} else {
+			return l[i].WalkOrHikeMeters > l[j].WalkOrHikeMeters
+		}
+	})
+}
+
+func (l Leaderboard) sortByWalkOrHikeTime(k *Kraftee) {
+	sort.Slice(l, func(i, j int) bool {
+		if k != nil && l[i].WalkOrHikeMovingSeconds == l[j].WalkOrHikeMovingSeconds {
+			return l[i].ID != k.StravaId
+		} else {
+			return l[i].WalkOrHikeMovingSeconds > l[j].WalkOrHikeMovingSeconds
 		}
 	})
 }

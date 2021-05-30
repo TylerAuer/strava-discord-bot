@@ -19,6 +19,13 @@ func buildLeaderboardStatus(a ActivityDetails, k Kraftee) string {
 		postString += leaderboard.printRideDurationUpToKraftee(&k)
 	}
 
+	if a.Type == "Walk" || a.Type == "Hike" {
+		postString += leaderboard.printWalkOrHikeDistanceUpToKraftee(&k)
+		postString += leaderboard.printWalkOrHikeDurationUpToKraftee(&k)
+	}
 	postString += "```"
+
+	postString += "\n"
+
 	return postString
 }
