@@ -134,14 +134,14 @@ func handleLocal() {
 	// }`)
 
 	// Connor
-	// 	handleStravaWebhook(`{
-	//     "aspect_type": "create",
-	//     "event_time": 1622391955,
-	//     "object_id": 5384643767,
-	//     "object_type": "activity",
-	//     "owner_id": 80341128,
-	//     "subscription_id": 188592,
-	//     "updates": {}
-	// }`)
+	handleStravaWebhook(`{
+	    "aspect_type": "create",
+	    "event_time": 1622391955,
+	    "object_id": 5384643767,
+	    "object_type": "activity",
+	    "owner_id": 80341128,
+	    "subscription_id": 188592,
+	    "updates": {}
+	}`)
 
 }
