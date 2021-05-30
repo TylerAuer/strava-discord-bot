@@ -21,7 +21,7 @@ func (l Leaderboard) printActivityCountUpToKraftee(k Kraftee) string {
 	}
 	str := "## Activities ##\n" // Header
 	for i, kraftee := range l {
-		str += fmt.Sprint(i+1) + " "                              // Rank
+		str += medal[i+1] + " "                                   // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                // Name
 		str += padLeft(fmt.Sprint(kraftee.AllCount), STAT_LENGTH) // Stat
 		str += "\n"                                               // Line break
@@ -41,7 +41,7 @@ func (l Leaderboard) printDurationUpToKraftee(k Kraftee) string {
 	}
 	str := "## Time ##\n" // Header
 	for i, kraftee := range l {
-		str += fmt.Sprint(i+1) + " "                                    // Rank
+		str += medal[i+1] + " "                                         // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                      // Name
 		str += padLeft(secToHMS(kraftee.AllMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                     // Line break
@@ -61,7 +61,7 @@ func (l Leaderboard) printRunDistanceUpToKraftee(k Kraftee) string {
 	}
 	str := emojis["run"] + " Distance\n" // Header
 	for i, kraftee := range l {
-		str += fmt.Sprint(i+1) + " "                                                             // Rank
+		str += medal[i+1] + " "                                                                  // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                               // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                              // Line break
@@ -81,7 +81,7 @@ func (l Leaderboard) printRunDurationUpToKraftee(k Kraftee) string {
 	}
 	str := emojis["run"] + " Time\n" // Header
 	for i, kraftee := range l {
-		str += fmt.Sprint(i+1) + " "                                    // Rank
+		str += medal[i+1] + " "                                         // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                      // Name
 		str += padLeft(secToHMS(kraftee.RunMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                     // Line break
@@ -101,7 +101,7 @@ func (l Leaderboard) printRideDistanceUpToKraftee(k Kraftee) string {
 	}
 	str := emojis["ride"] + " Distance\n" // Header
 	for i, kraftee := range l {
-		str += fmt.Sprint(i+1) + " "                                                              // Rank
+		str += medal[i+1] + " "                                                                   // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                                // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RideMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                               // Line break
@@ -121,7 +121,7 @@ func (l Leaderboard) printRideDurationUpToKraftee(k Kraftee) string {
 	}
 	str := emojis["ride"] + " Time\n" // Header
 	for i, kraftee := range l {
-		str += fmt.Sprint(i+1) + " "                                     // Rank
+		str += medal[i+1] + " "                                          // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                       // Name
 		str += padLeft(secToHMS(kraftee.RideMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                      // Line break
