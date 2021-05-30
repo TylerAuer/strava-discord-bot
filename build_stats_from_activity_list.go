@@ -7,7 +7,8 @@ type Stats struct {
 	AllCount         int
 	AllMovingSeconds int
 	Heartbeats       int
-	//MaxHeartRate
+	MaxHeartRate     int
+	Calories         int
 
 	RunCount         int
 	RunMovingSeconds int
@@ -27,14 +28,20 @@ type Stats struct {
 
 func buildStatsFromActivityList(name string, ID string, a []ActivityDetails) Stats {
 	s := Stats{
-		Name: name,
-		ID:   ID,
+		Name:         name,
+		ID:           ID,
+		MaxHeartRate: 0,
 	}
 
 	for _, a := range a {
 		s.AllCount++
 		s.AllMovingSeconds += a.MovingTime
 		s.Heartbeats += int(a.AverageHeartrate * float64(a.MovingTime) / 60.0)
+		s.Calories += int(a.Calories)
+
+		if int(a.MaxHeartrate) > s.MaxHeartRate {
+			s.MaxHeartRate = int(a.MaxHeartrate)
+		}
 
 		if a.Type == "Run" {
 			s.RunCount++
@@ -59,14 +66,4 @@ func buildStatsFromActivityList(name string, ID string, a []ActivityDetails) Sta
 	}
 
 	return s
-}
-
-func (s Stats) PadName(length int) string {
-	paddedName := s.Name
-	for {
-		paddedName = paddedName + " "
-		if len(paddedName) >= length {
-			return paddedName
-		}
-	}
 }
