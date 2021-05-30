@@ -10,6 +10,9 @@ import (
 	"github.com/joho/godotenv"
 )
 
+const NAME_LENGTH = 10
+const STAT_LENGTH = 7
+
 var krafteesByStravaId = map[string]Kraftee{
 	"20419783": {"Tyler", "Auer", "TYLER", "20419783", ""},
 	"80996402": {"Jamie", "Quella", "Q", "80996402", ""},
@@ -108,14 +111,37 @@ func handleLocal() {
 	// 	"updates": {}
 	// 	}`)
 
-	handleStravaWebhook(`{
-		"aspect_type": "create",
-		"event_time": 1619767037,
-		"object_id": 5198828416,
-		"object_type": "activity",
-		"owner_id": 20419783,
-		"subscription_id": 188592,
-		"updates": {}
-		}`)
+	// Tyler
+	// handleStravaWebhook(`{
+	// 	"aspect_type": "create",
+	// 	"event_time": 1619767037,
+	// 	"object_id": 5198828416,
+	// 	"object_type": "activity",
+	// 	"owner_id": 20419783,
+	// 	"subscription_id": 188592,
+	// 	"updates": {}
+	// 	}`)
+
+	// Bryan
+	// 	handleStravaWebhook(`{
+	//     "aspect_type": "create",
+	//     "event_time": 1622380204,
+	//     "object_id": 5383270682,
+	//     "object_type": "activity",
+	//     "owner_id": 80485980,
+	//     "subscription_id": 188592,
+	//     "updates": {}
+	// }`)
+
+	// Connor
+	// 	handleStravaWebhook(`{
+	//     "aspect_type": "create",
+	//     "event_time": 1622391955,
+	//     "object_id": 5384643767,
+	//     "object_type": "activity",
+	//     "owner_id": 80341128,
+	//     "subscription_id": 188592,
+	//     "updates": {}
+	// }`)
 
 }

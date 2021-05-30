@@ -108,3 +108,23 @@ func contains(s []string, str string) bool {
 
 	return false
 }
+
+func padLeft(s string, length int) string {
+	paddedString := s
+	for {
+		if len(paddedString) >= length {
+			return paddedString
+		}
+		paddedString = " " + paddedString
+	}
+}
+
+func padRight(s string, length int) string {
+	paddedString := s
+	for {
+		if len(paddedString) >= length {
+			return paddedString
+		}
+		paddedString = paddedString + " "
+	}
+}
