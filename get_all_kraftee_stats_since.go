@@ -4,39 +4,36 @@ import (
 	"fmt"
 )
 
-func getAllKrafteeStatsSince(startEpochTime int64) (Leaderboard, []ActivityDetails) {
-	var kStatsList []Stats           // Holds each Kraftees stats for comparison
-	var allActList []ActivityDetails // Holds all activities for group stats computation
+func getAllKrafteeStatsSince(startEpochTime int64) (Leaderboard, ActivityList) {
+	var lb Leaderboard          // Holds each Kraftees stats for comparison
+	var activities ActivityList // Holds all activities for group stats computation
 
-	kChan := make(chan Stats)
-	allChan := make(chan []ActivityDetails)
+	lbChan := make(chan Stats)
+	activityListChan := make(chan ActivityList)
 
 	for _, k := range krafteesByStravaId {
-		go getOneKrafteesStats(startEpochTime, k, kChan, allChan)
+		go getOneKrafteesStats(startEpochTime, k, lbChan, activityListChan)
 	}
 
 	// Handle incoming channel messages
-
 	for i := 0; i < 2*len(krafteesByStravaId); i++ {
 		select {
-		case newKrafteeStats := <-kChan:
-			fmt.Println("Received kChan message")
-			kStatsList = append(kStatsList, newKrafteeStats)
-		case newListOfActivities := <-allChan:
-			fmt.Println("Received allChan message")
-			allActList = append(allActList, newListOfActivities...)
+		case newKrafteeStats := <-lbChan:
+			lb = append(lb, newKrafteeStats)
+		case newListOfActivities := <-activityListChan:
+			activities = append(activities, newListOfActivities...)
 		}
 	}
 
-	return kStatsList, allActList
+	return lb, activities
 }
 
-func getOneKrafteesStats(t int64, k Kraftee, kChan chan Stats, allChan chan []ActivityDetails) {
-	kActList := getActivitiesSince(t, k)
-	allChan <- kActList
+func getOneKrafteesStats(t int64, k Kraftee, lbChan chan Stats, activityListChan chan ActivityList) {
+	actList := getActivitiesSince(t, k)
+	activityListChan <- actList
 
-	kStats := buildStatsFromActivityList(k.First, k.StravaId, kActList)
-	kChan <- kStats
+	kStats := actList.buildStatsFromActivityList(k.First, k.StravaId)
+	lbChan <- kStats
 
 	fmt.Println("Finished " + k.FullName())
 }

@@ -15,7 +15,7 @@ func handleWeeklyUpdatePost() {
 
 	listOfKrafteeStats, listOfEveryActivity := getAllKrafteeStatsSince(startInEpochTime)
 
-	groupStats := buildStatsFromActivityList("All", "", listOfEveryActivity)
+	groupStats := listOfEveryActivity.buildStatsFromActivityList("All", "")
 	groupStatsPost := buildGroupStatsPost(groupStats)
 
 	leaderboardPost := buildLeaderboardPost(listOfKrafteeStats)

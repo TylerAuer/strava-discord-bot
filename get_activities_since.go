@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func getActivitiesSince(s int64, k Kraftee) []ActivityDetails {
+func getActivitiesSince(s int64, k Kraftee) ActivityList {
 	fmt.Println("Getting activity history for " + k.FullName())
 	// Grab the stats for Kraftee
 
@@ -29,7 +29,7 @@ func getActivitiesSince(s int64, k Kraftee) []ActivityDetails {
 	}
 	defer resp.Body.Close()
 
-	activityList := []ActivityDetails{}
+	activityList := ActivityList{}
 
 	err = json.NewDecoder(resp.Body).Decode(&activityList)
 	if err != nil {
