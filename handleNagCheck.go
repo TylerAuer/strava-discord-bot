@@ -33,7 +33,7 @@ func handleNagCheck() {
 	}
 
 	msg := strings.Join(lazyKraftees, ", ") + "\n"
-	msg += "You are pitiful and lazy. You have not logged a workout in a while. Man up!\n"
+	msg += "You are pitiful and lazy. You have not logged a workout in a while. Let's go!\n"
 	msg += getRandomGifOfInspiration()
 
 	postToDiscord(dg, msg)
