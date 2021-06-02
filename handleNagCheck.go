@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -42,6 +43,7 @@ func handleNagCheck() {
 func checkIfLazy(k Kraftee, lazyChan chan string) {
 	// Only check Kraftees who have opted in
 	if k.daysBeforeNag == 0 {
+		fmt.Println(k.First, "hasn't opted into nagging")
 		lazyChan <- ""
 		return
 	}
@@ -50,8 +52,10 @@ func checkIfLazy(k Kraftee, lazyChan chan string) {
 	activities := getActivitiesSince(dateToStartCheckFrom, k)
 
 	if len(activities) == 0 {
+		fmt.Println(k.First, "is lazy")
 		lazyChan <- k.First
 	} else {
+		fmt.Println(k.First, "is not lazy")
 		lazyChan <- ""
 	}
 
