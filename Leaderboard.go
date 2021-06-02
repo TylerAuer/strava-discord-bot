@@ -15,11 +15,18 @@ func (l Leaderboard) printActivityCountUpToKraftee(k *Kraftee) string {
 	l.sortByActivityCount(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := "## Activities ##\n" // Header
+	currentRank := 0            // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0            // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.AllCount <= 0 {
-			break // Don't include kraftees without relevant stat / data / workout type
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
 		}
-		str += medal[i] + " "                                     // Rank
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.AllCount {
+			currentRank = i
+			currentStat = kraftee.AllCount
+		}
+		str += medal[currentRank] + " "                           // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                // Name
 		str += padLeft(fmt.Sprint(kraftee.AllCount), STAT_LENGTH) // Stat
 		str += "\n"                                               // Line break
@@ -35,11 +42,18 @@ func (l Leaderboard) printDurationUpToKraftee(k *Kraftee) string {
 	l.sortByActivityDuration(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := "## Time ##\n" // Header
+	currentRank := 0      // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0      // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.AllMovingSeconds <= 0 {
-			break // Don't include kraftees without relevant stat / data / workout type
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
 		}
-		str += medal[i] + " "                                           // Rank
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.AllMovingSeconds {
+			currentRank = i
+			currentStat = kraftee.AllMovingSeconds
+		}
+		str += medal[currentRank] + " "                                 // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                      // Name
 		str += padLeft(secToHMS(kraftee.AllMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                     // Line break
@@ -55,11 +69,18 @@ func (l Leaderboard) printRunDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByRunDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["run"] + " Distance\n" // Header
+	currentRank := 0                     // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0.0                   // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.RunMeters <= 0 {
-			break // Don't include kraftees without relevant stat / data / workout type
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
 		}
-		str += medal[i] + " "                                                                    // Rank
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.RunMeters {
+			currentRank = i
+			currentStat = kraftee.RunMeters
+		}
+		str += medal[currentRank] + " "                                                          // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                               // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                              // Line break
@@ -75,11 +96,18 @@ func (l Leaderboard) printRunDurationUpToKraftee(k *Kraftee) string {
 	l.sortByRunTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["run"] + " Time\n" // Header
+	currentRank := 0                 // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0                 // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.RunMovingSeconds <= 0 {
-			break // Don't include kraftees without relevant stat / data / workout type
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
 		}
-		str += medal[i] + " "                                           // Rank
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.RunMovingSeconds {
+			currentRank = i
+			currentStat = kraftee.RunMovingSeconds
+		}
+		str += medal[currentRank] + " "                                 // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                      // Name
 		str += padLeft(secToHMS(kraftee.RunMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                     // Line break
@@ -95,11 +123,18 @@ func (l Leaderboard) printRideDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByRideDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["ride"] + " Distance\n" // Header
+	currentRank := 0                      // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0.0                    // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.RideMeters <= 0 {
-			break // Don't include kraftees without relevant stat / data / workout type
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
 		}
-		str += medal[i] + " "                                                                     // Rank
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.RideMeters {
+			currentRank = i
+			currentStat = kraftee.RideMeters
+		}
+		str += medal[currentRank] + " "                                                           // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                                // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RideMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                               // Line break
@@ -115,11 +150,18 @@ func (l Leaderboard) printRideDurationUpToKraftee(k *Kraftee) string {
 	l.sortByRideTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["ride"] + " Time\n" // Header
+	currentRank := 0                  // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0                  // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.RideMovingSeconds <= 0 {
-			break // Don't include kraftees without relevant stat / data / workout type
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
 		}
-		str += medal[i] + " "                                            // Rank
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.RideMovingSeconds {
+			currentRank = i
+			currentStat = kraftee.RideMovingSeconds
+		}
+		str += medal[currentRank] + " "                                  // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                       // Name
 		str += padLeft(secToHMS(kraftee.RideMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                      // Line break
@@ -135,11 +177,18 @@ func (l Leaderboard) printWalkOrHikeDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByWalkorHikeDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["walk"] + " Distance\n" // Header
+	currentRank := 0                      // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0.0                    // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.WalkOrHikeMeters <= 0 {
-			break // Don't include kraftees without relevant stat / data / workout type
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
 		}
-		str += medal[i] + " "                                                                           // Rank
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.WalkOrHikeMeters {
+			currentRank = i
+			currentStat = kraftee.WalkOrHikeMeters
+		}
+		str += medal[currentRank] + " "                                                                 // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                                      // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.WalkOrHikeMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                                     // Line break
@@ -155,11 +204,18 @@ func (l Leaderboard) printWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
 	l.sortByWalkOrHikeTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["walk"] + " Time\n" // Header
+	currentRank := 0                  // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0                  // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.WalkOrHikeMovingSeconds <= 0 {
-			break // Don't include kraftees without relevant stat / data / workout type
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
 		}
-		str += medal[i] + " "                                                  // Rank
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.WalkOrHikeMovingSeconds {
+			currentRank = i
+			currentStat = kraftee.WalkOrHikeMovingSeconds
+		}
+		str += medal[currentRank] + " "                                        // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                             // Name
 		str += padLeft(secToHMS(kraftee.WalkOrHikeMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                            // Line break
