@@ -15,7 +15,7 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 	defer dg.Close()
 
 	// Collect last 100 messages
-	msgs := getDiscordChannelMessages(dg, c)
+	messagesList := getDiscordChannelMessages(dg, c)
 	re := "ID: " + activityID
 
 	/**
@@ -25,17 +25,18 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 	This is desired even if the Strava webhook type is "create" because Strava's webhook accidentally
 	fires duplicate events, often.
 	*/
-	for i, m := range msgs {
-		matched, err := regexp.Match(re, []byte(m.Content))
+	for i, msg := range messagesList {
+		matched, err := regexp.Match(re, []byte(msg.Content))
 		if err != nil {
 			log.Fatal("Regexp error: ", err)
 		}
 		if matched {
-			fmt.Println("Updating post with id: " + m.ID + " which is " + fmt.Sprint(i) + " posts from the end of the thread.")
-			reForLB := regexp.MustCompile(`[*]*Leaderboard[*]* @ post time[\w|\W]*`)
-			oldLB := reForLB.Find([]byte(m.Content))
+			fmt.Println("Updating post with id: " + msg.ID + " which is " + fmt.Sprint(i) + " posts from the end of the thread.")
+			regexForLeaderboard := regexp.MustCompile(`[*]*Leaderboard[*]* @ post time[\w|\W]*`)
+			oldLeaderboard := regexForLeaderboard.Find([]byte(msg.Content))
+			updatedPost := postContent + "\n" + string(oldLeaderboard)
 
-			dg.ChannelMessageEdit(m.ChannelID, m.ID, postContent+"\n"+string(oldLB))
+			updateDiscordPost(dg, msg.ID, updatedPost)
 			return
 		}
 	}
