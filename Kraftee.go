@@ -6,6 +6,7 @@ type Kraftee struct {
 	RefreshTokenEnvName string
 	StravaId            string
 	StravaAccessToken   string
+	daysBeforeNag       int
 }
 
 func (k Kraftee) FullName() string {

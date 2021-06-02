@@ -14,18 +14,18 @@ const NAME_LENGTH = 10
 const STAT_LENGTH = 7
 
 var krafteesByStravaId = map[string]Kraftee{
-	"20419783": {"Tyler", "Auer", "TYLER", "20419783", ""},
-	"80996402": {"Jamie", "Quella", "Q", "80996402", ""},
-	"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", ""},
-	"23248014": {"Fred", "Brasz", "FRED", "23248014", ""},
-	"83356822": {"Larry", "Dworkin", "SMOOTH", "83356822", ""},
-	"2102360":  {"Brian", "Munroe", "PHYS", "2102360", ""},
-	"81799070": {"Norman", "Nicolson", "NORMAN", "81799070", ""},
-	"65753450": {"Zach", "Grossman", "ZACH", "65753450", ""},
-	"65626950": {"Alex", "Hogan", "HOGAN", "65626950", ""},
-	"80341128": {"Conor", "Quinn", "CONOR", "80341128", ""},
-	// "60682578": {"Tom", "Samuelson", "TOM", "60682578", ""},
-	// "82860978": {"Andre", "Martinez", "DRE", "82860978", ""},
+	"20419783": {"Tyler", "Auer", "TYLER", "20419783", "", 3},
+	"80996402": {"Jamie", "Quella", "Q", "80996402", "", 1},
+	"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", "", 1},
+	"23248014": {"Fred", "Brasz", "FRED", "23248014", "", 1},
+	"83356822": {"Larry", "Dworkin", "SMOOTH", "83356822", "", 1},
+	"2102360":  {"Brian", "Munroe", "PHYS", "2102360", "", 1},
+	"81799070": {"Norman", "Nicolson", "NORMAN", "81799070", "", 1},
+	"65753450": {"Zach", "Grossman", "ZACH", "65753450", "", 1},
+	"65626950": {"Alex", "Hogan", "HOGAN", "65626950", "", 1},
+	"80341128": {"Conor", "Quinn", "CONOR", "80341128", "", 1},
+	// "60682578": {"Tom", "Samuelson", "TOM", "60682578", "", 0},
+	// "82860978": {"Andre", "Martinez", "DRE", "82860978", "", 0},
 }
 
 var emojis = map[string]string{
@@ -79,19 +79,26 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 	httpMethod := req.HTTPMethod
 	fmt.Println("HTTP Method: " + httpMethod)
 
+	// Each purpose is a different AWS Lambda function running this container
+	// The env var PURPOSE customizes the behavior.
+	// This allows for code reuse and simplicity
 	purpose := os.Getenv("PURPOSE")
 
 	if purpose == "NEW_POSTS" {
 		switch httpMethod {
 		case "GET":
-			fmt.Printf("Handling GET request which should be subscription validation from Strava")
+			fmt.Println("Handling GET request which should be subscription validation from Strava")
 			return handleStravaSubscriptionChallenge(req.QueryStringParameters)
 		case "POST":
-			fmt.Printf("Handling POST request which should be webhook event from Strava")
+			fmt.Println("Handling POST request which should be webhook event from Strava")
 			handleStravaWebhook(req.Body)
 		}
 	} else if purpose == "WEEKLY_UPDATES" {
+		fmt.Println("Running the weekly update post")
 		handleWeeklyUpdatePost()
+	} else if purpose == "NAG" {
+		fmt.Println("Running a nag check")
+		handleNagCheck()
 	}
 
 	return defaultResponse, nil
@@ -100,7 +107,7 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 func handleLocal() {
 	defer duration(track("handleLocal"))
 
-	// handleWeeklyUpdatePost()
+	handleNagCheck()
 
 	// handleStravaWebhook(`{
 	// 	"aspect_type": "create",
@@ -146,14 +153,14 @@ func handleLocal() {
 	// }`)
 
 	// Quella
-	handleStravaWebhook(`{
-	    "aspect_type": "create",
-	    "event_time": 1622391955,
-	    "object_id": 5397738686,
-	    "object_type": "activity",
-	    "owner_id": 80996402,
-	    "subscription_id": 188592,
-	    "updates": {}
-	}`)
+	// handleStravaWebhook(`{
+	//     "aspect_type": "create",
+	//     "event_time": 1622391955,
+	//     "object_id": 5397738686,
+	//     "object_type": "activity",
+	//     "owner_id": 80996402,
+	//     "subscription_id": 188592,
+	//     "updates": {}
+	// }`)
 
 }

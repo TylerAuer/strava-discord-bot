@@ -86,7 +86,7 @@ func duration(msg string, start time.Time) {
 	log.Printf("%v: %v\n", msg, time.Since(start))
 }
 
-func getStartOfWeekInUnixTime() (startOfWeekInUnixTime int64) {
+func getStartOfWeekInUnixTime() int64 {
 	now := time.Now()
 
 	offset := int(time.Monday - now.Weekday())
@@ -94,9 +94,13 @@ func getStartOfWeekInUnixTime() (startOfWeekInUnixTime int64) {
 		offset = -6
 	}
 
-	weekStartInUnix := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local).AddDate(0, 0, offset).Unix()
+	return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local).AddDate(0, 0, offset).Unix()
+}
 
-	return weekStartInUnix
+func getNDaysAgoInUnixtime(days int) int64 {
+	return time.Now().AddDate(0, 0, -1*days).Unix()
+	// return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local).AddDate(0, 0, -1*days).Unix()
+
 }
 
 func contains(s []string, str string) bool {
