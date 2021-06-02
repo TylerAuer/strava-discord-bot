@@ -9,4 +9,4 @@ docker push 403525920890.dkr.ecr.us-east-2.amazonaws.com/strava-discord-bot:late
 # Update the functions to the new container image
 aws lambda update-function-code --function-name strava-to-discord-weekly-summary --image-uri 403525920890.dkr.ecr.us-east-2.amazonaws.com/strava-discord-bot:latest &
 aws lambda update-function-code --function-name strava-to-discord-nag --image-uri 403525920890.dkr.ecr.us-east-2.amazonaws.com/strava-discord-bot:latest &
-aws lambda update-function-code --function-name strava-to-discord-go --image-uri 403525920890.dkr.ecr.us-east-2.amazonaws.com/strava-discord-bot:latest
+aws lambda update-function-code --function-name strava-to-discord-go --image-uri 403525920890.dkr.ecr.us-east-2.amazonaws.com/strava-discord-bot:latest &
