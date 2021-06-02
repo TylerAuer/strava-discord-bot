@@ -14,16 +14,16 @@ const NAME_LENGTH = 10
 const STAT_LENGTH = 7
 
 var krafteesByStravaId = map[string]Kraftee{
-	"20419783": {"Tyler", "Auer", "TYLER", "20419783", "", 3},
-	"80996402": {"Jamie", "Quella", "Q", "80996402", "", 1},
-	"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", "", 1},
-	"23248014": {"Fred", "Brasz", "FRED", "23248014", "", 1},
-	"83356822": {"Larry", "Dworkin", "SMOOTH", "83356822", "", 1},
-	"2102360":  {"Brian", "Munroe", "PHYS", "2102360", "", 1},
-	"81799070": {"Norman", "Nicolson", "NORMAN", "81799070", "", 1},
-	"65753450": {"Zach", "Grossman", "ZACH", "65753450", "", 1},
-	"65626950": {"Alex", "Hogan", "HOGAN", "65626950", "", 1},
-	"80341128": {"Conor", "Quinn", "CONOR", "80341128", "", 1},
+	"20419783": {"Tyler", "Auer", "TYLER", "20419783", "", 1},
+	"80996402": {"Jamie", "Quella", "Q", "80996402", "", 0},
+	"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", "", 0},
+	"23248014": {"Fred", "Brasz", "FRED", "23248014", "", 0},
+	"83356822": {"Larry", "Dworkin", "SMOOTH", "83356822", "", 0},
+	"2102360":  {"Brian", "Munroe", "PHYS", "2102360", "", 0},
+	"81799070": {"Norman", "Nicolson", "NORMAN", "81799070", "", 0},
+	"65753450": {"Zach", "Grossman", "ZACH", "65753450", "", 0},
+	"65626950": {"Alex", "Hogan", "HOGAN", "65626950", "", 0},
+	"80341128": {"Conor", "Quinn", "CONOR", "80341128", "", 0},
 	// "60682578": {"Tom", "Samuelson", "TOM", "60682578", "", 0},
 	// "82860978": {"Andre", "Martinez", "DRE", "82860978", "", 0},
 }
