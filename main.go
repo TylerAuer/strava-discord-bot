@@ -15,7 +15,7 @@ const STAT_LENGTH = 7
 
 var krafteesByStravaId = map[string]Kraftee{
 	"20419783": {"Tyler", "Auer", "TYLER", "20419783", "", 2},
-	"80996402": {"Jamie", "Quella", "Q", "80996402", "", 0},
+	"80996402": {"Jamie", "Quella", "Q", "80996402", "", 4},
 	"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", "", 0},
 	"23248014": {"Fred", "Brasz", "FRED", "23248014", "", 0},
 	"83356822": {"Larry", "Dworkin", "SMOOTH", "83356822", "", 0},

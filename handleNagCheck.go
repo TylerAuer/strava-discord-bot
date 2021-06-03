@@ -66,15 +66,19 @@ func getRandomGifOfInspiration() string {
 	rand.Seed(time.Now().UnixNano())
 
 	gifsOfInspiration := []string{
-		"https://media.giphy.com/media/6XA99Q0nPSXyU/giphy.gif",
-		"https://media.giphy.com/media/mcH0upG1TeEak/giphy.gif",
-		"https://media.giphy.com/media/rfskmSvktqSoo/giphy.gif",
-		"https://media.giphy.com/media/IVUT6ZrmwluToUnb1F/giphy.gif",
-		"https://media.giphy.com/media/pVkmGyqYRt4qY/giphy.gif",
-		"https://media.giphy.com/media/w9DgGBsFfU9OM/giphy.gif",
-		"https://media.giphy.com/media/kaCdrXPD9hkZzsEEJn/giphy.gif",
-		"https://media.giphy.com/media/Ob7p7lDT99cd2/giphy.gif",
-		"https://media.giphy.com/media/d5mI2F3MxCTJu/giphy.gif",
+		"https://media.giphy.com/media/6XA99Q0nPSXyU/giphy.gif",      // Breaking Bad
+		"https://media.giphy.com/media/mcH0upG1TeEak/giphy.gif",      // Old School
+		"https://media.giphy.com/media/rfskmSvktqSoo/giphy.gif",      // TSwift
+		"https://media.giphy.com/media/IVUT6ZrmwluToUnb1F/giphy.gif", // Daniel Jones
+		"https://media.giphy.com/media/pVkmGyqYRt4qY/giphy.gif",      // Cat on sofa
+		"https://media.giphy.com/media/w9DgGBsFfU9OM/giphy.gif",      // Edna Mode
+		"https://media.giphy.com/media/kaCdrXPD9hkZzsEEJn/giphy.gif", // Groundhog day
+		"https://media.giphy.com/media/Ob7p7lDT99cd2/giphy.gif",      // GOT Shame
+		"https://media.giphy.com/media/d5mI2F3MxCTJu/giphy.gif",      // Sloth
+		"https://media.giphy.com/media/DOId45m6FAEUw/giphy.gif",      // Major Payne
+		"https://media.giphy.com/media/gKO8OzGBZMSxOBaxjp/giphy.gif", // Big hero 6
+		"https://media.giphy.com/media/3oEduUsg7Ad7gXH4CA/giphy.gif", // Fat Joe
+		"https://media.giphy.com/media/SnplG1QPbcULwdj1wR/giphy.gif", // Parks and recs
 	}
 	randomIndex := rand.Intn(len(gifsOfInspiration))
 
