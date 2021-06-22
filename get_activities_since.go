@@ -11,7 +11,7 @@ func getActivitiesSince(s int64, k Kraftee) ActivityList {
 	fmt.Println("Getting activity history for " + k.FullName())
 	// Grab the stats for Kraftee
 
-	url := "https://www.strava.com/api/v3/athlete/activities?page=1&per_page=30&after=" + fmt.Sprint(s)
+	url := "https://www.strava.com/api/v3/athlete/activities?page=1&per_page=200&after=" + fmt.Sprint(s)
 
 	authHeader := "Bearer " + k.GetStravaAccessToken()
 

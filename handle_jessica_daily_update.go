@@ -17,10 +17,10 @@ func handleJessicaDailyUpdate() {
 	goal := 100.0
 
 	today := time.Now().Day()
-	daysIntoTheMonth := today - now.BeginningOfMonth().Day()
 	daysLeftInMonth := now.EndOfMonth().Day() - today
 
-	jessicaActiviesSince := getActivitiesSince(getNDaysAgoInUnixtime(daysIntoTheMonth), jessica)
+	jessicaActiviesSince := getActivitiesSince(now.BeginningOfMonth().Unix(), jessica)
+
 	jStats := jessicaActiviesSince.buildStats("Jessica", jessica.StravaId)
 
 	if metersToMiles(jStats.WalkOrHikeMeters) > goal {

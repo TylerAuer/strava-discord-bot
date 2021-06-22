@@ -90,3 +90,13 @@ func (al ActivityList) buildStatsFor(k Kraftee) Stats {
 
 	return s
 }
+
+// This is useful for checking activity lists for issues.
+func (al ActivityList) printActivitySummaries() {
+	for i, a := range al {
+		msg := fmt.Sprint(i)                                  // Index in list
+		msg += " - " + fmt.Sprint(a.ID) + " - "               // activity id
+		msg += fmt.Sprintf("%.1f", metersToMiles(a.Distance)) // distance in miles
+		fmt.Println(msg)
+	}
+}
