@@ -14,7 +14,7 @@ const NAME_LENGTH = 10
 const STAT_LENGTH = 7
 
 var krafteesByStravaId = map[string]Kraftee{
-	"20419783": {"Tyler", "Auer", "TYLER", "20419783", "", 2},
+	"20419783": {"Tyler", "Auer", "TYLER", "20419783", "", 1},
 	"80996402": {"Jamie", "Quella", "Q", "80996402", "", 4},
 	"80485980": {"Bryan", "Eckelmann", "BRYAN", "80485980", "", 0},
 	"23248014": {"Fred", "Brasz", "FRED", "23248014", "", 0},
@@ -52,7 +52,6 @@ var medal = map[int]string{
 }
 
 func main() {
-	fmt.Println("Starting")
 	godotenv.Load()
 	fmt.Println("Loaded env vars")
 
@@ -110,7 +109,9 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 func handleLocal() {
 	defer duration(track("handleLocal"))
 
-	handleJessicaDailyUpdate()
+	// getCurrentChallenge()
+
+	// handleJessicaDailyUpdate()
 
 	// handleNagCheck()
 
@@ -167,5 +168,16 @@ func handleLocal() {
 	//     "subscription_id": 188592,
 	//     "updates": {}
 	// }`)
+
+	// Tyler's wwc example
+	handleStravaWebhook(`{
+	  "aspect_type": "create",
+	  "event_time": 1624338393,
+	  "object_id": 5509090759,
+	  "object_type": "activity",
+	  "owner_id": 20419783,
+	  "subscription_id": 188592,
+	  "updates": {}
+	}`)
 
 }

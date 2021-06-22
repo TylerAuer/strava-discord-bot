@@ -1,0 +1,40 @@
+package main
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/jinzhu/now"
+)
+
+type WeeklyChallenge struct {
+	GoalKind    string // max/minTime, max/minReps
+	Title       string
+	Description string
+}
+
+func getChallengeByDate(dateKey string) WeeklyChallenge {
+	wcs := map[string]WeeklyChallenge{
+		// Dates MUST be for the monday of each week.
+		"July-5-2021":  {"maxReps", "10 min AMRAP: 5 pushups, 10 squats, 20 crunches", "As many rounds as possible; squats must reach >=90 degree knee bend"},
+		"June-28-2021": {"minTime", "50 burpess for time", "Full body to ground at bottom. Body fully upright for jump"},
+		"June-21-2021": {"maxReps", "AMRAP pushups", "Max pushups without taking your full weight off arms"},
+	}
+	return wcs[dateKey]
+}
+
+func getCurrentChallenge() WeeklyChallenge {
+	now.WeekStartDay = time.Monday
+	monday := now.BeginningOfWeek()
+	dateKey := fmt.Sprint(monday.Month()) + "-" + fmt.Sprint(monday.Day()) + "-" + fmt.Sprint(monday.Year())
+	return getChallengeByDate(dateKey)
+}
+
+func handleWeeklyWorkoutChallengeStravaWebhook(k Kraftee, ad ActivityDetails, webhook WebhookData) {
+	dg := getActiveDiscordSession()
+	defer dg.Close()
+
+	challenge := getCurrentChallenge()
+
+	postToDiscord(dg, challenge.Title)
+}

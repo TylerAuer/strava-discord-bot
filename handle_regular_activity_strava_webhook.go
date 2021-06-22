@@ -7,7 +7,13 @@ import (
 	"regexp"
 )
 
-func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDeclaredType string, a ActivityDetails, k Kraftee) {
+func handleRegularActivityStravaWebhook(k Kraftee, ad ActivityDetails, webhook WebhookData) {
+	activityId := fmt.Sprint(webhook.ObjectId)
+
+	postString := buildActivityPost(ad, k)
+
+	// postOrUpdateActivity(idStr, postString, webhook.AspectType, ad, k)
+
 	c := os.Getenv("DISCORD_CHANNEL_ID")
 
 	// Get a connection to Discord, defer closing it
@@ -16,7 +22,7 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 
 	// Collect last 100 messages
 	messagesList := getDiscordChannelMessages(dg, c)
-	re := "ID: " + activityID
+	re := "ID: " + activityId
 
 	/**
 	For each of the last 100 messages, check if it contains "ID: <activityID>". If one is found
@@ -34,7 +40,7 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 			fmt.Println("Updating post with id: " + msg.ID + " which is " + fmt.Sprint(i) + " posts from the end of the thread.")
 			regexForLeaderboard := regexp.MustCompile(`[*]*Leaderboard[*]* @ post time[\w|\W]*`)
 			oldLeaderboard := regexForLeaderboard.Find([]byte(msg.Content))
-			updatedPost := postContent + "\n" + string(oldLeaderboard)
+			updatedPost := postString + "\n" + string(oldLeaderboard)
 
 			updateDiscordPost(dg, msg.ID, updatedPost)
 			return
@@ -48,10 +54,10 @@ func postOrUpdateActivity(activityID string, postContent string, stravaWebhookDe
 	We only want to create a new post if it is truly new, so that's why we check if strava's webhook
 	indicates that this is a "create" type of update.
 	*/
-	if stravaWebhookDeclaredType == "create" {
+	if webhook.AspectType == "create" {
 		// Build and post the leaderboard status for a user's post just once. Otherwise, if they update
 		// a post a few days later it will botch the whole thing.
-		lbs := buildLeaderboardStatus(a, k)
-		postToDiscord(dg, postContent+lbs+"\nID: "+activityID)
+		lbs := buildLeaderboardStatus(ad, k)
+		postToDiscord(dg, postString+lbs+"\nID: "+activityId)
 	}
 }

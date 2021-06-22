@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"regexp"
 )
 
 type WebhookData struct {
@@ -30,9 +31,18 @@ func handleStravaWebhook(body string) {
 
 		idStr := fmt.Sprint(b.ObjectId)
 		activityDetails := getActivityDetails(idStr, k)
-		postString := buildActivityPost(activityDetails, k)
 
-		postOrUpdateActivity(idStr, postString, b.AspectType, activityDetails, k)
+		// Check if this activity is a weekly workout challenge
+		re := `wwc\s*$` // Any string ending in wwc (ignoring trailing whitespace)
+		isWWCPost, err := regexp.Match(re, []byte(activityDetails.Name))
+		if err != nil {
+			log.Fatal("Regexp error: ", err)
+		}
+		if isWWCPost {
+			handleWeeklyWorkoutChallengeStravaWebhook(k, activityDetails, b)
+		} else {
+			handleRegularActivityStravaWebhook(k, activityDetails, b)
+		}
 	} else {
 		fmt.Println("webhook was none of the following 1) activity 2) create aspect_type 3) update aspect_type")
 	}

@@ -64,22 +64,22 @@ type ActivityDetails struct {
 		ResourceState   int    `json:"resource_state"`
 		SummaryPolyline string `json:"summary_polyline"`
 	} `json:"map"`
-	AverageSpeed               float64     `json:"average_speed"`
-	MaxSpeed                   float64     `json:"max_speed"`
-	AverageCadence             float64     `json:"average_cadence"`
-	HasHeartrate               bool        `json:"has_heartrate"`
-	AverageHeartrate           float64     `json:"average_heartrate"`
-	MaxHeartrate               float64     `json:"max_heartrate"`
-	HeartrateOptOut            bool        `json:"heartrate_opt_out"`
-	DisplayHideHeartrateOption bool        `json:"display_hide_heartrate_option"`
-	ElevHigh                   float64     `json:"elev_high"`
-	ElevLow                    float64     `json:"elev_low"`
-	PrCount                    int         `json:"pr_count"`
-	TotalPhotoCount            int         `json:"total_photo_count"`
-	HasKudoed                  bool        `json:"has_kudoed"`
-	SufferScore                float64     `json:"suffer_score"`
-	Description                interface{} `json:"description"`
-	Calories                   float64     `json:"calories"`
+	AverageSpeed               float64 `json:"average_speed"`
+	MaxSpeed                   float64 `json:"max_speed"`
+	AverageCadence             float64 `json:"average_cadence"`
+	HasHeartrate               bool    `json:"has_heartrate"`
+	AverageHeartrate           float64 `json:"average_heartrate"`
+	MaxHeartrate               float64 `json:"max_heartrate"`
+	HeartrateOptOut            bool    `json:"heartrate_opt_out"`
+	DisplayHideHeartrateOption bool    `json:"display_hide_heartrate_option"`
+	ElevHigh                   float64 `json:"elev_high"`
+	ElevLow                    float64 `json:"elev_low"`
+	PrCount                    int     `json:"pr_count"`
+	TotalPhotoCount            int     `json:"total_photo_count"`
+	HasKudoed                  bool    `json:"has_kudoed"`
+	SufferScore                float64 `json:"suffer_score"`
+	Description                string  `json:"description"`
+	Calories                   float64 `json:"calories"`
 	Photos                     struct {
 		Primary interface{} `json:"primary"`
 		Count   int         `json:"count"`
