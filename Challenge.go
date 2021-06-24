@@ -36,5 +36,28 @@ func handleWeeklyWorkoutChallengeStravaWebhook(k Kraftee, ad ActivityDetails, we
 
 	challenge := getCurrentChallenge()
 
-	postToDiscord(dg, challenge.Title)
+	var score string
+
+	if challenge.GoalKind == "maxReps" || challenge.GoalKind == "minReps" {
+		score = ad.Description
+	} else if challenge.GoalKind == "minTime" || challenge.GoalKind == "maxTime" {
+		score = secToHMS(ad.MovingTime)
+	} else {
+		score = "Unable to find value for workout challenge score"
+	}
+
+	var msg string
+	msg += k.First + " just did the Weekly Workout Challenge\n"
+	msg += "\n"
+	msg += "```"
+	msg += "Score: " + score + "\n"
+	msg += "\n"
+	msg += "##" + challenge.Title + " ##\n"
+	msg += "\n"
+	msg += challenge.Description + "\n"
+	msg += "```"
+	msg += "\n"
+	msg += "ID: " + fmt.Sprint(ad.ID)
+
+	postToDiscord(dg, msg)
 }
