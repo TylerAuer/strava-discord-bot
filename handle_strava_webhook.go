@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"regexp"
 )
 
 type WebhookData struct {
@@ -28,20 +27,16 @@ func handleStravaWebhook(body string) {
 		fmt.Println("Handling new activity with ID: " + fmt.Sprint(b.ObjectId))
 
 		k := krafteesByStravaId[fmt.Sprint(b.OwnerId)]
-
 		idStr := fmt.Sprint(b.ObjectId)
-		activityDetails := getActivityDetails(idStr, k)
 
-		// Check if this activity is a weekly workout challenge
-		re := `wwc\s*$` // Any string ending in wwc (ignoring trailing whitespace)
-		isWWCPost, err := regexp.Match(re, []byte(activityDetails.Name))
-		if err != nil {
-			log.Fatal("Regexp error: ", err)
-		}
-		if isWWCPost {
-			handleWeeklyWorkoutChallengeStravaWebhook(k, activityDetails, b)
+		ad := getActivityDetails(idStr, k)
+		isWWC := ad.isWeeklyWorkoutChallenge()
+
+		if isWWC {
+			handleWeeklyWorkoutChallengeStravaWebhook(k, ad, b)
 		} else {
-			handleRegularActivityStravaWebhook(k, activityDetails, b)
+			isCreateType := b.AspectType == "create"
+			ad.makeOrUpdateActivityPost(isCreateType)
 		}
 	} else {
 		fmt.Println("webhook was none of the following 1) activity 2) create aspect_type 3) update aspect_type")

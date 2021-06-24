@@ -13,6 +13,7 @@ type WeeklyChallenge struct {
 	Description string
 }
 
+// These should be indexed by an ID, that way they can be reused and previous bests can be found
 func getChallengeByDate(dateKey string) WeeklyChallenge {
 	wcs := map[string]WeeklyChallenge{
 		// Dates MUST be for the monday of each week.
@@ -23,7 +24,8 @@ func getChallengeByDate(dateKey string) WeeklyChallenge {
 	return wcs[dateKey]
 }
 
-func getCurrentChallenge() WeeklyChallenge {
+// Should not be used in posts because if an old post is updated it might access the wrong challenge
+func getChallengeActiveToday() WeeklyChallenge {
 	now.WeekStartDay = time.Monday
 	monday := now.BeginningOfWeek()
 	dateKey := fmt.Sprint(monday.Month()) + "-" + fmt.Sprint(monday.Day()) + "-" + fmt.Sprint(monday.Year())
@@ -34,7 +36,7 @@ func handleWeeklyWorkoutChallengeStravaWebhook(k Kraftee, ad ActivityDetails, we
 	dg := getActiveDiscordSession()
 	defer dg.Close()
 
-	challenge := getCurrentChallenge()
+	challenge := getChallengeActiveToday()
 
 	var score string
 

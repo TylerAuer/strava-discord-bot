@@ -326,3 +326,18 @@ func (l Leaderboard) findRankOfKrafteeOrLastIfAbsent(k *Kraftee) int {
 		return len(l) - 1
 	}
 }
+
+func (l Leaderboard) buildLeaderboardPost() string {
+	lbPost := "Leaderboard\n"
+	lbPost += "```"
+	lbPost += l.printDurationUpToKraftee(nil)
+	lbPost += l.printActivityCountUpToKraftee(nil)
+	lbPost += l.printRunDistanceUpToKraftee(nil)
+	lbPost += l.printRunDurationUpToKraftee(nil)
+	lbPost += l.printRideDistanceUpToKraftee(nil)
+	lbPost += l.printRideDurationUpToKraftee(nil)
+	lbPost += l.printWalkOrHikeDistanceUpToKraftee(nil)
+	lbPost += l.printWalkOrHikeDurationUpToKraftee(nil)
+	lbPost += "```"
+	return lbPost
+}
