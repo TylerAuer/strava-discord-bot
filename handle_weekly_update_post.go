@@ -18,14 +18,15 @@ func handleWeeklyUpdatePost() {
 	groupStats := listOfEveryActivity.buildStats("All", "")
 	groupStatsPost := groupStats.printGroupStats()
 
-	leaderboardPost := buildLeaderboardPost(listOfKrafteeStats)
+	leaderboardPost := listOfKrafteeStats.buildLeaderboardPost()
 
-	post := "**Weekly Update**\n"
-	post += "*Here's a summary for " + fmt.Sprint(krafteeCount) + " kraftees over the last week*"
-	post += "\n\n" + groupStatsPost
-	post += "\n\n" + leaderboardPost
+	msg := "**Weekly Update**\n"
+	msg += "*Here's a summary for " + fmt.Sprint(krafteeCount) + " kraftees over the last week*"
+	msg += "\n\n" + groupStatsPost
+	msg += "\n\n" + leaderboardPost
 
-	dg := getActiveDiscordSession()
+	dg := getDiscord()
+	dg.Close()
 
-	postToDiscord(dg, post)
+	dg.post(msg)
 }

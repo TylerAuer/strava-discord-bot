@@ -32,10 +32,12 @@ func handleStravaWebhook(body string) {
 		ad := getActivityDetails(idStr, k)
 		isWWC := ad.isWeeklyWorkoutChallenge()
 
+		isCreateType := b.AspectType == "create"
+
 		if isWWC {
-			handleWeeklyWorkoutChallengeStravaWebhook(k, ad, b)
+			ad.makeOrUpdateWeeklyWorkoutChallengePost(isCreateType)
 		} else {
-			isCreateType := b.AspectType == "create"
+
 			ad.makeOrUpdateActivityPost(isCreateType)
 		}
 	} else {

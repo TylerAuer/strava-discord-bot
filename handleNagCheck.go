@@ -37,7 +37,6 @@ func handleNagCheck() {
 	msg += getRandomGifOfInspiration()
 
 	postToDiscord(dg, msg)
-
 }
 
 func checkIfLazy(k Kraftee, lazyChan chan string) {

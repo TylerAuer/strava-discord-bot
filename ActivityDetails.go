@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -107,9 +106,7 @@ func (ad ActivityDetails) isWeeklyWorkoutChallenge() bool {
 }
 
 func (ad ActivityDetails) getDiscordPostWithMatchingId() *discordgo.Message {
-	c := os.Getenv("DISCORD_CHANNEL_ID")
-
-	dg := getActiveDiscordSession()
+	dg := getDiscord()
 	defer dg.Close()
 
 	/**
@@ -119,7 +116,7 @@ func (ad ActivityDetails) getDiscordPostWithMatchingId() *discordgo.Message {
 	This is desired even if the Strava webhook type is "create" because Strava's webhook accidentally
 	fires duplicate events, often.
 	*/
-	messagesList := getDiscordChannelMessages(dg, c)
+	messagesList := dg.lastOneHundredMessages()
 	re := "ID: " + fmt.Sprint(ad.ID)
 	for i, msg := range messagesList {
 		matched, err := regexp.Match(re, []byte(msg.Content))
@@ -251,7 +248,6 @@ func (ad ActivityDetails) buildChallengePost() string {
 	msg += challenge.Description + "\n"
 	msg += "```"
 	msg += "\n"
-	msg += "ID: " + fmt.Sprint(ad.ID)
 
 	return msg
 }
@@ -293,7 +289,7 @@ func (ad ActivityDetails) makePostIdentifier() string {
 }
 
 func (ad ActivityDetails) makeOrUpdateActivityPost(canMakeNewPost bool) {
-	dg := getActiveDiscordSession()
+	dg := getDiscord()
 	defer dg.Close()
 
 	postToUpdate := ad.getDiscordPostWithMatchingId()
@@ -309,14 +305,43 @@ func (ad ActivityDetails) makeOrUpdateActivityPost(canMakeNewPost bool) {
 		oldLeaderboard := string(regexForLeaderboard.Find([]byte(postToUpdate.Content)))
 
 		post := ad.buildActivityPost() + oldLeaderboard + ad.makePostIdentifier()
-		updateDiscordPost(dg, postToUpdate.ID, post)
+		dg.updatePost(postToUpdate, post)
 	} else if canMakeNewPost {
-		// Now post with matching ID found, so make a new post if allowed
+		// No post with matching ID found, so make a new post if allowed
 		fmt.Println("Making a new activity post")
 
 		post := ad.buildActivityPost() + ad.buildLeaderboardStatusPost() + ad.makePostIdentifier()
-		postToDiscord(dg, post)
+		dg.post(post)
 	} else {
-		fmt.Println("Old post wasn't found but canMakeNewPost == false. This is likely because Strava sent a duplicate `create` event ")
+		fmt.Println("Old post wasn't found and canMakeNewPost == false. This is likely because Strava sent a duplicate `create` event ")
+	}
+}
+
+func (ad ActivityDetails) makeOrUpdateWeeklyWorkoutChallengePost(canMakeNewPost bool) {
+	dg := getDiscord()
+	defer dg.Close()
+
+	postToUpdate := ad.getDiscordPostWithMatchingId()
+
+	if postToUpdate != nil {
+		// Found a post with the matching ID. So need to grab the previous leaderboard with regex
+		// and use that with the post
+		fmt.Println("Updating challenge post")
+
+		// The leaderboard must lock at activity creation time, so we don't want to regenerate it
+		// Instead we want to capture the old one with regex
+		// regexForLeaderboard := regexp.MustCompile("[*]*Leaderboard[*]* @ post time[\\w|\\W]*`{3}\n{1}")
+		// oldLeaderboard := string(regexForLeaderboard.Find([]byte(postToUpdate.Content)))
+
+		post := ad.buildChallengePost() + ad.makePostIdentifier()
+		dg.updatePost(postToUpdate, post)
+	} else if canMakeNewPost {
+		// No post with matching ID found, so make a new post if allowed
+		fmt.Println("Making a new challenge post")
+
+		post := ad.buildChallengePost() + ad.makePostIdentifier()
+		dg.post(post)
+	} else {
+		fmt.Println("Old post wasn't found and canMakeNewPost == false. This is likely because Strava sent a duplicate `create` event ")
 	}
 }
