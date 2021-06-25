@@ -238,14 +238,14 @@ func (ad ActivityDetails) buildChallengePost() string {
 	}
 
 	var msg string
-	msg += k.First + " just did the Weekly Workout Challenge\n"
+	msg += k.First + " just did the " + challenge.Name + " WWC\n"
 	msg += "\n"
 	msg += "```"
 	msg += "Score: " + score + "\n"
 	msg += "\n"
-	msg += "##" + challenge.Title + " ##\n"
+	msg += "## " + challenge.ShortDescription + " ##\n"
 	msg += "\n"
-	msg += challenge.Description + "\n"
+	msg += challenge.LongDescription + "\n"
 	msg += "```"
 	msg += "\n"
 
@@ -303,6 +303,11 @@ func (ad ActivityDetails) makeOrUpdateActivityPost(canMakeNewPost bool) {
 		// Instead we want to capture the old one with regex
 		regexForLeaderboard := regexp.MustCompile("[*]*Leaderboard[*]* @ post time[\\w|\\W]*`{3}\n{1}")
 		oldLeaderboard := string(regexForLeaderboard.Find([]byte(postToUpdate.Content)))
+
+		// If no leaderboard was found -- because post was a WWC before -- generate a leaderboard
+		if oldLeaderboard == "" {
+			oldLeaderboard = ad.buildLeaderboardStatusPost()
+		}
 
 		post := ad.buildActivityPost() + oldLeaderboard + ad.makePostIdentifier()
 		dg.updatePost(postToUpdate, post)
