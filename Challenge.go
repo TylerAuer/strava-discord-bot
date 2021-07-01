@@ -99,7 +99,15 @@ func getCurrentlyActiveToday() *Challenge {
 	return findChallengeByMondayDate(dateKey)
 }
 
-	return getChallengeMondayDate(dateKey)
+func (c Challenge) composeChallengeAnnouncement() string {
+	var msg string
+	msg += "This week's challenge: **" + c.Name + "**\n"
+	msg += "\n"
+	msg += "**" + c.ShortDescription + "**\n"
+	msg += "*" + c.LongDescription + "*"
+
+	return msg
+}
 
 func announceWeeklyChallenge() {
 	d := getDiscord()
