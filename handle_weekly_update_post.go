@@ -18,7 +18,7 @@ func handleWeeklyUpdatePost() {
 	groupStats := listOfEveryActivity.buildStats("All", "")
 	groupStatsPost := groupStats.printGroupStats()
 
-	leaderboardPost := listOfKrafteeStats.buildLeaderboardPost()
+	leaderboardPost := listOfKrafteeStats.composeLeaderboardPost()
 
 	msg := "**Weekly Update**\n"
 	msg += "*Here's a summary for " + fmt.Sprint(krafteeCount) + " kraftees over the last week*"

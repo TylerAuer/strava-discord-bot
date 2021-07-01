@@ -92,7 +92,7 @@ func (l Leaderboard) printRunDistanceUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) printRunDurationUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeRunDurationUpToKraftee(k *Kraftee) string {
 	l.sortByRunTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["run"] + " Time\n" // Header
@@ -119,7 +119,7 @@ func (l Leaderboard) printRunDurationUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) printRideDistanceUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeRideDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByRideDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["ride"] + " Distance\n" // Header
@@ -146,7 +146,7 @@ func (l Leaderboard) printRideDistanceUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) printRideDurationUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeRideDurationUpToKraftee(k *Kraftee) string {
 	l.sortByRideTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["ride"] + " Time\n" // Header
@@ -173,7 +173,7 @@ func (l Leaderboard) printRideDurationUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) printWalkOrHikeDistanceUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeWalkOrHikeDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByWalkorHikeDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["walk"] + " Distance\n" // Header
@@ -200,7 +200,7 @@ func (l Leaderboard) printWalkOrHikeDistanceUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) printWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
 	l.sortByWalkOrHikeTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["walk"] + " Time\n" // Header
@@ -327,17 +327,17 @@ func (l Leaderboard) findRankOfKrafteeOrLastIfAbsent(k *Kraftee) int {
 	}
 }
 
-func (l Leaderboard) buildLeaderboardPost() string {
+func (l Leaderboard) composeLeaderboardPost() string {
 	lbPost := "Leaderboard\n"
 	lbPost += "```"
 	lbPost += l.printDurationUpToKraftee(nil)
 	lbPost += l.printActivityCountUpToKraftee(nil)
 	lbPost += l.printRunDistanceUpToKraftee(nil)
-	lbPost += l.printRunDurationUpToKraftee(nil)
-	lbPost += l.printRideDistanceUpToKraftee(nil)
-	lbPost += l.printRideDurationUpToKraftee(nil)
-	lbPost += l.printWalkOrHikeDistanceUpToKraftee(nil)
-	lbPost += l.printWalkOrHikeDurationUpToKraftee(nil)
+	lbPost += l.composeRunDurationUpToKraftee(nil)
+	lbPost += l.composeRideDistanceUpToKraftee(nil)
+	lbPost += l.composeRideDurationUpToKraftee(nil)
+	lbPost += l.composeWalkOrHikeDistanceUpToKraftee(nil)
+	lbPost += l.composeWalkOrHikeDurationUpToKraftee(nil)
 	lbPost += "```"
 	return lbPost
 }

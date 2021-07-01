@@ -30,15 +30,14 @@ func handleStravaWebhook(body string) {
 		idStr := fmt.Sprint(b.ObjectId)
 
 		ad := getActivityDetails(idStr, k)
-		isWWC := ad.isWeeklyWorkoutChallenge()
+		isWeeklyWorkoutChallengeActivity := ad.isWeeklyWorkoutChallenge()
 
 		isCreateType := b.AspectType == "create"
 
-		if isWWC {
-			ad.makeOrUpdateWeeklyWorkoutChallengePost(isCreateType)
+		if isWeeklyWorkoutChallengeActivity {
+			ad.postOrUpdateWeeklyWorkoutChallengePost(isCreateType)
 		} else {
-
-			ad.makeOrUpdateActivityPost(isCreateType)
+			ad.postOrUpdateActivityPost(isCreateType)
 		}
 	} else {
 		fmt.Println("webhook was none of the following 1) activity 2) create aspect_type 3) update aspect_type")

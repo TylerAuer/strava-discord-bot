@@ -136,7 +136,7 @@ func (ad ActivityDetails) paceInSecondsPerMile() string {
 	return secondsToMinSec(pace)
 }
 
-func (ad ActivityDetails) buildActivityPost() string {
+func (ad ActivityDetails) composeActivityPost() string {
 	k := ad.krafteeWhoRecordedActivity()
 	title := ad.Name
 
@@ -223,7 +223,7 @@ func (ad ActivityDetails) buildActivityPost() string {
 		"\n"
 }
 
-func (ad ActivityDetails) buildChallengePost() string {
+func (ad ActivityDetails) composeChallengePost() string {
 	k := ad.krafteeWhoRecordedActivity()
 	challenge := getCurrentlyActiveToday()
 
@@ -252,7 +252,7 @@ func (ad ActivityDetails) buildChallengePost() string {
 	return msg
 }
 
-func (ad ActivityDetails) buildLeaderboardStatusPost() string {
+func (ad ActivityDetails) composeLeaderboardStatusPost() string {
 	k := ad.krafteeWhoRecordedActivity()
 
 	startOfWeek := getStartOfWeekInUnixTime()
@@ -265,17 +265,17 @@ func (ad ActivityDetails) buildLeaderboardStatusPost() string {
 
 	if ad.Type == "Run" {
 		postString += leaderboard.printRunDistanceUpToKraftee(&k)
-		postString += leaderboard.printRunDurationUpToKraftee(&k)
+		postString += leaderboard.composeRunDurationUpToKraftee(&k)
 	}
 
 	if ad.Type == "Ride" {
-		postString += leaderboard.printRideDistanceUpToKraftee(&k)
-		postString += leaderboard.printRideDurationUpToKraftee(&k)
+		postString += leaderboard.composeRideDistanceUpToKraftee(&k)
+		postString += leaderboard.composeRideDurationUpToKraftee(&k)
 	}
 
 	if ad.Type == "Walk" || ad.Type == "Hike" {
-		postString += leaderboard.printWalkOrHikeDistanceUpToKraftee(&k)
-		postString += leaderboard.printWalkOrHikeDurationUpToKraftee(&k)
+		postString += leaderboard.composeWalkOrHikeDistanceUpToKraftee(&k)
+		postString += leaderboard.composeWalkOrHikeDurationUpToKraftee(&k)
 	}
 	postString += "```"
 
@@ -284,11 +284,11 @@ func (ad ActivityDetails) buildLeaderboardStatusPost() string {
 	return postString
 }
 
-func (ad ActivityDetails) makePostIdentifier() string {
+func (ad ActivityDetails) composePostIdentifier() string {
 	return "ID: " + fmt.Sprint(ad.ID)
 }
 
-func (ad ActivityDetails) makeOrUpdateActivityPost(canMakeNewPost bool) {
+func (ad ActivityDetails) postOrUpdateActivityPost(canMakeNewPost bool) {
 	dg := getDiscord()
 	defer dg.Close()
 
@@ -306,23 +306,23 @@ func (ad ActivityDetails) makeOrUpdateActivityPost(canMakeNewPost bool) {
 
 		// If no leaderboard was found -- because post was a WWC before -- generate a leaderboard
 		if oldLeaderboard == "" {
-			oldLeaderboard = ad.buildLeaderboardStatusPost()
+			oldLeaderboard = ad.composeLeaderboardStatusPost()
 		}
 
-		post := ad.buildActivityPost() + oldLeaderboard + ad.makePostIdentifier()
+		post := ad.composeActivityPost() + oldLeaderboard + ad.composePostIdentifier()
 		dg.updatePost(postToUpdate, post)
 	} else if canMakeNewPost {
 		// No post with matching ID found, so make a new post if allowed
 		fmt.Println("Making a new activity post")
 
-		post := ad.buildActivityPost() + ad.buildLeaderboardStatusPost() + ad.makePostIdentifier()
+		post := ad.composeActivityPost() + ad.composeLeaderboardStatusPost() + ad.composePostIdentifier()
 		dg.post(post)
 	} else {
 		fmt.Println("Old post wasn't found and canMakeNewPost == false. This is likely because Strava sent a duplicate `create` event ")
 	}
 }
 
-func (ad ActivityDetails) makeOrUpdateWeeklyWorkoutChallengePost(canMakeNewPost bool) {
+func (ad ActivityDetails) postOrUpdateWeeklyWorkoutChallengePost(canMakeNewPost bool) {
 	dg := getDiscord()
 	defer dg.Close()
 
@@ -338,13 +338,13 @@ func (ad ActivityDetails) makeOrUpdateWeeklyWorkoutChallengePost(canMakeNewPost 
 		// regexForLeaderboard := regexp.MustCompile("[*]*Leaderboard[*]* @ post time[\\w|\\W]*`{3}\n{1}")
 		// oldLeaderboard := string(regexForLeaderboard.Find([]byte(postToUpdate.Content)))
 
-		post := ad.buildChallengePost() + ad.makePostIdentifier()
+		post := ad.composeChallengePost() + ad.composePostIdentifier()
 		dg.updatePost(postToUpdate, post)
 	} else if canMakeNewPost {
 		// No post with matching ID found, so make a new post if allowed
 		fmt.Println("Making a new challenge post")
 
-		post := ad.buildChallengePost() + ad.makePostIdentifier()
+		post := ad.composeChallengePost() + ad.composePostIdentifier()
 		dg.post(post)
 	} else {
 		fmt.Println("Old post wasn't found and canMakeNewPost == false. This is likely because Strava sent a duplicate `create` event ")
