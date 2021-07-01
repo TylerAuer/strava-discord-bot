@@ -27,13 +27,13 @@ func getChallengeById(id string) *Challenge {
 		"Odd Quad": {
 			"Odd Quad",
 			"50 burpess for time",
-			"Full body to ground at bottom. Body fully upright for jump. Tracks moving time of activity",
+			"Full body to ground at bottom. Body fully upright for jump. Tracks moving time of activity.",
 			"minTime",
 		},
 		"Pain Server": {
 			"Pain Server",
 			"AMRAP pushups",
-			"Max pushups without taking your full weight off arms. Reps in description",
+			"Max pushups without taking your full weight off arms. Reps in description.",
 			"maxReps",
 		},
 		"Goodrich": {
@@ -52,7 +52,7 @@ func getChallengeById(id string) *Challenge {
 }
 
 // These should be indexed by an ID, that way they can be reused and previous bests can be found
-func getChallengeMondayDate(dateKey string) *Challenge {
+func findChallengeByMondayDate(dateKey string) *Challenge {
 	dateMap := map[string]string{
 		// Dates MUST be for the monday of each week.
 		"July-12-2021": "Poker",
@@ -69,14 +69,43 @@ func getChallengeMondayDate(dateKey string) *Challenge {
 	return nil
 }
 
+func formatDateKeyWithOffsetToPacifc(t time.Time) string {
+	// Our group considers day changes to occur at midnight pacific. However, most dates are stored
+	// in UTC. So, when determining the date key for activity lookups, this should offset to the LA
+	// time zone.
+	pst, err := time.LoadLocation("America/Los_Angeles")
+	if err != nil {
+		panic(err)
+	}
+	pstTime := t.In(pst)
+	return fmt.Sprint(pstTime.Month()) + "-" + fmt.Sprint(pstTime.Day()) + "-" + fmt.Sprint(pstTime.Year())
+}
+
 func getMonthDayYearStringOfCurrentWeek() string {
 	now.WeekStartDay = time.Monday
 	monday := now.BeginningOfWeek()
-	return fmt.Sprint(monday.Month()) + "-" + fmt.Sprint(monday.Day()) + "-" + fmt.Sprint(monday.Year())
+	return formatDateKeyWithOffsetToPacifc(monday)
+}
+
+func getMondayMonthDayYearStringOfDate(t time.Time) string {
+	now.WeekStartDay = time.Monday
+	monday := now.With(t).BeginningOfWeek()
+	return formatDateKeyWithOffsetToPacifc(monday)
 }
 
 // Should not be used in posts because if an old post is updated it might access the wrong challenge
-func getChallengeActiveToday() *Challenge {
+func getCurrentlyActiveToday() *Challenge {
 	dateKey := getMonthDayYearStringOfCurrentWeek()
+	return findChallengeByMondayDate(dateKey)
+}
+
 	return getChallengeMondayDate(dateKey)
+
+func announceWeeklyChallenge() {
+	d := getDiscord()
+	defer d.Close()
+
+	c := getCurrentlyActiveToday()
+	msg := c.composeChallengeAnnouncement()
+	d.post(msg)
 }

@@ -170,14 +170,14 @@ func handleLocal() {
 	// }`)
 
 	// Tyler's wwc example
-	handleStravaWebhook(`{
-	  "aspect_type": "create",
-	  "event_time": 1624338393,
-	  "object_id": 5509090759,
-	  "object_type": "activity",
-	  "owner_id": 20419783,
-	  "subscription_id": 188592,
-	  "updates": {}
-	}`)
+	// handleStravaWebhook(`{
+	//   "aspect_type": "create",
+	//   "event_time": 1624338393,
+	//   "object_id": 5509090759,
+	//   "object_type": "activity",
+	//   "owner_id": 20419783,
+	//   "subscription_id": 188592,
+	//   "updates": {}
+	// }`)
 
 }

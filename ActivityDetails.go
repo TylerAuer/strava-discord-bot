@@ -225,7 +225,7 @@ func (ad ActivityDetails) buildActivityPost() string {
 
 func (ad ActivityDetails) buildChallengePost() string {
 	k := ad.krafteeWhoRecordedActivity()
-	challenge := getChallengeActiveToday()
+	challenge := getCurrentlyActiveToday()
 
 	var score string
 
