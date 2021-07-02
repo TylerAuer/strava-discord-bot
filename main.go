@@ -24,6 +24,7 @@ var krafteesByStravaId = map[string]Kraftee{
 	"65753450": {"Zach", "Grossman", "ZACH", "65753450", "", 0},
 	"65626950": {"Alex", "Hogan", "HOGAN", "65626950", "", 0},
 	"80341128": {"Conor", "Quinn", "CONOR", "80341128", "", 0},
+	"83956179": {"Owen", "Simpson", "FICUS", "83956179", "", 0},
 	// "60682578": {"Tom", "Samuelson", "TOM", "60682578", "", 0},
 	// "82860978": {"Andre", "Martinez", "DRE", "82860978", "", 0},
 }
@@ -37,7 +38,6 @@ var emojis = map[string]string{
 	"weighttraining": "🏋️💪🏋️💪",
 	"fallback":       "🥵🥵🥵",
 }
-
 var medal = map[int]string{
 	0: "🥇",
 	1: "🥈",
