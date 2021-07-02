@@ -67,15 +67,13 @@ func main() {
 	}
 }
 
-func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	fmt.Println("Invoking handleRequest")
-
+func handleLambda(ctx context.Context, event events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	defaultResponse := events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Body:       "Not much to see here!",
 	}
 
-	httpMethod := req.HTTPMethod
+	httpMethod := event.HTTPMethod
 	fmt.Println("HTTP Method: " + httpMethod)
 
 	// Each purpose is a different AWS Lambda function running this container
@@ -87,10 +85,10 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 		switch httpMethod {
 		case "GET":
 			fmt.Println("Handling GET request which should be subscription validation from Strava")
-			return handleStravaSubscriptionChallenge(req.QueryStringParameters)
+			return handleStravaSubscriptionChallenge(event.QueryStringParameters)
 		case "POST":
 			fmt.Println("Handling POST request which should be webhook event from Strava")
-			handleStravaWebhook(req.Body)
+			handleStravaWebhook(event.Body)
 		}
 	} else if purpose == "WEEKLY_UPDATES" {
 		fmt.Println("Running the weekly update post")
@@ -103,7 +101,7 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 		handleJessicaDailyUpdate()
 	} else if purpose == "CRON" {
 		fmt.Println("Handling a cron task")
-		handleCron(req.Body).executeCronJobBasedOnType()
+		handleCron(event.Body).executeCronJobBasedOnType()
 	}
 
 	return defaultResponse, nil
@@ -182,5 +180,8 @@ func handleLocal() {
 	//   "subscription_id": 188592,
 	//   "updates": {}
 	// }`)
+
+	// CRON
+	handleCron(`{"type": "jessica_daily_update"}`).executeCronJobBasedOnType()
 
 }
