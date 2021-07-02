@@ -101,6 +101,9 @@ func handleLambda(ctx context.Context, req events.APIGatewayProxyRequest) (event
 	} else if purpose == "JESSICA_DAILY_UPDATES" {
 		fmt.Println("Sending Jessica a daily update")
 		handleJessicaDailyUpdate()
+	} else if purpose == "CRON" {
+		fmt.Println("Handling a cron task")
+		handleCron(req.Body).executeCronJobBasedOnType()
 	}
 
 	return defaultResponse, nil
