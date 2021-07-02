@@ -17,7 +17,7 @@ func handleJessicaDailyUpdate() {
 	goal := 100.0
 
 	today := time.Now().Day()
-	daysLeftInMonth := now.EndOfMonth().Day() - today
+	daysLeftInMonth := now.EndOfMonth().Day() - today + 1
 
 	jessicaActiviesSince := getActivitiesSince(now.BeginningOfMonth().Unix(), jessica)
 
