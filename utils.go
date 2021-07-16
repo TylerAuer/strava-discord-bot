@@ -6,6 +6,7 @@ import (
 	"log"
 	"strconv"
 	"time"
+	"unicode/utf8"
 )
 
 func metersToMiles(m float64) float64 {
@@ -131,4 +132,32 @@ func padRight(s string, length int) string {
 		}
 		paddedString = paddedString + " "
 	}
+}
+
+type TwoDimensionalTableData struct {
+	left, right string
+}
+
+func composeTwoColumnTable(data []TwoDimensionalTableData) string {
+	padding := "  "
+
+	// Get the maximum lenghts of the left and right columns
+	var maxLeft, maxRight int
+	for _, d := range data {
+		leftLen := utf8.RuneCountInString(d.left)
+		rightLen := utf8.RuneCountInString(d.right)
+		if leftLen > maxLeft {
+			maxLeft = leftLen
+		}
+		if rightLen > maxRight {
+			maxRight = rightLen
+		}
+	}
+
+	// Compose the table so the left column is aligned left and the right column is aligned right
+	var table string
+	for _, d := range data {
+		table += padRight(d.left, maxLeft) + padding + padLeft(d.right, maxRight) + "\n"
+	}
+	return table
 }
