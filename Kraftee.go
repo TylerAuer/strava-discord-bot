@@ -17,7 +17,7 @@ func (k Kraftee) GetStravaAccessToken() string {
 	if k.StravaAccessToken != "" {
 		return k.StravaAccessToken
 	} else {
-		token := getStravaAccessToken(k)
+		token := fetchStravaAccessToken(k)
 		k.StravaAccessToken = token
 		return token
 	}

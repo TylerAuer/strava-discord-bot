@@ -256,7 +256,7 @@ func (ad ActivityDetails) composeLeaderboardStatusPost() string {
 	k := ad.krafteeWhoRecordedActivity()
 
 	startOfWeek := getStartOfWeekInUnixTime()
-	lb, _ := getAllKrafteeStatsSince(startOfWeek)
+	lb, _ := fetchAllKrafteeStatsSince(startOfWeek)
 
 	postString := "**Leaderboard** @ post time\n"
 	postString += "```\n"
