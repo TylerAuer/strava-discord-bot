@@ -265,7 +265,7 @@ func (ad ActivityDetails) composeLeaderboardStatusPost() string {
 	if ad.Type == "Run" {
 		// postString += lb.printRunDistanceUpToKraftee(&k)
 		// postString += lb.composeRunDurationUpToKraftee(&k)
-		postString += lb.composeCombinedRunAndWalkLeaderboard(&k)
+		postString += lb.composeCombinedRunLeaderboard(&k)
 	}
 
 	if ad.Type == "Ride" {
