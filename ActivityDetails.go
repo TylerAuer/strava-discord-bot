@@ -256,25 +256,26 @@ func (ad ActivityDetails) composeLeaderboardStatusPost() string {
 	k := ad.krafteeWhoRecordedActivity()
 
 	startOfWeek := getStartOfWeekInUnixTime()
-	leaderboard, _ := getAllKrafteeStatsSince(startOfWeek)
+	lb, _ := getAllKrafteeStatsSince(startOfWeek)
 
 	postString := "**Leaderboard** @ post time\n"
 	postString += "```\n"
-	postString += leaderboard.composeActivityCountAndTimeCombinedOnActivityUpToKraftee(&k)
+	postString += lb.composeActivityCountAndTimeCombinedOnActivity(&k)
 
 	if ad.Type == "Run" {
-		postString += leaderboard.printRunDistanceUpToKraftee(&k)
-		postString += leaderboard.composeRunDurationUpToKraftee(&k)
+		// postString += lb.printRunDistanceUpToKraftee(&k)
+		// postString += lb.composeRunDurationUpToKraftee(&k)
+		postString += lb.composeRunDistanceAndDurationCombinedOnActivity(&k)
 	}
 
 	if ad.Type == "Ride" {
-		postString += leaderboard.composeRideDistanceUpToKraftee(&k)
-		postString += leaderboard.composeRideDurationUpToKraftee(&k)
+		postString += lb.composeRideDistanceUpToKraftee(&k)
+		postString += lb.composeRideDurationUpToKraftee(&k)
 	}
 
 	if ad.Type == "Walk" || ad.Type == "Hike" {
-		postString += leaderboard.composeWalkOrHikeDistanceUpToKraftee(&k)
-		postString += leaderboard.composeWalkOrHikeDurationUpToKraftee(&k)
+		postString += lb.composeWalkOrHikeDistanceUpToKraftee(&k)
+		postString += lb.composeWalkOrHikeDurationUpToKraftee(&k)
 	}
 	postString += "```"
 

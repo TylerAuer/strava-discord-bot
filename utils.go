@@ -134,7 +134,7 @@ type TwoColumnTableRow struct {
 type TwoColumnTable []TwoColumnTableRow
 
 func (data TwoColumnTable) composeTwoColumnTable() string {
-	padding := "  "
+	padding := "    "
 
 	// Get the maximum lenghts of the left and right columns
 	var maxLeft, maxRight int
@@ -154,6 +154,56 @@ func (data TwoColumnTable) composeTwoColumnTable() string {
 	for _, d := range data {
 		tableString += padRight(d.left, maxLeft) + padding + padLeft(d.right, maxRight) + "\n"
 	}
-	fmt.Println(tableString)
 	return tableString
+}
+
+type TableRow []string
+type Table []TableRow
+
+// Builds a left-aligned table
+func (t Table) composeLeftAlignedTable(gutterSize int) string {
+	var gutter string
+	for i := 0; i < gutterSize; i++ {
+		gutter += " "
+	}
+
+	// Check that all table rows are the same length
+	for _, row := range t {
+		if len(row) != len(t[0]) {
+			log.Fatalf("Table rows are not of equal length")
+		}
+	}
+
+	// Get the maximum length of the columns
+	var colMaxLengths []int
+	for range t {
+		// Populate colMaxLengths with the 0s to avoid out-of-bounds errors
+		colMaxLengths = append(colMaxLengths, 0)
+	}
+	for _, row := range t {
+		for j, cell := range row {
+			cellSize := uniseg.GraphemeClusterCount(cell)
+			if cellSize > colMaxLengths[j] {
+				colMaxLengths[j] = cellSize
+			}
+		}
+	}
+
+	// Compose the tableString so the columns are aligned left
+	var table string
+	for _, row := range t {
+		colCount := len(row)
+		for j, cell := range row {
+			if colCount-1 == j {
+				// Last column
+				table += cell
+			} else {
+				// Not the last column (pad and add gutter)
+				table += padRight(cell, colMaxLengths[j]) + gutter
+			}
+		}
+		table += "\n"
+	}
+
+	return table
 }

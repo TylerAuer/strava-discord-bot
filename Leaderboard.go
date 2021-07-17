@@ -227,11 +227,10 @@ func (l Leaderboard) composeWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) composeActivityCountAndTimeCombinedOnActivityUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeActivityCountAndTimeCombinedOnActivity(k *Kraftee) string {
 	l.sortByActivityDuration(k) // Sort
-	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	var str string
-	str += "## Activities ##\n" // Header
+	str += "## Total Time ##\n" // Header
 	currentRank := 0            // Matches the index of the list until multiple Kraftees are tied
 	currentStat := 0            // Holds person in front's stat to check for ties
 	var data TwoColumnTable
@@ -247,15 +246,39 @@ func (l Leaderboard) composeActivityCountAndTimeCombinedOnActivityUpToKraftee(k 
 
 		var d TwoColumnTableRow
 		d.left = medal[currentRank] + " " + kraftee.Name
-		d.right = fmt.Sprint(kraftee.AllCount) + " in " + secToHMS(kraftee.AllMovingSeconds)
+		d.right = secToHMS(kraftee.AllMovingSeconds) + " (" + fmt.Sprint(kraftee.AllCount) + ")"
 
 		data = append(data, d)
-		if i == rank {
-			break // Stop when reaching the given kraftee
-		}
 	}
 	str += data.composeTwoColumnTable()
-	fmt.Println(data)
+	str += "\n"
+	return str
+}
+
+func (l Leaderboard) composeRunDistanceAndDurationCombinedOnActivity(k *Kraftee) string {
+	l.sortByRunTime(k) // Sort
+	var str string
+	str += "### Run Leaderboard " + emojis["run"] + "\n" // Header
+	currentRank := 0                                     // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0                                     // Holds person in front's stat to check for ties
+	var data TwoColumnTable
+	for i, kraftee := range l {
+		if kraftee.RunMovingSeconds <= 0 {
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
+		}
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.AllCount {
+			currentRank = i
+			currentStat = kraftee.AllCount
+		}
+
+		var d TwoColumnTableRow
+		d.left = medal[currentRank] + " " + kraftee.Name
+		d.right = fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters)) + " mi in " + secToHMS(kraftee.RunMovingSeconds)
+
+		data = append(data, d)
+	}
+	str += data.composeTwoColumnTable()
 	str += "\n"
 	return str
 }

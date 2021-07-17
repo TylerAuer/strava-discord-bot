@@ -13,7 +13,7 @@ func TestMetersToMiles(t *testing.T) {
 }
 
 func TestComposeTwoColumnTable(t *testing.T) {
-	padding := "  "
+	padding := "    "
 
 	var expected string
 	expected += "Left         " + padding + "         Right\n"
@@ -89,5 +89,19 @@ func TestPadRight(t *testing.T) {
 	got = padRight("😶‍🌫️ Tyler", 10)
 	if got != expect {
 		t.Errorf("Expected \n%s, got \n%s", expect, got)
+	}
+}
+
+func TestTableCompose(t *testing.T) {
+	table := Table{
+		TableRow{"1 Tyler", "4 mi", "2:12:03"},
+		TableRow{"2 Jim", "4.7 mi", "12:03"},
+		TableRow{"3 Jonathan", "14.7 mi", "2:03"},
+		TableRow{"4 K", "1 mi", "1:22:03"},
+	}
+	expected := "1 Tyler      4 mi      2:12:03\n2 Jim        4.7 mi    12:03\n3 Jonathan   14.7 mi   2:03\n4 K          1 mi      1:22:03\n"
+	got := table.composeLeftAlignedTable(3)
+	if got != expected {
+		t.Errorf("Expected:\n%s, got:\n%s", expected, got)
 	}
 }
