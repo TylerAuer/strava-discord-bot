@@ -17,16 +17,62 @@ func TestComposeTwoColumnTable(t *testing.T) {
 
 	var expected string
 	expected += "Left         " + padding + "         Right\n"
-	expected += "LeftButLonger" + padding + "         Right\n"
-	expected += "Left         " + padding + "RightButLonger\n"
+	expected += "LeftButLonger" + padding + "  Right medium\n"
+	expected += "LeftButLong  " + padding + "RightButLonger\n"
 
-	d := []TwoDimensionalTableData{
+	data := TwoDimensionalTable{
 		{left: "Left", right: "Right"},
-		{left: "LeftButLonger", right: "Right"},
-		{left: "Left", right: "RightButLonger"},
+		{left: "LeftButLonger", right: "Right medium"},
+		{left: "LeftButLong", right: "RightButLonger"},
 	}
-	got := composeTwoColumnTable(d)
+	got := data.composeTwoColumnTable()
 	if got != expected {
-		t.Errorf("Expected %s, got %s", expected, got)
+		t.Errorf("Expected:\n\n%s, got:\n\n%s", expected, got)
+	}
+}
+
+func TestPadLeft(t *testing.T) {
+	// Test a string
+	expect := "     Tyler"
+	got := padLeft("Tyler", 10)
+	if got != expect {
+		t.Errorf("Expected %s, got %s", expect, got)
+	}
+
+	// Test a sting that is the same length as the padding
+	expect = "Tyler"
+	got = padLeft("Tyler", 5)
+	if got != expect {
+		t.Errorf("Expected %s, got %s", expect, got)
+	}
+
+	// Test string with emoji
+	expect = "   💩 Tyler"
+	got = padLeft("💩 Tyler", 10)
+	if got != expect {
+		t.Errorf("Expected %s, got %s", expect, got)
+	}
+}
+
+func TestPadRight(t *testing.T) {
+	// Test a string
+	expect := "Tyler     "
+	got := padRight("Tyler", 10)
+	if got != expect {
+		t.Errorf("Expected %s, got %s", expect, got)
+	}
+
+	// Test a sting that is the same length as the padding
+	expect = "Tyler"
+	got = padRight("Tyler", 5)
+	if got != expect {
+		t.Errorf("Expected %s, got %s", expect, got)
+	}
+
+	// Test string with emoji
+	expect = "💩 Tyler   "
+	got = padRight("💩 Tyler", 10)
+	if got != expect {
+		t.Errorf("Expected \n%s|||, got \n%s|||", expect, got)
 	}
 }

@@ -22,14 +22,6 @@ func secondsToHours(s int) float64 {
 }
 
 func secToHMS(s int) string {
-	// floatHours := float64(s) / 60.0 / 60.0
-
-	// intHours := int(floatHours)
-	// floatMins := math.Remainder(floatHours, float64(1)) * 60
-	// intMins := int(floatMins)
-	// intSeconds := int(math.Remainder(floatMins, float64(1)) * 60)
-	// fmt.Println(floatMins)
-
 	secs := s % 60
 	mins := s / 60 % 60
 	hours := s / 60 / 60 % 60
@@ -117,7 +109,7 @@ func contains(s []string, str string) bool {
 func padLeft(s string, length int) string {
 	paddedString := s
 	for {
-		if len(paddedString) >= length {
+		if utf8.RuneCountInString(paddedString) >= length {
 			return paddedString
 		}
 		paddedString = " " + paddedString
@@ -127,7 +119,7 @@ func padLeft(s string, length int) string {
 func padRight(s string, length int) string {
 	paddedString := s
 	for {
-		if len(paddedString) >= length {
+		if utf8.RuneCountInString(paddedString) >= length {
 			return paddedString
 		}
 		paddedString = paddedString + " "
@@ -138,7 +130,9 @@ type TwoDimensionalTableData struct {
 	left, right string
 }
 
-func composeTwoColumnTable(data []TwoDimensionalTableData) string {
+type TwoDimensionalTable []TwoDimensionalTableData
+
+func (data TwoDimensionalTable) composeTwoColumnTable() string {
 	padding := "  "
 
 	// Get the maximum lenghts of the left and right columns
@@ -154,10 +148,11 @@ func composeTwoColumnTable(data []TwoDimensionalTableData) string {
 		}
 	}
 
-	// Compose the table so the left column is aligned left and the right column is aligned right
-	var table string
+	// Compose the tableString so the left column is aligned left and the right column is aligned right
+	var tableString string
 	for _, d := range data {
-		table += padRight(d.left, maxLeft) + padding + padLeft(d.right, maxRight) + "\n"
+		tableString += padRight(d.left, maxLeft) + padding + padLeft(d.right, maxRight) + "\n"
 	}
-	return table
+	fmt.Println(tableString)
+	return tableString
 }

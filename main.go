@@ -127,15 +127,15 @@ func handleLocal() {
 	// 	}`)
 
 	// Tyler
-	// handleStravaWebhook(`{
-	// 	"aspect_type": "create",
-	// 	"event_time": 1619767037,
-	// 	"object_id": 5198828416,
-	// 	"object_type": "activity",
-	// 	"owner_id": 20419783,
-	// 	"subscription_id": 188592,
-	// 	"updates": {}
-	// 	}`)
+	handleStravaWebhook(`{
+		"aspect_type": "create",
+		"event_time": 1619767037,
+		"object_id": 5198828416,
+		"object_type": "activity",
+		"owner_id": 20419783,
+		"subscription_id": 188592,
+		"updates": {}
+		}`)
 
 	// Bryan
 	// 	handleStravaWebhook(`{
@@ -182,6 +182,6 @@ func handleLocal() {
 	// }`)
 
 	// CRON
-	handleCron(`{"type": "jessica_daily_update"}`).executeCronJobBasedOnType()
+	// handleCron(`{"type": "jessica_daily_update"}`).executeCronJobBasedOnType()
 
 }
