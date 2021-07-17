@@ -12,37 +12,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func getActivityDetails(id string, k Kraftee) ActivityDetails {
-	fmt.Println("Getting details of activity with ID: " + id)
-
-	url := "https://www.strava.com/api/v3/activities/" + id
-
-	authHeader := "Bearer " + k.GetStravaAccessToken()
-
-	// Build request; include authHeader
-	req, err := http.NewRequest("GET", url, nil)
-	req.Header.Add("Authorization", authHeader)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	stats := ActivityDetails{}
-
-	err = json.NewDecoder(resp.Body).Decode(&stats)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return stats
-}
-
 type ActivityDetails struct {
 	ResourceState int `json:"resource_state"`
 	Athlete       struct {
@@ -88,6 +57,37 @@ type ActivityDetails struct {
 		Primary interface{} `json:"primary"`
 		Count   int         `json:"count"`
 	} `json:"photos"`
+}
+
+func getActivityDetails(id string, k Kraftee) ActivityDetails {
+	fmt.Println("Getting details of activity with ID: " + id)
+
+	url := "https://www.strava.com/api/v3/activities/" + id
+
+	authHeader := "Bearer " + k.GetStravaAccessToken()
+
+	// Build request; include authHeader
+	req, err := http.NewRequest("GET", url, nil)
+	req.Header.Add("Authorization", authHeader)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	stats := ActivityDetails{}
+
+	err = json.NewDecoder(resp.Body).Decode(&stats)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return stats
 }
 
 func (ad ActivityDetails) krafteeWhoRecordedActivity() Kraftee {
@@ -260,22 +260,24 @@ func (ad ActivityDetails) composeLeaderboardStatusPost() string {
 
 	postString := "**Leaderboard** @ post time\n"
 	postString += "```\n"
-	postString += lb.composeActivityCountAndTimeCombinedOnActivity(&k)
+	postString += lb.composeCombinedActivityLeaderboard(&k)
 
 	if ad.Type == "Run" {
 		// postString += lb.printRunDistanceUpToKraftee(&k)
 		// postString += lb.composeRunDurationUpToKraftee(&k)
-		postString += lb.composeRunDistanceAndDurationCombinedOnActivity(&k)
+		postString += lb.composeCombinedRunAndWalkLeaderboard(&k)
 	}
 
 	if ad.Type == "Ride" {
-		postString += lb.composeRideDistanceUpToKraftee(&k)
-		postString += lb.composeRideDurationUpToKraftee(&k)
+		// postString += lb.composeRideDistanceUpToKraftee(&k)
+		// postString += lb.composeRideDurationUpToKraftee(&k)
+		postString += lb.composeCombinedRideLeaderboard(&k)
 	}
 
 	if ad.Type == "Walk" || ad.Type == "Hike" {
-		postString += lb.composeWalkOrHikeDistanceUpToKraftee(&k)
-		postString += lb.composeWalkOrHikeDurationUpToKraftee(&k)
+		// postString += lb.composeWalkOrHikeDistanceUpToKraftee(&k)
+		// postString += lb.composeWalkOrHikeDurationUpToKraftee(&k)
+		postString += lb.composeCombinedRunAndWalkLeaderboard(&k)
 	}
 	postString += "```"
 

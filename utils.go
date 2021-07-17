@@ -160,8 +160,9 @@ func (data TwoColumnTable) composeTwoColumnTable() string {
 type TableRow []string
 type Table []TableRow
 
-// Builds a left-aligned table
-func (t Table) composeLeftAlignedTable(gutterSize int) string {
+// Builds a custom-aligned table where
+// the first column is left aligned and the rest are right aligned
+func (t Table) composeAlignedTable(gutterSize int) string {
 	var gutter string
 	for i := 0; i < gutterSize; i++ {
 		gutter += " "
@@ -189,17 +190,20 @@ func (t Table) composeLeftAlignedTable(gutterSize int) string {
 		}
 	}
 
-	// Compose the tableString so the columns are aligned left
+	// Compose the tableString so the first column is left-aligned and the rest are right aligned
 	var table string
 	for _, row := range t {
 		colCount := len(row)
 		for j, cell := range row {
-			if colCount-1 == j {
-				// Last column
-				table += cell
-			} else {
-				// Not the last column (pad and add gutter)
+			if j == 0 {
+				// First column
 				table += padRight(cell, colMaxLengths[j]) + gutter
+			} else if j == colCount-1 {
+				// Last column
+				table += padLeft(cell, colMaxLengths[j])
+			} else {
+				// Not the first or the last column (pad and add gutter)
+				table += padLeft(cell, colMaxLengths[j]) + gutter
 			}
 		}
 		table += "\n"

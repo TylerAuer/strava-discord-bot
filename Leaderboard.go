@@ -11,7 +11,7 @@ type Leaderboard []Stats
 Methods that generate strings summarizing the leaderboard through the passed Kraftee (that kraftee)
 loses ties.
 */
-func (l Leaderboard) printActivityCountUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeActivityCountUpToKraftee(k *Kraftee) string {
 	l.sortByActivityCount(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := "## Activities ##\n" // Header
@@ -38,7 +38,7 @@ func (l Leaderboard) printActivityCountUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) printDurationUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeDurationUpToKraftee(k *Kraftee) string {
 	l.sortByActivityDuration(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := "## Time ##\n" // Header
@@ -65,7 +65,7 @@ func (l Leaderboard) printDurationUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) printRunDistanceUpToKraftee(k *Kraftee) string {
+func (l Leaderboard) composeRunDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByRunDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
 	str := emojis["run"] + " Distance\n" // Header
@@ -227,60 +227,74 @@ func (l Leaderboard) composeWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
 	return str
 }
 
-func (l Leaderboard) composeActivityCountAndTimeCombinedOnActivity(k *Kraftee) string {
-	l.sortByActivityDuration(k) // Sort
-	var str string
-	str += "## Total Time ##\n" // Header
-	currentRank := 0            // Matches the index of the list until multiple Kraftees are tied
-	currentStat := 0            // Holds person in front's stat to check for ties
-	var data TwoColumnTable
+func (l Leaderboard) composeCombinedActivityLeaderboard(k *Kraftee) string {
+	l.sortByActivityDuration(k)
+	var table Table
 	for i, kraftee := range l {
-		if kraftee.AllCount <= 0 {
-			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
+		if kraftee.AllMovingSeconds <= 0 {
+			break
 		}
-		// Track stat of person in front to check for ties and adjust rank accordingly
-		if currentStat != kraftee.AllCount {
-			currentRank = i
-			currentStat = kraftee.AllCount
-		}
+		name := medal[i] + " " + kraftee.Name
+		time := secToHMS(kraftee.AllMovingSeconds)
+		count := fmt.Sprint(kraftee.AllCount) + "x"
 
-		var d TwoColumnTableRow
-		d.left = medal[currentRank] + " " + kraftee.Name
-		d.right = secToHMS(kraftee.AllMovingSeconds) + " (" + fmt.Sprint(kraftee.AllCount) + ")"
-
-		data = append(data, d)
+		table = append(table, TableRow{name, time, count})
 	}
-	str += data.composeTwoColumnTable()
-	str += "\n"
-	return str
+	return "### All Activities ###\n" + table.composeAlignedTable(3) + "\n"
 }
 
-func (l Leaderboard) composeRunDistanceAndDurationCombinedOnActivity(k *Kraftee) string {
-	l.sortByRunTime(k) // Sort
-	var str string
-	str += "### Run Leaderboard " + emojis["run"] + "\n" // Header
-	currentRank := 0                                     // Matches the index of the list until multiple Kraftees are tied
-	currentStat := 0                                     // Holds person in front's stat to check for ties
-	var data TwoColumnTable
+func (l Leaderboard) composeCombinedRunLeaderboard(k *Kraftee) string {
+	l.sortByRunTime(k)
+	var table Table
 	for i, kraftee := range l {
 		if kraftee.RunMovingSeconds <= 0 {
-			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
+			break
 		}
-		// Track stat of person in front to check for ties and adjust rank accordingly
-		if currentStat != kraftee.AllCount {
-			currentRank = i
-			currentStat = kraftee.AllCount
-		}
+		name := medal[i] + " " + kraftee.Name
+		distance := fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters)) + " mi"
+		time := secToHMS(kraftee.RunMovingSeconds)
+		elev := "+" + fmt.Sprintf("%.0f", metersToFeet(kraftee.RunElevationGain)) + "'"
 
-		var d TwoColumnTableRow
-		d.left = medal[currentRank] + " " + kraftee.Name
-		d.right = fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters)) + " mi in " + secToHMS(kraftee.RunMovingSeconds)
-
-		data = append(data, d)
+		table = append(table, TableRow{name, distance, time, elev})
 	}
-	str += data.composeTwoColumnTable()
-	str += "\n"
-	return str
+	title := emojis["run"] + " Run Leaderboard" + emojis["run"]
+	return title + table.composeAlignedTable(3) + "\n"
+}
+
+func (l Leaderboard) composeCombinedRideLeaderboard(k *Kraftee) string {
+	l.sortByRideTime(k)
+	var table Table
+	for i, kraftee := range l {
+		if kraftee.RideMovingSeconds <= 0 {
+			break
+		}
+		name := medal[i] + " " + kraftee.Name
+		distance := fmt.Sprintf("%.1f", metersToMiles(kraftee.RideMeters)) + " mi"
+		time := secToHMS(kraftee.RideMovingSeconds)
+		elev := "+" + fmt.Sprintf("%.0f", metersToFeet(kraftee.RideElevationGain)) + "'"
+
+		table = append(table, TableRow{name, distance, time, elev})
+	}
+	title := emojis["ride"] + " Ride Leaderboard" + emojis["ride"]
+	return title + table.composeAlignedTable(3) + "\n"
+}
+
+func (l Leaderboard) composeCombinedRunAndWalkLeaderboard(k *Kraftee) string {
+	l.sortByWalkOrHikeTime(k)
+	var table Table
+	for i, kraftee := range l {
+		if kraftee.WalkOrHikeMovingSeconds <= 0 {
+			break
+		}
+		name := medal[i] + " " + kraftee.Name
+		distance := fmt.Sprintf("%.1f", metersToMiles(kraftee.WalkOrHikeMeters)) + " mi"
+		time := secToHMS(kraftee.WalkOrHikeMovingSeconds)
+		elev := "+" + fmt.Sprintf("%.0f", metersToFeet(kraftee.WalkOrHikeElevationGain)) + "'"
+
+		table = append(table, TableRow{name, distance, time, elev})
+	}
+	title := emojis["walk"] + " Walk & Hike Leaderboard" + emojis["hike"]
+	return title + table.composeAlignedTable(3) + "\n"
 }
 
 /*
@@ -386,9 +400,9 @@ func (l Leaderboard) findRankOfKrafteeOrLastIfAbsent(k *Kraftee) int {
 func (l Leaderboard) composeLeaderboardPost() string {
 	lbPost := "Leaderboard\n"
 	lbPost += "```"
-	lbPost += l.printDurationUpToKraftee(nil)
-	lbPost += l.printActivityCountUpToKraftee(nil)
-	lbPost += l.printRunDistanceUpToKraftee(nil)
+	lbPost += l.composeDurationUpToKraftee(nil)
+	lbPost += l.composeActivityCountUpToKraftee(nil)
+	lbPost += l.composeRunDistanceUpToKraftee(nil)
 	lbPost += l.composeRunDurationUpToKraftee(nil)
 	lbPost += l.composeRideDistanceUpToKraftee(nil)
 	lbPost += l.composeRideDurationUpToKraftee(nil)
