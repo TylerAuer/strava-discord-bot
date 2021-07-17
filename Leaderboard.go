@@ -227,6 +227,38 @@ func (l Leaderboard) composeWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
 	return str
 }
 
+func (l Leaderboard) composeActivityCountAndTimeCombinedOnActivityUpToKraftee(k *Kraftee) string {
+	l.sortByActivityDuration(k) // Sort
+	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
+	var str string
+	str += "## Activities ##\n" // Header
+	currentRank := 0            // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0            // Holds person in front's stat to check for ties
+	var data TwoDimensionalTable
+	for i, kraftee := range l {
+		if kraftee.AllCount <= 0 {
+			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
+		}
+		// Track stat of person in front to check for ties and adjust rank accordingly
+		if currentStat != kraftee.AllCount {
+			currentRank = i
+			currentStat = kraftee.AllCount
+		}
+		var d TwoDimensionalTableData
+		d.left = medal[currentRank] + " " + kraftee.Name
+		d.right = fmt.Sprint(kraftee.AllCount) + " in " + secToHMS(kraftee.AllMovingSeconds)
+
+		data = append(data, d)
+		if i == rank {
+			break // Stop when reaching the given kraftee
+		}
+	}
+	str += data.composeTwoColumnTable()
+	fmt.Println(data)
+	str += "\n"
+	return str
+}
+
 /*
 These methods sort the leaderboard. The passed Kraftee loses all ties.
 */

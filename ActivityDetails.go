@@ -260,8 +260,7 @@ func (ad ActivityDetails) composeLeaderboardStatusPost() string {
 
 	postString := "**Leaderboard** @ post time\n"
 	postString += "```\n"
-	postString += leaderboard.printActivityCountUpToKraftee(&k)
-	postString += leaderboard.printDurationUpToKraftee(&k)
+	postString += leaderboard.composeActivityCountAndTimeCombinedOnActivityUpToKraftee(&k)
 
 	if ad.Type == "Run" {
 		postString += leaderboard.printRunDistanceUpToKraftee(&k)
