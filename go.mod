@@ -9,4 +9,5 @@ require (
 	github.com/dustin/go-humanize v1.0.0
 	github.com/jinzhu/now v1.1.2
 	github.com/joho/godotenv v1.3.0
+	github.com/rivo/uniseg v0.2.0
 )

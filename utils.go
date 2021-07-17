@@ -6,7 +6,8 @@ import (
 	"log"
 	"strconv"
 	"time"
-	"unicode/utf8"
+
+	"github.com/rivo/uniseg"
 )
 
 func metersToMiles(m float64) float64 {
@@ -109,7 +110,7 @@ func contains(s []string, str string) bool {
 func padLeft(s string, length int) string {
 	paddedString := s
 	for {
-		if utf8.RuneCountInString(paddedString) >= length {
+		if uniseg.GraphemeClusterCount(paddedString) >= length {
 			return paddedString
 		}
 		paddedString = " " + paddedString
@@ -119,27 +120,27 @@ func padLeft(s string, length int) string {
 func padRight(s string, length int) string {
 	paddedString := s
 	for {
-		if utf8.RuneCountInString(paddedString) >= length {
+		if uniseg.GraphemeClusterCount(paddedString) >= length {
 			return paddedString
 		}
 		paddedString = paddedString + " "
 	}
 }
 
-type TwoDimensionalTableData struct {
+type TwoColumnTableRow struct {
 	left, right string
 }
 
-type TwoDimensionalTable []TwoDimensionalTableData
+type TwoColumnTable []TwoColumnTableRow
 
-func (data TwoDimensionalTable) composeTwoColumnTable() string {
+func (data TwoColumnTable) composeTwoColumnTable() string {
 	padding := "  "
 
 	// Get the maximum lenghts of the left and right columns
 	var maxLeft, maxRight int
 	for _, d := range data {
-		leftLen := utf8.RuneCountInString(d.left)
-		rightLen := utf8.RuneCountInString(d.right)
+		leftLen := uniseg.GraphemeClusterCount(d.left)
+		rightLen := uniseg.GraphemeClusterCount(d.right)
 		if leftLen > maxLeft {
 			maxLeft = leftLen
 		}

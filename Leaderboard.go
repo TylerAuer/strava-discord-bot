@@ -234,7 +234,7 @@ func (l Leaderboard) composeActivityCountAndTimeCombinedOnActivityUpToKraftee(k 
 	str += "## Activities ##\n" // Header
 	currentRank := 0            // Matches the index of the list until multiple Kraftees are tied
 	currentStat := 0            // Holds person in front's stat to check for ties
-	var data TwoDimensionalTable
+	var data TwoColumnTable
 	for i, kraftee := range l {
 		if kraftee.AllCount <= 0 {
 			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
@@ -244,7 +244,8 @@ func (l Leaderboard) composeActivityCountAndTimeCombinedOnActivityUpToKraftee(k 
 			currentRank = i
 			currentStat = kraftee.AllCount
 		}
-		var d TwoDimensionalTableData
+
+		var d TwoColumnTableRow
 		d.left = medal[currentRank] + " " + kraftee.Name
 		d.right = fmt.Sprint(kraftee.AllCount) + " in " + secToHMS(kraftee.AllMovingSeconds)
 

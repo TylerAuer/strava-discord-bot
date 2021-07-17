@@ -20,7 +20,7 @@ func TestComposeTwoColumnTable(t *testing.T) {
 	expected += "LeftButLonger" + padding + "  Right medium\n"
 	expected += "LeftButLong  " + padding + "RightButLonger\n"
 
-	data := TwoDimensionalTable{
+	data := TwoColumnTable{
 		{left: "Left", right: "Right"},
 		{left: "LeftButLonger", right: "Right medium"},
 		{left: "LeftButLong", right: "RightButLonger"},
@@ -52,6 +52,14 @@ func TestPadLeft(t *testing.T) {
 	if got != expect {
 		t.Errorf("Expected %s, got %s", expect, got)
 	}
+
+	// Test with multi emoji emoji
+	expect = "   😶‍🌫️"
+	got = padLeft("😶‍🌫️", 4)
+	if got != expect {
+		t.Errorf("Expected %s, got %s", expect, got)
+	}
+
 }
 
 func TestPadRight(t *testing.T) {
@@ -73,6 +81,13 @@ func TestPadRight(t *testing.T) {
 	expect = "💩 Tyler   "
 	got = padRight("💩 Tyler", 10)
 	if got != expect {
-		t.Errorf("Expected \n%s|||, got \n%s|||", expect, got)
+		t.Errorf("Expected \n%s, got \n%s", expect, got)
+	}
+
+	// Test string with multi emoji emoji
+	expect = "😶‍🌫️ Tyler   "
+	got = padRight("😶‍🌫️ Tyler", 10)
+	if got != expect {
+		t.Errorf("Expected \n%s, got \n%s", expect, got)
 	}
 }
