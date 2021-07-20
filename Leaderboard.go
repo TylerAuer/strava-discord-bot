@@ -257,7 +257,7 @@ func (l Leaderboard) composeCombinedRunLeaderboard(k *Kraftee) string {
 
 		table = append(table, TableRow{name, distance, time, elev})
 	}
-	title := emojis["run"] + " Run Leaderboard" + emojis["run"] + "\n"
+	title := emojis["run"] + " Run Leaderboard " + emojis["run"] + "\n"
 	return title + table.composeAlignedTable(3) + "\n"
 }
 
@@ -275,7 +275,7 @@ func (l Leaderboard) composeCombinedRideLeaderboard(k *Kraftee) string {
 
 		table = append(table, TableRow{name, distance, time, elev})
 	}
-	title := emojis["ride"] + " Ride Leaderboard" + emojis["ride"] + "\n"
+	title := emojis["ride"] + " Ride Leaderboard " + emojis["ride"] + "\n"
 	return title + table.composeAlignedTable(3) + "\n"
 }
 
@@ -293,7 +293,7 @@ func (l Leaderboard) composeCombinedWalkAndHikeLeaderboard(k *Kraftee) string {
 
 		table = append(table, TableRow{name, distance, time, elev})
 	}
-	title := emojis["walk"] + " Walk & Hike Leaderboard" + emojis["hike"] + "\n"
+	title := emojis["walk"] + " Walk & Hike Leaderboard " + emojis["hike"] + "\n"
 	return title + table.composeAlignedTable(3) + "\n"
 }
 
