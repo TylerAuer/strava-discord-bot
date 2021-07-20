@@ -164,28 +164,28 @@ type Table []TableRow
 // the first column is left aligned and the rest are right aligned
 func (t Table) composeAlignedTable(gutterSize int) string {
 	var gutter string
-	for i := 0; i < gutterSize; i++ {
+	for i := 0; i <= gutterSize; i++ {
 		gutter += " "
 	}
 
 	// Check that all table rows are the same length
 	for _, row := range t {
 		if len(row) != len(t[0]) {
-			log.Fatalf("Table rows are not of equal length")
+			log.Fatal("Table rows are not of equal length")
 		}
 	}
 
 	// Get the maximum length of the columns
 	var colMaxLengths []int
-	for range t {
+	for range t[0] {
 		// Populate colMaxLengths with the 0s to avoid out-of-bounds errors
 		colMaxLengths = append(colMaxLengths, 0)
 	}
 	for _, row := range t {
-		for j, cell := range row {
-			cellSize := uniseg.GraphemeClusterCount(cell)
-			if cellSize > colMaxLengths[j] {
-				colMaxLengths[j] = cellSize
+		for colIndex, cellContents := range row {
+			cellLength := uniseg.GraphemeClusterCount(cellContents)
+			if cellLength > colMaxLengths[colIndex] {
+				colMaxLengths[colIndex] = cellLength
 			}
 		}
 	}

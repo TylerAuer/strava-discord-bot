@@ -277,7 +277,7 @@ func (ad ActivityDetails) composeLeaderboardStatusPost() string {
 	if ad.Type == "Walk" || ad.Type == "Hike" {
 		// postString += lb.composeWalkOrHikeDistanceUpToKraftee(&k)
 		// postString += lb.composeWalkOrHikeDurationUpToKraftee(&k)
-		postString += lb.composeCombinedRunAndWalkLeaderboard(&k)
+		postString += lb.composeCombinedWalkAndHikeLeaderboard(&k)
 	}
 	postString += "```"
 

@@ -279,7 +279,7 @@ func (l Leaderboard) composeCombinedRideLeaderboard(k *Kraftee) string {
 	return title + table.composeAlignedTable(3) + "\n"
 }
 
-func (l Leaderboard) composeCombinedRunAndWalkLeaderboard(k *Kraftee) string {
+func (l Leaderboard) composeCombinedWalkAndHikeLeaderboard(k *Kraftee) string {
 	l.sortByWalkOrHikeTime(k)
 	var table Table
 	for i, kraftee := range l {
