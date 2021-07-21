@@ -211,3 +211,49 @@ func (t Table) composeAlignedTable(gutterSize int) string {
 
 	return table
 }
+
+func getEmoji(name string, length int) string {
+	var emojis = map[string]string{
+		"walk":           "🚶",
+		"hike":           "🥾",
+		"run":            "🏃",
+		"ride":           "🚴",
+		"swim":           "🏊",
+		"weighttraining": "🏋️",
+	}
+	var str string
+	var e string
+
+	if emoji, ok := emojis[name]; ok {
+		e = emoji
+	} else {
+		e = "🥵"
+	}
+
+	// Make <length> copies of emoji
+	for i := 0; i < length; i++ {
+		str += e
+	}
+	return str
+}
+
+func getRankEmoji(zeroIndexedRank int) string {
+	var medals = map[int]string{
+		0: "🥇",
+		1: "🥈",
+		2: "🥉",
+		3: "4️⃣",
+		4: "5️⃣",
+		5: "6️⃣",
+		6: "7️⃣",
+		7: "8️⃣",
+		8: "9️⃣",
+		9: "🔟",
+	}
+
+	if medal, ok := medals[zeroIndexedRank]; ok {
+		return medal
+	} else {
+		return "🙁"
+	}
+}

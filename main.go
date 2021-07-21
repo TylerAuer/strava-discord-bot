@@ -29,28 +29,6 @@ var krafteesByStravaId = map[string]Kraftee{
 	// "82860978": {"Andre", "Martinez", "DRE", "82860978", "", 0},
 }
 
-var emojis = map[string]string{
-	"walk":           "🚶🚶🚶",
-	"hike":           "🥾🥾🥾",
-	"run":            "🏃🏃🏃",
-	"ride":           "🚴🚴🚴",
-	"swim":           "🏊🏊🏊",
-	"weighttraining": "🏋️💪🏋️💪",
-	"fallback":       "🥵🥵🥵",
-}
-var medal = map[int]string{
-	0: "🥇",
-	1: "🥈",
-	2: "🥉",
-	3: "4️⃣",
-	4: "5️⃣",
-	5: "6️⃣",
-	6: "7️⃣",
-	7: "8️⃣",
-	8: "9️⃣",
-	9: "🔟",
-}
-
 func main() {
 	godotenv.Load()
 	fmt.Println("Loaded env vars")

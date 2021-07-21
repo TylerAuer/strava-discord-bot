@@ -26,7 +26,7 @@ func (l Leaderboard) composeActivityCountUpToKraftee(k *Kraftee) string {
 			currentRank = i
 			currentStat = kraftee.AllCount
 		}
-		str += medal[currentRank] + " "                           // Rank
+		str += getRankEmoji(currentRank) + " "                    // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                // Name
 		str += padLeft(fmt.Sprint(kraftee.AllCount), STAT_LENGTH) // Stat
 		str += "\n"                                               // Line break
@@ -53,7 +53,7 @@ func (l Leaderboard) composeDurationUpToKraftee(k *Kraftee) string {
 			currentRank = i
 			currentStat = kraftee.AllMovingSeconds
 		}
-		str += medal[currentRank] + " "                                 // Rank
+		str += getRankEmoji(currentRank) + " "                          // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                      // Name
 		str += padLeft(secToHMS(kraftee.AllMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                     // Line break
@@ -68,9 +68,9 @@ func (l Leaderboard) composeDurationUpToKraftee(k *Kraftee) string {
 func (l Leaderboard) composeRunDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByRunDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
-	str := emojis["run"] + " Distance\n" // Header
-	currentRank := 0                     // Matches the index of the list until multiple Kraftees are tied
-	currentStat := 0.0                   // Holds person in front's stat to check for ties
+	str := getEmoji("run", 3) + " Distance\n" // Header
+	currentRank := 0                          // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0.0                        // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.RunMeters <= 0 {
 			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
@@ -80,7 +80,7 @@ func (l Leaderboard) composeRunDistanceUpToKraftee(k *Kraftee) string {
 			currentRank = i
 			currentStat = kraftee.RunMeters
 		}
-		str += medal[currentRank] + " "                                                          // Rank
+		str += getRankEmoji(currentRank) + " "                                                   // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                               // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                              // Line break
@@ -95,9 +95,9 @@ func (l Leaderboard) composeRunDistanceUpToKraftee(k *Kraftee) string {
 func (l Leaderboard) composeRunDurationUpToKraftee(k *Kraftee) string {
 	l.sortByRunTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
-	str := emojis["run"] + " Time\n" // Header
-	currentRank := 0                 // Matches the index of the list until multiple Kraftees are tied
-	currentStat := 0                 // Holds person in front's stat to check for ties
+	str := getEmoji("run", 3) + " Time\n" // Header
+	currentRank := 0                      // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0                      // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.RunMovingSeconds <= 0 {
 			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
@@ -107,7 +107,7 @@ func (l Leaderboard) composeRunDurationUpToKraftee(k *Kraftee) string {
 			currentRank = i
 			currentStat = kraftee.RunMovingSeconds
 		}
-		str += medal[currentRank] + " "                                 // Rank
+		str += getRankEmoji(currentRank) + " "                          // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                      // Name
 		str += padLeft(secToHMS(kraftee.RunMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                     // Line break
@@ -122,9 +122,9 @@ func (l Leaderboard) composeRunDurationUpToKraftee(k *Kraftee) string {
 func (l Leaderboard) composeRideDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByRideDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
-	str := emojis["ride"] + " Distance\n" // Header
-	currentRank := 0                      // Matches the index of the list until multiple Kraftees are tied
-	currentStat := 0.0                    // Holds person in front's stat to check for ties
+	str := getEmoji("ride", 3) + " Distance\n" // Header
+	currentRank := 0                           // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0.0                         // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.RideMeters <= 0 {
 			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
@@ -134,7 +134,7 @@ func (l Leaderboard) composeRideDistanceUpToKraftee(k *Kraftee) string {
 			currentRank = i
 			currentStat = kraftee.RideMeters
 		}
-		str += medal[currentRank] + " "                                                           // Rank
+		str += getRankEmoji(currentRank) + " "                                                    // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                                // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.RideMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                               // Line break
@@ -149,9 +149,9 @@ func (l Leaderboard) composeRideDistanceUpToKraftee(k *Kraftee) string {
 func (l Leaderboard) composeRideDurationUpToKraftee(k *Kraftee) string {
 	l.sortByRideTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
-	str := emojis["ride"] + " Time\n" // Header
-	currentRank := 0                  // Matches the index of the list until multiple Kraftees are tied
-	currentStat := 0                  // Holds person in front's stat to check for ties
+	str := getEmoji("ride", 3) + " Time\n" // Header
+	currentRank := 0                       // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0                       // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.RideMovingSeconds <= 0 {
 			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
@@ -161,7 +161,7 @@ func (l Leaderboard) composeRideDurationUpToKraftee(k *Kraftee) string {
 			currentRank = i
 			currentStat = kraftee.RideMovingSeconds
 		}
-		str += medal[currentRank] + " "                                  // Rank
+		str += getRankEmoji(currentRank) + " "                           // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                       // Name
 		str += padLeft(secToHMS(kraftee.RideMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                      // Line break
@@ -176,9 +176,9 @@ func (l Leaderboard) composeRideDurationUpToKraftee(k *Kraftee) string {
 func (l Leaderboard) composeWalkOrHikeDistanceUpToKraftee(k *Kraftee) string {
 	l.sortByWalkorHikeDistance(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
-	str := emojis["walk"] + " Distance\n" // Header
-	currentRank := 0                      // Matches the index of the list until multiple Kraftees are tied
-	currentStat := 0.0                    // Holds person in front's stat to check for ties
+	str := getEmoji("walk", 3) + " Distance\n" // Header
+	currentRank := 0                           // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0.0                         // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.WalkOrHikeMeters <= 0 {
 			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
@@ -188,7 +188,7 @@ func (l Leaderboard) composeWalkOrHikeDistanceUpToKraftee(k *Kraftee) string {
 			currentRank = i
 			currentStat = kraftee.WalkOrHikeMeters
 		}
-		str += medal[currentRank] + " "                                                                 // Rank
+		str += getRankEmoji(currentRank) + " "                                                          // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                                                      // Name
 		str += padLeft(fmt.Sprintf("%.1f", metersToMiles(kraftee.WalkOrHikeMeters))+" mi", STAT_LENGTH) // Stat
 		str += "\n"                                                                                     // Line break
@@ -203,9 +203,9 @@ func (l Leaderboard) composeWalkOrHikeDistanceUpToKraftee(k *Kraftee) string {
 func (l Leaderboard) composeWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
 	l.sortByWalkOrHikeTime(k) // Sort
 	rank := l.findRankOfKrafteeOrLastIfAbsent(k)
-	str := emojis["walk"] + " Time\n" // Header
-	currentRank := 0                  // Matches the index of the list until multiple Kraftees are tied
-	currentStat := 0                  // Holds person in front's stat to check for ties
+	str := getEmoji("walk", 3) + " Time\n" // Header
+	currentRank := 0                       // Matches the index of the list until multiple Kraftees are tied
+	currentStat := 0                       // Holds person in front's stat to check for ties
 	for i, kraftee := range l {
 		if kraftee.WalkOrHikeMovingSeconds <= 0 {
 			break // Stop adding to the leaderboard when you reach a Kraftee with no stats
@@ -215,7 +215,7 @@ func (l Leaderboard) composeWalkOrHikeDurationUpToKraftee(k *Kraftee) string {
 			currentRank = i
 			currentStat = kraftee.WalkOrHikeMovingSeconds
 		}
-		str += medal[currentRank] + " "                                        // Rank
+		str += getRankEmoji(currentRank) + " "                                 // Rank
 		str += padRight(kraftee.Name, NAME_LENGTH)                             // Name
 		str += padLeft(secToHMS(kraftee.WalkOrHikeMovingSeconds), STAT_LENGTH) // Stat
 		str += "\n"                                                            // Line break
@@ -234,7 +234,7 @@ func (l Leaderboard) composeCombinedActivityLeaderboard(k *Kraftee) string {
 		if kraftee.AllMovingSeconds <= 0 {
 			break
 		}
-		name := medal[i] + " " + kraftee.Name
+		name := getRankEmoji(i) + " " + kraftee.Name
 		time := secToHMS(kraftee.AllMovingSeconds)
 		count := fmt.Sprint(kraftee.AllCount) + "x"
 
@@ -250,14 +250,14 @@ func (l Leaderboard) composeCombinedRunLeaderboard(k *Kraftee) string {
 		if kraftee.RunMovingSeconds <= 0 {
 			break
 		}
-		name := medal[i] + " " + kraftee.Name
+		name := getRankEmoji(i) + " " + kraftee.Name
 		distance := fmt.Sprintf("%.1f", metersToMiles(kraftee.RunMeters)) + " mi"
 		time := secToHMS(kraftee.RunMovingSeconds)
 		elev := "+" + fmt.Sprintf("%.0f", metersToFeet(kraftee.RunElevationGain)) + "'"
 
 		table = append(table, TableRow{name, distance, time, elev})
 	}
-	title := emojis["run"] + " Run Leaderboard " + emojis["run"] + "\n"
+	title := getEmoji("run", 3) + " Run Leaderboard " + getEmoji("run", 3) + "\n"
 	return title + table.composeAlignedTable(3) + "\n"
 }
 
@@ -268,14 +268,14 @@ func (l Leaderboard) composeCombinedRideLeaderboard(k *Kraftee) string {
 		if kraftee.RideMovingSeconds <= 0 {
 			break
 		}
-		name := medal[i] + " " + kraftee.Name
+		name := getRankEmoji(i) + " " + kraftee.Name
 		distance := fmt.Sprintf("%.1f", metersToMiles(kraftee.RideMeters)) + " mi"
 		time := secToHMS(kraftee.RideMovingSeconds)
 		elev := "+" + fmt.Sprintf("%.0f", metersToFeet(kraftee.RideElevationGain)) + "'"
 
 		table = append(table, TableRow{name, distance, time, elev})
 	}
-	title := emojis["ride"] + " Ride Leaderboard " + emojis["ride"] + "\n"
+	title := getEmoji("ride", 3) + " Ride Leaderboard " + getEmoji("ride", 3) + "\n"
 	return title + table.composeAlignedTable(3) + "\n"
 }
 
@@ -286,14 +286,14 @@ func (l Leaderboard) composeCombinedWalkAndHikeLeaderboard(k *Kraftee) string {
 		if kraftee.WalkOrHikeMovingSeconds <= 0 {
 			break
 		}
-		name := medal[i] + " " + kraftee.Name
+		name := getRankEmoji(i) + " " + kraftee.Name
 		distance := fmt.Sprintf("%.1f", metersToMiles(kraftee.WalkOrHikeMeters)) + " mi"
 		time := secToHMS(kraftee.WalkOrHikeMovingSeconds)
 		elev := "+" + fmt.Sprintf("%.0f", metersToFeet(kraftee.WalkOrHikeElevationGain)) + "'"
 
 		table = append(table, TableRow{name, distance, time, elev})
 	}
-	title := emojis["walk"] + " Walk & Hike Leaderboard " + emojis["hike"] + "\n"
+	title := getEmoji("walk", 3) + " Walk & Hike Leaderboard " + getEmoji("hike", 3) + "\n"
 	return title + table.composeAlignedTable(3) + "\n"
 }
 

@@ -149,14 +149,6 @@ func (ad ActivityDetails) composeActivityPost() string {
 		}
 	}
 
-	emoji := func() string {
-		if emojis, ok := emojis[strings.ToLower(ad.Type)]; ok {
-			return emojis
-		}
-		fmt.Println("No emoji for: " + strings.ToLower(ad.Type))
-		return emojis["fallback"]
-	}
-
 	dist := func() string {
 		if ad.Distance > 0 {
 			return "Dist:    " + fmt.Sprintf("%.2f", metersToMiles(ad.Distance)) + " miles\n"
@@ -205,7 +197,7 @@ func (ad ActivityDetails) composeActivityPost() string {
 	}()
 
 	return "" +
-		k.First + " logged a " + emoji() + "\n" +
+		k.First + " logged a " + getEmoji(strings.ToLower(ad.Type), 3) + "\n" +
 		msg() +
 		"\n*" + title + "*\n" +
 		"\n" +
