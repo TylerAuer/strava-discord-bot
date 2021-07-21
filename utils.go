@@ -212,7 +212,7 @@ func (t Table) composeAlignedTable(gutterSize int) string {
 	return table
 }
 
-func getEmoji(name string, length int) string {
+func getEmojiSequence(name string, length int) string {
 	var emojis = map[string]string{
 		"walk":           "🚶",
 		"hike":           "🥾",

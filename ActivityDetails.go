@@ -197,7 +197,7 @@ func (ad ActivityDetails) composeActivityPost() string {
 	}()
 
 	return "" +
-		k.First + " logged a " + getEmoji(strings.ToLower(ad.Type), 3) + "\n" +
+		k.First + " logged a " + getEmojiSequence(strings.ToLower(ad.Type), 3) + "\n" +
 		msg() +
 		"\n*" + title + "*\n" +
 		"\n" +

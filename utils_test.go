@@ -101,7 +101,19 @@ func TestTableCompose(t *testing.T) {
 	}
 	expected := "1 Tyler         4 mi   2:12:03\n2 Jim         4.7 mi     12:03\n3 Jonathan   14.7 mi      2:03\n4 K             1 mi   1:22:03\n"
 
-	got := table.composeAlignedTable(3)
+	got := table.composeAlignedTable(2)
+	if got != expected {
+		t.Errorf("Expected:\n%s, got:\n%s", expected, got)
+	}
+
+	table = Table{
+		TableRow{"1 Tyler", "4 mi", ""},
+		TableRow{"2 Jim", "", "12:03"},
+		TableRow{"3 Jonathan", "14.7 mi", "2:03"},
+		TableRow{"4 K", "", ""},
+	}
+	expected = "1 Tyler         4 mi        \n2 Jim                  12:03\n3 Jonathan   14.7 mi    2:03\n4 K                         \n"
+	got = table.composeAlignedTable(2)
 	if got != expected {
 		t.Errorf("Expected:\n%s, got:\n%s", expected, got)
 	}
