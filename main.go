@@ -68,15 +68,6 @@ func handleLambda(ctx context.Context, event events.APIGatewayProxyRequest) (eve
 			fmt.Println("Handling POST request which should be webhook event from Strava")
 			handleStravaWebhook(event.Body)
 		}
-	} else if purpose == "WEEKLY_UPDATES" {
-		fmt.Println("Running the weekly update post")
-		handleWeeklyUpdatePost()
-	} else if purpose == "NAG" {
-		fmt.Println("Running a nag check")
-		handleNagCheck()
-	} else if purpose == "JESSICA_DAILY_UPDATES" {
-		fmt.Println("Sending Jessica a daily update")
-		handleJessicaDailyUpdate()
 	} else if purpose == "CRON" {
 		fmt.Println("Handling a cron task")
 		handleCron(event.Body).executeCronJobBasedOnType()
