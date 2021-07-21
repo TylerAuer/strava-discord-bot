@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Stop script if any line fails
+set -e
+
+# Run test suite
+go test
+
 # Build and push image to AWS ECR
 docker build -t strava-discord-bot . 
 aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 403525920890.dkr.ecr.us-east-2.amazonaws.com
