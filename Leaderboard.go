@@ -236,25 +236,12 @@ func (l Leaderboard) composeCombinedActivityLeaderboard(k *Kraftee) string {
 		}
 		name := getRankEmoji(i) + " " + kraftee.Name
 		time := secToHMS(kraftee.AllMovingSeconds)
+		runs := getEmojiSequence("run", 1) + "x" + fmt.Sprint(kraftee.RunCount)
+		rides := getEmojiSequence("ride", 1) + "x" + fmt.Sprint(kraftee.RideCount)
+		walksAndHikes := getEmojiSequence("walk", 1) + "x" + fmt.Sprint(kraftee.WalkOrHikeCount)
 
-		var runs string
-		var rides string
-		var walksAndHikes string
-		var others string
-
-		if kraftee.RunCount > 0 {
-			runs += getEmojiSequence("run", 1) + "x" + fmt.Sprint(kraftee.RunCount)
-		}
-		if kraftee.RideCount > 0 {
-			rides += getEmojiSequence("ride", 1) + "x" + fmt.Sprint(kraftee.RideCount)
-		}
-		if kraftee.WalkOrHikeCount > 0 {
-			walksAndHikes += getEmojiSequence("walk", 1) + "x" + fmt.Sprint(kraftee.WalkOrHikeCount)
-		}
 		otherActivityCount := kraftee.AllCount - kraftee.RunCount - kraftee.RideCount - kraftee.WalkOrHikeCount
-		if otherActivityCount > 0 {
-			others += getEmojiSequence("other", 1) + "x" + fmt.Sprint(otherActivityCount)
-		}
+		others := getEmojiSequence("other", 1) + "x" + fmt.Sprint(otherActivityCount)
 
 		table = append(table, TableRow{name, time, runs, rides, walksAndHikes, others})
 	}
