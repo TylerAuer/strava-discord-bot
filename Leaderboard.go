@@ -236,16 +236,29 @@ func (l Leaderboard) composeCombinedActivityLeaderboard(k *Kraftee) string {
 		}
 		name := getRankEmoji(i) + " " + kraftee.Name
 		time := secToHMS(kraftee.AllMovingSeconds)
-		runs := getEmojiSequence("run", 1) + "x" + fmt.Sprint(kraftee.RunCount)
-		rides := getEmojiSequence("ride", 1) + "x" + fmt.Sprint(kraftee.RideCount)
-		walksAndHikes := getEmojiSequence("walk", 1) + "x" + fmt.Sprint(kraftee.WalkOrHikeCount)
 
+		var runs string
+		var rides string
+		var walksAndHikes string
+		var others string
+
+		if kraftee.RunCount > 0 {
+			runs += getEmojiSequence("run", 1) + "x" + fmt.Sprint(kraftee.RunCount)
+		}
+		if kraftee.RideCount > 0 {
+			rides += getEmojiSequence("ride", 1) + "x" + fmt.Sprint(kraftee.RideCount)
+		}
+		if kraftee.WalkOrHikeCount > 0 {
+			walksAndHikes += getEmojiSequence("walk", 1) + "x" + fmt.Sprint(kraftee.WalkOrHikeCount)
+		}
 		otherActivityCount := kraftee.AllCount - kraftee.RunCount - kraftee.RideCount - kraftee.WalkOrHikeCount
-		others := getEmojiSequence("other", 1) + "x" + fmt.Sprint(otherActivityCount)
+		if otherActivityCount > 0 {
+			others += getEmojiSequence("other", 1) + "x" + fmt.Sprint(otherActivityCount)
+		}
 
 		table = append(table, TableRow{name, time, runs, rides, walksAndHikes, others})
 	}
-	return "### All Activities ###\n" + table.composeAlignedTable(1) + "\n"
+	return "### All Activities ###\n" + table.composeRightAlignedTable(1, true) + "\n"
 }
 
 func (l Leaderboard) composeCombinedRunLeaderboard(k *Kraftee) string {
@@ -263,7 +276,7 @@ func (l Leaderboard) composeCombinedRunLeaderboard(k *Kraftee) string {
 		table = append(table, TableRow{name, distance, time, elev})
 	}
 	title := getEmojiSequence("run", 3) + " Run Leaderboard " + getEmojiSequence("run", 3) + "\n"
-	return title + table.composeAlignedTable(3) + "\n"
+	return title + table.composeRightAlignedTable(3, false) + "\n"
 }
 
 func (l Leaderboard) composeCombinedRideLeaderboard(k *Kraftee) string {
@@ -281,7 +294,7 @@ func (l Leaderboard) composeCombinedRideLeaderboard(k *Kraftee) string {
 		table = append(table, TableRow{name, distance, time, elev})
 	}
 	title := getEmojiSequence("ride", 3) + " Ride Leaderboard " + getEmojiSequence("ride", 3) + "\n"
-	return title + table.composeAlignedTable(3) + "\n"
+	return title + table.composeRightAlignedTable(3, false) + "\n"
 }
 
 func (l Leaderboard) composeCombinedWalkAndHikeLeaderboard(k *Kraftee) string {
@@ -299,7 +312,7 @@ func (l Leaderboard) composeCombinedWalkAndHikeLeaderboard(k *Kraftee) string {
 		table = append(table, TableRow{name, distance, time, elev})
 	}
 	title := getEmojiSequence("walk", 3) + " Walk & Hike Leaderboard " + getEmojiSequence("hike", 3) + "\n"
-	return title + table.composeAlignedTable(3) + "\n"
+	return title + table.composeRightAlignedTable(3, false) + "\n"
 }
 
 /*

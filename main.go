@@ -166,14 +166,14 @@ func handleLocal() {
 	// }`)
 
 	// BRYAN
-	// handleStravaWebhook(`
-	// {
-	//   "aspect_type": "create",
-	//   "event_time": 1627217245,
-	//   "object_id": 5684557639,
-	//   "object_type": "activity",
-	//   "owner_id": 80485980,
-	//   "subscription_id": 188592,
-	//   "updates": {}
-	// }`)
+	handleStravaWebhook(`
+	{
+	  "aspect_type": "create",
+	  "event_time": 1627217245,
+	  "object_id": 5684557639,
+	  "object_type": "activity",
+	  "owner_id": 80485980,
+	  "subscription_id": 188592,
+	  "updates": {}
+	}`)
 }

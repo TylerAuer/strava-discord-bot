@@ -93,8 +93,6 @@ func getStartOfWeekInUnixTime() int64 {
 
 func getNDaysAgoInUnixtime(days int) int64 {
 	return time.Now().AddDate(0, 0, -1*days).Unix()
-	// return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local).AddDate(0, 0, -1*days).Unix()
-
 }
 
 func contains(s []string, str string) bool {
@@ -127,42 +125,12 @@ func padRight(s string, length int) string {
 	}
 }
 
-type TwoColumnTableRow struct {
-	left, right string
-}
-
-type TwoColumnTable []TwoColumnTableRow
-
-func (data TwoColumnTable) composeTwoColumnTable() string {
-	padding := "    "
-
-	// Get the maximum lenghts of the left and right columns
-	var maxLeft, maxRight int
-	for _, d := range data {
-		leftLen := uniseg.GraphemeClusterCount(d.left)
-		rightLen := uniseg.GraphemeClusterCount(d.right)
-		if leftLen > maxLeft {
-			maxLeft = leftLen
-		}
-		if rightLen > maxRight {
-			maxRight = rightLen
-		}
-	}
-
-	// Compose the tableString so the left column is aligned left and the right column is aligned right
-	var tableString string
-	for _, d := range data {
-		tableString += padRight(d.left, maxLeft) + padding + padLeft(d.right, maxRight) + "\n"
-	}
-	return tableString
-}
-
 type TableRow []string
 type Table []TableRow
 
 // Builds a custom-aligned table where
 // the first column is left aligned and the rest are right aligned
-func (t Table) composeAlignedTable(gutterSize int) string {
+func (t Table) composeRightAlignedTable(gutterSize int, isAllActivitiesTable bool) string {
 	var gutter string
 	for i := 0; i <= gutterSize; i++ {
 		gutter += " "
@@ -203,7 +171,14 @@ func (t Table) composeAlignedTable(gutterSize int) string {
 				table += padLeft(cell, colMaxLengths[j])
 			} else {
 				// Not the first or the last column (pad and add gutter)
-				table += padLeft(cell, colMaxLengths[j]) + gutter
+				colWidth := colMaxLengths[j]
+				// Discords emojis are 2 chars wide in the fixed width font
+				// So to avoid issues in the all activites table, we need to make empty columns
+				// an extra character wide
+				if cell == "" && isAllActivitiesTable {
+					colWidth++
+				}
+				table += padLeft(cell, colWidth) + gutter
 			}
 		}
 		table += "\n"
