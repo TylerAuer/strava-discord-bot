@@ -70,7 +70,7 @@ func fetchOneKrafteeStats(t int64, k Kraftee, lbChan chan Stats, activityListCha
 	actList := fetchKrafteeActivitiesSince(t, k)
 	activityListChan <- actList
 
-	kStats := actList.buildStats(k.First, k.StravaId)
+	kStats := actList.buildStats(k.SafeFirstName(), k.StravaId)
 	lbChan <- kStats
 
 	fmt.Println("Finished " + k.FullName())
