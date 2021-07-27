@@ -197,7 +197,7 @@ func (ad ActivityDetails) composeActivityPost() string {
 	}()
 
 	return "" +
-		k.First + " logged a " + getEmojiSequence(strings.ToLower(ad.Type), 3) + "\n" +
+		k.SafeFirstName() + " logged a " + getEmojiSequence(strings.ToLower(ad.Type), 3) + "\n" +
 		msg() +
 		"\n*" + title + "*\n" +
 		"\n" +
@@ -230,7 +230,7 @@ func (ad ActivityDetails) composeChallengePost() string {
 	}
 
 	var msg string
-	msg += k.First + " just did the " + challenge.Name + " WWC\n"
+	msg += k.SafeFirstName() + " just did the " + challenge.Name + " WWC\n"
 	msg += "\n"
 	msg += "```"
 	msg += "Score: " + score + "\n"

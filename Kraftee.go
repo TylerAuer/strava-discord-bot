@@ -1,7 +1,7 @@
 package main
 
 type Kraftee struct {
-	First               string
+	first               string
 	Last                string
 	RefreshTokenEnvName string
 	StravaId            string
@@ -10,7 +10,20 @@ type Kraftee struct {
 }
 
 func (k Kraftee) FullName() string {
-	return k.First + " " + k.Last
+	return k.first + " " + k.Last
+}
+
+// SafeFirstName returns the first name of a Kraftee, but uses substitutions for
+// Kraftees that have the same name. SafeFirstName should always be used in place of Kraftee.First
+func (k Kraftee) SafeFirstName() string {
+	switch k.StravaId {
+	case "80996402":
+		return "Quella"
+	case "89420051":
+		return "Sweeney"
+	default:
+		return k.first
+	}
 }
 
 func (k Kraftee) GetStravaAccessToken() string {

@@ -48,7 +48,7 @@ func (al ActivityList) buildStats(name string, ID string) Stats {
 
 func (al ActivityList) buildStatsFor(k Kraftee) Stats {
 	s := Stats{
-		Name:         k.First,
+		Name:         k.SafeFirstName(),
 		ID:           k.StravaId,
 		MaxHeartRate: 0,
 	}

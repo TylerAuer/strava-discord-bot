@@ -59,7 +59,7 @@ func (gs Stats) printGroupStats() string {
 }
 
 func (s Stats) printKrafteeStats(k Kraftee) string {
-	post := "**" + k.First + "'s Weekly Stats** @ post time\n"
+	post := "**" + k.SafeFirstName() + "'s Weekly Stats** @ post time\n"
 	post += "```"
 	post += "Activities: " + fmt.Sprint(s.AllCount) + "\n"
 	post += "Total Time: " + secToHMS(s.AllMovingSeconds) + "\n"

@@ -143,7 +143,7 @@ func handleNagCheck() {
 func checkIfLazy(k Kraftee, lazyChan chan string) {
 	// Only check Kraftees who have opted in
 	if k.daysBeforeNag == 0 {
-		fmt.Println(k.First, "hasn't opted into nagging")
+		fmt.Println(k.SafeFirstName(), "hasn't opted into nagging")
 		lazyChan <- ""
 		return
 	}
@@ -152,10 +152,10 @@ func checkIfLazy(k Kraftee, lazyChan chan string) {
 	activities := fetchKrafteeActivitiesSince(dateToStartCheckFrom, k)
 
 	if len(activities) == 0 {
-		fmt.Println(k.First, "is lazy")
-		lazyChan <- k.First
+		fmt.Println(k.SafeFirstName(), "is lazy")
+		lazyChan <- k.SafeFirstName()
 	} else {
-		fmt.Println(k.First, "is not lazy")
+		fmt.Println(k.SafeFirstName(), "is not lazy")
 		lazyChan <- ""
 	}
 
