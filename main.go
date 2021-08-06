@@ -31,7 +31,7 @@ var krafteesByStravaId = map[string]Kraftee{
 }
 
 func main() {
-	godotenv.Load()
+	godotenv.Load("./secrets/local")
 	fmt.Println("Loaded env vars")
 
 	// Decide what to execute based on where things are running.
@@ -55,9 +55,6 @@ func handleLambda(ctx context.Context, event events.APIGatewayProxyRequest) (eve
 	httpMethod := event.HTTPMethod
 	fmt.Println("HTTP Method: " + httpMethod)
 
-	// Each purpose is a different AWS Lambda function running this container
-	// The env var PURPOSE customizes the behavior.
-	// This allows for code reuse and simplicity
 	purpose := os.Getenv("PURPOSE")
 
 	if purpose == "NEW_POSTS" {
