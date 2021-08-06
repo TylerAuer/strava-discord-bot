@@ -165,12 +165,12 @@ func handleLocal() {
 	// BRYAN
 	handleStravaWebhook(`
 	{
-	  "aspect_type": "create",
-	  "event_time": 1627217245,
-	  "object_id": 5684557639,
-	  "object_type": "activity",
-	  "owner_id": 80485980,
-	  "subscription_id": 188592,
-	  "updates": {}
+    "aspect_type": "update",
+    "event_time": 1628286979,
+    "object_id": 5750070283,
+    "object_type": "activity",
+    "owner_id": 20419783,
+    "subscription_id": 188592,
+    "updates": {}
 	}`)
 }

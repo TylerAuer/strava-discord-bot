@@ -202,7 +202,6 @@ func (ad ActivityDetails) composeActivityPost() string {
 		"\n*" + title + "*\n" +
 		"\n" +
 		"**This Activity**\n" +
-		// "*Where you stood on the leaderboard when this activity was first posted*\n" +
 		"```\n" +
 		dist() +
 		movTime + "\n" +

@@ -195,6 +195,7 @@ func getEmojiSequence(name string, length int) string {
 		"ride":           "🚴",
 		"swim":           "🏊",
 		"weighttraining": "🏋️",
+		"ebikeride":      "🛵",
 	}
 	var str string
 	var e string
