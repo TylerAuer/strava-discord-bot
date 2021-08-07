@@ -50,16 +50,36 @@ func (m Mongo) disconnect(ctx context.Context, client *mongo.Client) {
 	}
 }
 
-func (m Mongo) store() {
+func (m Mongo) Upsert() {
 	ctx, client := m.connect()
 	defer m.disconnect(ctx, client)
 
+	coll := client.Database("Cluster0").Collection("customers")
+
+	opts := options.Update().SetUpsert(true)
+	filter := bson.D{{"_id", "987654321"}}
+	update := bson.D{{"$set", bson.D{{"email", "newemail@example.com"}}}}
+
+	coll.UpdateOne(ctx, filter, update, opts)
+
 	// Insert a document
-	_, err := client.Database("Cluster0").Collection("customers").InsertOne(ctx, bson.M{
-		"name":  "John",
-		"email": "fjaskl",
-	})
-	if err != nil {
-		panic(err)
-	}
+	// _, err := client.Database("Cluster0").Collection("customers").InsertOne(ctx, bson.M{
+	// 	"_id":   "123456789",
+	// 	"name":  "John",
+	// 	"email": "fjaskl",
+	// })
+	// _, err := client.Database("Cluster0").Collection("customers").UpdateOne(ctx, bson.M{
+	// 	"_id":   "123456789",
+	// 	"name":  "Jimmy",
+	// 	"email": "Johnson",
+	// })
+
+	// _, err = client.Database("Cluster0").Collection("customers").UpdateOne(ctx, bson.M{
+	// 	"_id":   "123456789",
+	// 	"name":  "Jimmy",
+	// 	"email": "Johnson",
+	// })
+	// if err != nil {
+	// 	panic(err)
+	// }
 }

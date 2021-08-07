@@ -175,5 +175,5 @@ func handleLocal() {
 	// }`)
 
 	mongo := initMongo()
-	mongo.store()
+	mongo.Upsert()
 }
