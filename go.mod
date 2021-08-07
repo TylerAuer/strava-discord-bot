@@ -10,4 +10,5 @@ require (
 	github.com/jinzhu/now v1.1.2
 	github.com/joho/godotenv v1.3.0
 	github.com/rivo/uniseg v0.2.0
+	go.mongodb.org/mongo-driver v1.7.1
 )
