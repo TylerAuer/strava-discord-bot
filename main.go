@@ -152,15 +152,15 @@ func handleLocal() {
 	// handleCron(`{"type": "jessica_daily_update"}`).executeCronJobBasedOnType()
 
 	// Tyler Walk
-	// handleStravaWebhook(`{
-	//   "aspect_type": "create",
-	//   "event_time": 1626617763,
-	//   "object_id": 5647611387,
-	//   "object_type": "activity",
-	//   "owner_id": 80341128,
-	//   "subscription_id": 188592,
-	//   "updates": {}
-	// }`)
+	handleStravaWebhook(`{
+	  "aspect_type": "create",
+	  "event_time": 1626617763,
+	  "object_id": 5647611387,
+	  "object_type": "activity",
+	  "owner_id": 80341128,
+	  "subscription_id": 188592,
+	  "updates": {}
+	}`)
 
 	// BRYAN
 	// handleStravaWebhook(`
@@ -173,7 +173,4 @@ func handleLocal() {
 	//   "subscription_id": 188592,
 	//   "updates": {}
 	// }`)
-
-	mongo := initMongo()
-	mongo.Upsert()
 }

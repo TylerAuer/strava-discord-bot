@@ -13,50 +13,50 @@ import (
 )
 
 type ActivityDetails struct {
-	ResourceState int `json:"resource_state"`
+	ResourceState int `json:"resource_state" bson:"-"`
 	Athlete       struct {
-		ID            int `json:"id"`
-		ResourceState int `json:"resource_state"`
-	} `json:"athlete"`
-	Name               string    `json:"name"`
-	Distance           float64   `json:"distance"`
-	MovingTime         int       `json:"moving_time"`
-	ElapsedTime        int       `json:"elapsed_time"`
-	TotalElevationGain float64   `json:"total_elevation_gain"`
-	Type               string    `json:"type"`
-	ID                 int64     `json:"id"`
-	StartDate          time.Time `json:"start_date"`
-	StartDateLocal     time.Time `json:"start_date_local"`
-	Timezone           string    `json:"timezone"`
-	UtcOffset          float64   `json:"utc_offset"`
-	StartLatlng        []float64 `json:"start_latlng"`
-	AchievementCount   int       `json:"achievement_count"`
+		ID            int `json:"id" bson:"-"`
+		ResourceState int `json:"resource_state" bson:"-"`
+	} `json:"athlete" bson:"-"`
+	Name               string    `json:"name" bson:"name,omitempty"`
+	Distance           float64   `json:"distance" bson:"distance,omitempty"`
+	MovingTime         int       `json:"moving_time" bson:"moving_time,omitempty"`
+	ElapsedTime        int       `json:"elapsed_time" bson:"elapsed_time,omitempty"`
+	TotalElevationGain float64   `json:"total_elevation_gain" bson:"total_elevation_gain,omitempty"`
+	Type               string    `json:"type" bson:"type,omitempty"`
+	ID                 int64     `json:"id" bson:"-"`
+	StartDate          time.Time `json:"start_date" bson:"start_date,omitempty"`
+	StartDateLocal     time.Time `json:"start_date_local" bson:"-"`
+	Timezone           string    `json:"timezone" bson:"-"`
+	UtcOffset          float64   `json:"utc_offset" bson:"utc_offset,omitempty"`
+	StartLatlng        []float64 `json:"start_latlng" bson:"-"`
+	AchievementCount   int       `json:"achievement_count" bson:"-"`
 	Map                struct {
-		ID              string `json:"id"`
-		Polyline        string `json:"polyline"`
-		ResourceState   int    `json:"resource_state"`
-		SummaryPolyline string `json:"summary_polyline"`
-	} `json:"map"`
-	AverageSpeed               float64 `json:"average_speed"`
-	MaxSpeed                   float64 `json:"max_speed"`
-	AverageCadence             float64 `json:"average_cadence"`
-	HasHeartrate               bool    `json:"has_heartrate"`
-	AverageHeartrate           float64 `json:"average_heartrate"`
-	MaxHeartrate               float64 `json:"max_heartrate"`
-	HeartrateOptOut            bool    `json:"heartrate_opt_out"`
-	DisplayHideHeartrateOption bool    `json:"display_hide_heartrate_option"`
-	ElevHigh                   float64 `json:"elev_high"`
-	ElevLow                    float64 `json:"elev_low"`
-	PrCount                    int     `json:"pr_count"`
-	TotalPhotoCount            int     `json:"total_photo_count"`
-	HasKudoed                  bool    `json:"has_kudoed"`
-	SufferScore                float64 `json:"suffer_score"`
-	Description                string  `json:"description"`
-	Calories                   float64 `json:"calories"`
+		ID              string `json:"id" bson:"-"`
+		Polyline        string `json:"polyline" bson:"-"`
+		ResourceState   int    `json:"resource_state" bson:"-"`
+		SummaryPolyline string `json:"summary_polyline" bson:"-"`
+	} `json:"map" bson:"-"`
+	AverageSpeed               float64 `json:"average_speed" bson:"average_speed,omitempty"`
+	MaxSpeed                   float64 `json:"max_speed" bson:"max_speed,omitempty"`
+	AverageCadence             float64 `json:"average_cadence" bson:"average_cadence,omitempty"`
+	HasHeartrate               bool    `json:"has_heartrate" bson:"has_heartrate,omitempty"`
+	AverageHeartrate           float64 `json:"average_heartrate" bson:"average_heartrate,omitempty"`
+	MaxHeartrate               float64 `json:"max_heartrate" bson:"max_heartrate,omitempty"`
+	HeartrateOptOut            bool    `json:"heartrate_opt_out" bson:"-"`
+	DisplayHideHeartrateOption bool    `json:"display_hide_heartrate_option" bson:"-"`
+	ElevHigh                   float64 `json:"elev_high" bson:"elev_high,omitempty"`
+	ElevLow                    float64 `json:"elev_low" bson:"elev_low,omitempty"`
+	PrCount                    int     `json:"pr_count" bson:"pr_count,omitempty"`
+	TotalPhotoCount            int     `json:"total_photo_count" bson:"-"`
+	HasKudoed                  bool    `json:"has_kudoed" bson:"-"`
+	SufferScore                float64 `json:"suffer_score" bson:"suffer_score,omitempty"`
+	Description                string  `json:"description" bson:"description,omitempty"`
+	Calories                   float64 `json:"calories" bson:"calories,omitempty"`
 	Photos                     struct {
-		Primary interface{} `json:"primary"`
-		Count   int         `json:"count"`
-	} `json:"photos"`
+		Primary interface{} `json:"primary" bson:"-"`
+		Count   int         `json:"count" bson:"-"`
+	} `json:"photos" bson:"-"`
 }
 
 func getActivityDetails(id string, k Kraftee) ActivityDetails {

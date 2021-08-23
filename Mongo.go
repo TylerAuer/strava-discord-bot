@@ -50,36 +50,29 @@ func (m Mongo) disconnect(ctx context.Context, client *mongo.Client) {
 	}
 }
 
-func (m Mongo) Upsert() {
+func (m Mongo) Upsert(ad ActivityDetails) {
 	ctx, client := m.connect()
 	defer m.disconnect(ctx, client)
 
-	coll := client.Database("Cluster0").Collection("customers")
+	collection := os.Getenv("MONGO_COLLECTION")
+
+	coll := client.Database(collection).Collection(fmt.Sprint(ad.Athlete.ID))
 
 	opts := options.Update().SetUpsert(true)
-	filter := bson.D{{"_id", "987654321"}}
-	update := bson.D{{"$set", bson.D{{"email", "newemail@example.com"}}}}
+	filter := bson.D{{"_id", fmt.Sprint(ad.ID)}}
+	update := bson.D{
+		{"$setOnInsert", bson.D{
+			{"_id", fmt.Sprint(ad.ID)},
+		}},
+		{"$set", ad},
+	}
 
-	coll.UpdateOne(ctx, filter, update, opts)
-
-	// Insert a document
-	// _, err := client.Database("Cluster0").Collection("customers").InsertOne(ctx, bson.M{
-	// 	"_id":   "123456789",
-	// 	"name":  "John",
-	// 	"email": "fjaskl",
-	// })
-	// _, err := client.Database("Cluster0").Collection("customers").UpdateOne(ctx, bson.M{
-	// 	"_id":   "123456789",
-	// 	"name":  "Jimmy",
-	// 	"email": "Johnson",
-	// })
-
-	// _, err = client.Database("Cluster0").Collection("customers").UpdateOne(ctx, bson.M{
-	// 	"_id":   "123456789",
-	// 	"name":  "Jimmy",
-	// 	"email": "Johnson",
-	// })
-	// if err != nil {
-	// 	panic(err)
-	// }
+	result, err := coll.UpdateOne(ctx, filter, update, opts)
+	if err != nil {
+		fmt.Println("Error upserting into MongoDB: " + err.Error())
+	} else {
+		fmt.Println("MongoDB upsert results")
+		fmt.Println("_id: " + fmt.Sprint(result.UpsertedID))
+		fmt.Println("Upserted: " + fmt.Sprint(result.UpsertedCount))
+	}
 }

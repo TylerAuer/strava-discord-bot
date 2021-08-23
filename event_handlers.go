@@ -49,6 +49,9 @@ func handleStravaWebhook(body string) {
 		ad := getActivityDetails(idStr, k)
 		isWeeklyWorkoutChallengeActivity := ad.isWeeklyWorkoutChallenge()
 
+		// Upsert activity details to MongoDB
+		initMongo().Upsert(ad)
+
 		isCreateType := b.AspectType == "create"
 
 		if isWeeklyWorkoutChallengeActivity {
