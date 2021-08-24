@@ -80,3 +80,23 @@ func (m Mongo) Upsert(ad ActivityDetails) {
 		fmt.Println("Upserted: " + fmt.Sprint(result.UpsertedCount))
 	}
 }
+
+func (m Mongo) Delete(ad ActivityDetails) {
+	ctx, client, cancel := m.connect()
+	defer cancel()
+	defer m.disconnect(ctx, client)
+
+	collection := os.Getenv("MONGO_COLLECTION")
+
+	coll := client.Database("strava").Collection(collection)
+
+	filter := bson.D{{"_id", fmt.Sprint(ad.ID)}}
+
+	result, err := coll.DeleteOne(ctx, filter)
+	if err != nil {
+		fmt.Println("Error deleting from MongoDB: " + err.Error())
+	} else {
+		fmt.Println("MongoDB delete results")
+		fmt.Println("Deleted: " + fmt.Sprint(result.DeletedCount))
+	}
+}

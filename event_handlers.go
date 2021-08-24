@@ -68,7 +68,7 @@ func handleStravaWebhook(body string) {
 		ad := getActivityDetails(idStr, k)
 
 		ad.deleteActivityPost()
-		// Remove record from MongoDB
+		initMongo().Delete(ad)
 
 	} else {
 		fmt.Println("webhook was none of the following 1) activity 2) create aspect_type 3) update aspect_type")
