@@ -26,8 +26,8 @@ func initMongo() Mongo {
 	return Mongo{username, password, uri}
 }
 
-func (m Mongo) connect() (context.Context, *mongo.Client) {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+func (m Mongo) connect() (context.Context, *mongo.Client, context.CancelFunc) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(m.uri))
 	if err != nil {
@@ -40,7 +40,7 @@ func (m Mongo) connect() (context.Context, *mongo.Client) {
 	}
 	fmt.Println("Successfully connected and pinged.")
 
-	return ctx, client
+	return ctx, client, cancel
 }
 
 func (m Mongo) disconnect(ctx context.Context, client *mongo.Client) {
@@ -51,12 +51,13 @@ func (m Mongo) disconnect(ctx context.Context, client *mongo.Client) {
 }
 
 func (m Mongo) Upsert(ad ActivityDetails) {
-	ctx, client := m.connect()
+	ctx, client, cancel := m.connect()
+	defer cancel()
 	defer m.disconnect(ctx, client)
 
 	collection := os.Getenv("MONGO_COLLECTION")
 
-	coll := client.Database(collection).Collection(fmt.Sprint(ad.Athlete.ID))
+	coll := client.Database("strava").Collection(collection)
 
 	opts := options.Update().SetUpsert(true)
 	filter := bson.D{{"_id", fmt.Sprint(ad.ID)}}
@@ -65,6 +66,9 @@ func (m Mongo) Upsert(ad ActivityDetails) {
 			{"_id", fmt.Sprint(ad.ID)},
 		}},
 		{"$set", ad},
+		{"$set", bson.D{
+			{"kraftee_name", ad.krafteeWhoRecordedActivity().SafeFirstName()},
+		}},
 	}
 
 	result, err := coll.UpdateOne(ctx, filter, update, opts)
