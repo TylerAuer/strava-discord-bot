@@ -59,6 +59,17 @@ func handleStravaWebhook(body string) {
 		} else {
 			ad.postOrUpdateActivityPost(isCreateType)
 		}
+	} else if b.ObjectType == "activity" && b.AspectType == "delete" {
+		fmt.Println("Deleting activity with ID: " + fmt.Sprint(b.ObjectId))
+
+		k := krafteesByStravaId[fmt.Sprint(b.OwnerId)]
+		idStr := fmt.Sprint(b.ObjectId)
+
+		ad := getActivityDetails(idStr, k)
+
+		ad.deleteActivityPost()
+		// Remove record from MongoDB
+
 	} else {
 		fmt.Println("webhook was none of the following 1) activity 2) create aspect_type 3) update aspect_type")
 	}

@@ -343,3 +343,14 @@ func (ad ActivityDetails) postOrUpdateWeeklyWorkoutChallengePost(canMakeNewPost 
 		fmt.Println("Old post wasn't found and canMakeNewPost == false. This is likely because Strava sent a duplicate `create` event ")
 	}
 }
+
+func (ad ActivityDetails) deleteActivityPost() {
+	postToDelete := ad.getDiscordPostWithMatchingId()
+
+	if postToDelete != nil {
+		dg := getDiscord()
+		defer dg.Close()
+
+		dg.deletePost(postToDelete)
+	}
+}

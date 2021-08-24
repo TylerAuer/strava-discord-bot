@@ -69,3 +69,13 @@ func (d Discord) lastOneHundredMessages() []*discordgo.Message {
 
 	return msgs
 }
+
+func (d Discord) deletePost(postToDelete *discordgo.Message) {
+	c := os.Getenv("DISCORD_CHANNEL_ID")
+
+	err := d.ChannelMessageDelete(c, postToDelete.ID)
+	if err != nil {
+		log.Fatal("Error deleting message,", err)
+	}
+
+}
